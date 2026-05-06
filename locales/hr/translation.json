@@ -1,0 +1,23 @@
+{
+  "home": {
+    "titleMain": "Skuhaj nesto brzo",
+    "titleAccent": "od onoga sto imaš.",
+    "subtitle": "Upiši sastojke i generirat ćemo ideje za recepte.",
+    "ingredientsLabel": "Sastojci",
+    "ingredientsPlaceholder": "Imam jaja, sir, kruh...",
+    "quickFiltersLabel": "Brzi filteri",
+    "cta": "Pronađi recepte",
+    "filters": {
+      "quick": "15 min",
+      "highProtein": "Visok protein",
+      "budget": "Povoljno",
+      "vegetarian": "Vegetarijansko",
+      "gymMode": "Teretana režim"
+    }
+  },
+  "nav": {
+    "home": "Početna",
+    "saved": "Spremljeno",
+    "settings": "Postavke"
+  }
+}
