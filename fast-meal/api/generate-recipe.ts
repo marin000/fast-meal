@@ -2,11 +2,13 @@ import type { GenerateRecipeInput, GenerateRecipeRequestBody, GenerateRecipeResp
 import { parseIngredientsInput } from '@/utils/helper';
 // import { mockResponseFull } from '@/mocks';
 
-const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL;
+const rawBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL;
 
-if (!apiBaseUrl) {
+if (!rawBaseUrl) {
   throw new Error('Missing required environment variable: EXPO_PUBLIC_API_BASE_URL');
 }
+
+const apiBaseUrl = rawBaseUrl.replace(/\/+$/, '');
 
 export const generateRecipe = async ({
   ingredientsInput,
@@ -33,5 +35,11 @@ export const generateRecipe = async ({
     throw new Error(`Recipe generation failed (${response.status}): ${errorText}`);
   }
 
-  return response.json() as Promise<GenerateRecipeResponse>;
+  const text = await response.text();
+
+  try {
+    return JSON.parse(text) as GenerateRecipeResponse;
+  } catch {
+    throw new Error(`Invalid JSON from server (first 200 chars): ${text.slice(0, 200)}`);
+  }
 };

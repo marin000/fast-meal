@@ -48,8 +48,9 @@ export const useRecipes = () => {
         }
 
         setRecipes(response.recipes);
-      } catch {
-        showAlert('errors.generic');
+      } catch (error) {
+        const detail = error instanceof Error ? error.message : t('message.unknownError');
+        Alert.alert(t('errors.generic'), detail, [{ text: 'OK', onPress: goBack }]);
       }
     };
 
