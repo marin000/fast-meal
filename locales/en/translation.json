@@ -27,10 +27,30 @@
     "ingredients": "Ingredients",
     "steps": "Instructions",
     "substitutions": "Substitutions",
+    "tips": "Tips",
     "warnings": "Warnings",
+    "nutrition": "Nutrition",
     "prepTime": "{{minutes}} min",
     "kcal": "{{calories}} kcal",
-    "proteinG": "{{protein}}g protein"
+    "proteinG": "{{protein}}g protein",
+    "labels": {
+      "calories": "Calories",
+      "protein": "Protein",
+      "carbs": "Carbs",
+      "fat": "Fat"
+    },
+    "units": {
+      "kcal": "kcal",
+      "g": "g"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "cta": {
+      "seeRecipe": "See Recipe"
+    }
   },
   "errors": {
     "generic": "Something went wrong. Please try again.",

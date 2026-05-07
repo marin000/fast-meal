@@ -27,10 +27,30 @@
     "ingredients": "Sastojci",
     "steps": "Upute",
     "substitutions": "Zamjene",
+    "tips": "Savjeti",
     "warnings": "Napomene",
+    "nutrition": "Nutritivne vrijednosti",
     "prepTime": "{{minutes}} min",
     "kcal": "{{calories}} kcal",
-    "proteinG": "{{protein}}g proteina"
+    "proteinG": "{{protein}}g proteina",
+    "labels": {
+      "calories": "Kalorije",
+      "protein": "Proteini",
+      "carbs": "Ugljikohidrati",
+      "fat": "Masti"
+    },
+    "units": {
+      "kcal": "kcal",
+      "g": "g"
+    },
+    "difficulty": {
+      "easy": "Lako",
+      "medium": "Srednje",
+      "hard": "Teško"
+    },
+    "cta": {
+      "seeRecipe": "Pogledaj recept"
+    }
   },
   "errors": {
     "generic": "Nešto je pošlo po krivu. Pokušaj ponovno.",

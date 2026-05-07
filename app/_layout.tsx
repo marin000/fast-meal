@@ -23,6 +23,8 @@ const RootLayout = () => {
     return 'home';
   };
 
+  const isRecipeDetail = pathname.startsWith('/recipes/') && pathname !== '/recipes';
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? navigationDarkTheme : navigationLightTheme}>
       <View style={styles.container}>
@@ -34,7 +36,7 @@ const RootLayout = () => {
             <Stack.Screen name="index" />
           </Stack>
         </View>
-        <Footer activeTab={getActiveTab()} onHomePress={() => router.push('/')} />
+        {!isRecipeDetail && <Footer activeTab={getActiveTab()} onHomePress={() => router.push('/')} />}
       </View>
       <StatusBar style="auto" />
     </ThemeProvider>

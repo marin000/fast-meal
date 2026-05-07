@@ -41,6 +41,7 @@ export interface Recipe {
   macros: RecipeMacros;
   tags: string[];
   substitutions: RecipeSubstitution[];
+  tips: string[];
   warnings: string[];
 }
 

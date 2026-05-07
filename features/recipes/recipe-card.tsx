@@ -1,24 +1,33 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { DifficultyBadge } from '@/components';
 import type { Recipe } from '@/interface';
 
 interface RecipeCardProps {
   recipe: Recipe;
+  onPress: () => void;
 }
 
-export const RecipeCard = ({ recipe }: RecipeCardProps) => {
+export const RecipeCard = ({ recipe, onPress }: RecipeCardProps) => {
   const { t } = useTranslation();
 
   return (
     <View style={styles.card}>
-      <View style={styles.imagePlaceholder}>
-        <Text style={styles.imagePlaceholderTitle}>{recipe.title}</Text>
-      </View>
+      <View style={styles.accent} />
 
       <View style={styles.body}>
-        <Text style={styles.description}>{recipe.description}</Text>
+        <View style={styles.titleRow}>
+          <Text style={styles.title} numberOfLines={2}>
+            {recipe.title}
+          </Text>
+          <DifficultyBadge difficulty={recipe.difficulty} />
+        </View>
+
+        <Text style={styles.description} numberOfLines={2}>
+          {recipe.description}
+        </Text>
 
         <View style={styles.statsRow}>
           <View style={styles.statItem}>
@@ -35,42 +44,10 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
           </View>
         </View>
 
-        <Text style={styles.sectionLabel}>{t('recipe.ingredients')}</Text>
-        <View style={styles.list}>
-          {recipe.ingredients.map((ingredient, index) => (
-            <View key={`${recipe.title}-ingredient-${index}`} style={styles.ingredientRow}>
-              <Text style={styles.ingredientAmount}>
-                {ingredient.quantity} {ingredient.unit}
-              </Text>
-              <Text style={styles.ingredientName}>{ingredient.name}</Text>
-            </View>
-          ))}
-        </View>
-
-        <Text style={styles.sectionLabel}>{t('recipe.steps')}</Text>
-        <View style={styles.list}>
-          {recipe.steps.map((step, index) => (
-            <View key={`${recipe.title}-step-${index}`} style={styles.stepRow}>
-              <View style={styles.stepNumberCircle}>
-                <Text style={styles.stepNumberText}>{index + 1}</Text>
-              </View>
-              <Text style={styles.stepText}>{step}</Text>
-            </View>
-          ))}
-        </View>
-
-        {recipe.warnings.length > 0 && (
-          <>
-            <Text style={styles.sectionLabel}>{t('recipe.warnings')}</Text>
-            <View style={styles.list}>
-              {recipe.warnings.map((warning, index) => (
-                <Text key={`${recipe.title}-warning-${index}`} style={styles.warningText}>
-                  {warning}
-                </Text>
-              ))}
-            </View>
-          </>
-        )}
+        <Pressable accessibilityRole="button" onPress={onPress} style={styles.ctaButton}>
+          <Text style={styles.ctaText}>{t('recipe.cta.seeRecipe')}</Text>
+          <Ionicons name="arrow-forward" size={14} color="#FFFFFF" />
+        </Pressable>
       </View>
     </View>
   );
@@ -80,37 +57,44 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#FFFFFF',
     borderColor: 'rgba(20, 26, 20, 0.08)',
-    borderRadius: 24,
+    borderRadius: 20,
     borderWidth: 1,
+    flexDirection: 'row',
     overflow: 'hidden',
   },
-  imagePlaceholder: {
-    alignItems: 'center',
+  accent: {
     backgroundColor: '#2D8A4E',
-    height: 120,
-    justifyContent: 'center',
-    paddingHorizontal: 16,
-  },
-  imagePlaceholderTitle: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: '900',
-    textAlign: 'center',
+    width: 4,
   },
   body: {
-    gap: 14,
+    flex: 1,
+    gap: 10,
     padding: 16,
+  },
+  titleRow: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    gap: 12,
+    justifyContent: 'space-between',
+  },
+  title: {
+    color: '#141A14',
+    flex: 1,
+    fontSize: 17,
+    fontWeight: '900',
+    lineHeight: 22,
   },
   description: {
     color: '#6B7A6B',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
-    lineHeight: 20,
+    lineHeight: 18,
   },
   statsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 14,
+    gap: 12,
+    marginTop: 2,
   },
   statItem: {
     alignItems: 'center',
@@ -122,61 +106,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
-  sectionLabel: {
-    color: '#141A14',
-    fontSize: 12,
-    fontWeight: '800',
-    letterSpacing: 0.6,
-    marginTop: 4,
-    textTransform: 'uppercase',
-  },
-  list: {
-    gap: 8,
-  },
-  ingredientRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  ingredientAmount: {
-    color: '#2D8A4E',
-    fontSize: 13,
-    fontWeight: '800',
-    minWidth: 70,
-  },
-  ingredientName: {
-    color: '#141A14',
-    flex: 1,
-    fontSize: 13,
-    fontWeight: '500',
-  },
-  stepRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  stepNumberCircle: {
+  ctaButton: {
     alignItems: 'center',
     backgroundColor: '#2D8A4E',
     borderRadius: 12,
-    height: 22,
+    flexDirection: 'row',
+    gap: 6,
     justifyContent: 'center',
-    width: 22,
+    marginTop: 6,
+    paddingVertical: 10,
   },
-  stepNumberText: {
+  ctaText: {
     color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '800',
-  },
-  stepText: {
-    color: '#141A14',
-    flex: 1,
-    fontSize: 13,
-    fontWeight: '500',
-    lineHeight: 19,
-  },
-  warningText: {
-    color: '#A14A18',
-    fontSize: 13,
-    fontWeight: '500',
-    lineHeight: 19,
+    fontSize: 14,
+    fontWeight: '900',
   },
 });

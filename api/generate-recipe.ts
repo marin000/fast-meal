@@ -1,5 +1,6 @@
 import type { GenerateRecipeInput, GenerateRecipeRequestBody, GenerateRecipeResponse } from '@/interface';
 import { parseIngredientsInput } from '@/utils/helper';
+// import { mockResponseFull } from '@/mocks';
 
 const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL;
 
@@ -11,6 +12,9 @@ export const generateRecipe = async ({
   ingredientsInput,
   selectedFilters,
 }: GenerateRecipeInput): Promise<GenerateRecipeResponse> => {
+  // await new Promise((resolve) => setTimeout(resolve, 9000));
+  // return mockResponseFull;
+
   const requestBody: GenerateRecipeRequestBody = {
     ingredients: parseIngredientsInput(ingredientsInput),
     preferences: [...selectedFilters],
