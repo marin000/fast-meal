@@ -15,6 +15,28 @@
       "gymMode": "Teretana režim"
     }
   },
+  "loading": {
+    "title": "Pregledavamo tvoj hladnjak...",
+    "subtitle": "FridgeAI skenira sastojke i priprema jelovnik."
+  },
+  "results": {
+    "title": "Ideje za recepte",
+    "subtitle": "Na temelju onoga što imaš kod kuće"
+  },
+  "recipe": {
+    "ingredients": "Sastojci",
+    "steps": "Upute",
+    "substitutions": "Zamjene",
+    "warnings": "Napomene",
+    "prepTime": "{{minutes}} min",
+    "kcal": "{{calories}} kcal",
+    "proteinG": "{{protein}}g proteina"
+  },
+  "errors": {
+    "generic": "Nešto je pošlo po krivu. Pokušaj ponovno.",
+    "noRecipes": "Nismo uspjeli generirati recepte iz tih sastojaka.",
+    "declined": "FridgeAI može pomoći samo s receptima iz sastojaka."
+  },
   "message": {
     "recipeGenerator": "Generator recepata",
     "recipeGenerationFailed": "Generiranje recepata nije uspjelo",

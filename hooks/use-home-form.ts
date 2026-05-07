@@ -1,15 +1,12 @@
+import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Alert } from 'react-native';
-import { useTranslation } from 'react-i18next';
 
-import { generateRecipe } from '@/api';
 import { quickFilterOptions, type QuickFilterOption } from '@/constants/home';
 
 export const useHomeForm = () => {
-  const { t } = useTranslation();
+  const router = useRouter();
   const [ingredientsInputValue, setIngredientsInputValue] = useState('');
   const [selectedFilters, setSelectedFilters] = useState<QuickFilterOption[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toggleFilterOption = (filter: QuickFilterOption) => {
     setSelectedFilters((previousFilters) =>
@@ -19,32 +16,16 @@ export const useHomeForm = () => {
     );
   };
 
-  const canSubmit = useMemo(
-    () => ingredientsInputValue.trim().length > 0 && !isSubmitting,
-    [ingredientsInputValue, isSubmitting],
-  );
+  const canSubmit = useMemo(() => ingredientsInputValue.trim().length > 0, [ingredientsInputValue]);
 
-  const submitForm = async () => {
-    setIsSubmitting(true);
-
-    try {
-      const response = await generateRecipe({
-        ingredientsInput: ingredientsInputValue,
-        selectedFilters,
-      });
-
-      if (response.declined) {
-        Alert.alert(t('message.recipeGenerator'), response.message ?? t('message.unableToHelp'));
-        return;
-      }
-
-      console.log('Generate recipes response:', response);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : t('message.unknownError');
-      Alert.alert(t('message.recipeGenerationFailed'), message);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const submitForm = () => {
+    router.push({
+      pathname: '/recipes',
+      params: {
+        ingredients: ingredientsInputValue.trim(),
+        preferences: selectedFilters.join(','),
+      },
+    });
   };
 
   return {
@@ -54,7 +35,6 @@ export const useHomeForm = () => {
     toggleFilterOption,
     quickFilterOptions,
     canSubmit,
-    isSubmitting,
     submitForm,
   };
 };

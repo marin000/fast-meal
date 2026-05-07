@@ -29,7 +29,13 @@ const HomeScreen = () => {
 
       <HomeFilters options={quickFilterOptions} selectedOptions={selectedFilters} onToggleOption={toggleFilterOption} />
 
-      <PrimaryButton label={t('home.cta')} onPress={submitForm} disabled={!canSubmit} />
+      <PrimaryButton
+        label={t('home.cta')}
+        onPress={submitForm}
+        disabled={!canSubmit}
+        leftIconName="sparkles"
+        rightIconName="arrow-forward"
+      />
     </View>
   );
 };

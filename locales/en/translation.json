@@ -15,6 +15,28 @@
       "gymMode": "Gym mode"
     }
   },
+  "loading": {
+    "title": "Checking your fridge...",
+    "subtitle": "FridgeAI is scanning your ingredients and building your menu."
+  },
+  "results": {
+    "title": "Recipe ideas",
+    "subtitle": "Based on what you have at home"
+  },
+  "recipe": {
+    "ingredients": "Ingredients",
+    "steps": "Instructions",
+    "substitutions": "Substitutions",
+    "warnings": "Warnings",
+    "prepTime": "{{minutes}} min",
+    "kcal": "{{calories}} kcal",
+    "proteinG": "{{protein}}g protein"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "noRecipes": "We could not generate recipes for these ingredients.",
+    "declined": "FridgeAI can only help with recipes from ingredients."
+  },
   "message": {
     "recipeGenerator": "Recipe generator",
     "recipeGenerationFailed": "Recipe generation failed",
