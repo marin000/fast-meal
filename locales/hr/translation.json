@@ -15,6 +15,12 @@
       "gymMode": "Teretana režim"
     }
   },
+  "message": {
+    "recipeGenerator": "Generator recepata",
+    "recipeGenerationFailed": "Generiranje recepata nije uspjelo",
+    "unknownError": "Nepoznata greška",
+    "unableToHelp": "Nismo u mogućnosti pomoći s tim zahtjevom."
+  },
   "nav": {
     "home": "Početna",
     "saved": "Spremljeno",

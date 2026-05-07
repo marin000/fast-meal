@@ -15,6 +15,12 @@
       "gymMode": "Gym mode"
     }
   },
+  "message": {
+    "recipeGenerator": "Recipe generator",
+    "recipeGenerationFailed": "Recipe generation failed",
+    "unknownError": "Unknown error",
+    "unableToHelp": "Unable to help with that request."
+  },
   "nav": {
     "home": "Home",
     "saved": "Saved",
