@@ -1,73 +1,121 @@
 {
-  "home": {
-    "titleMain": "Cook something fast",
-    "titleAccent": "from what you have.",
-    "subtitle": "List your ingredients and we will generate recipe ideas.",
-    "ingredientsLabel": "Ingredients",
-    "ingredientsPlaceholder": "I have eggs, cheese, bread...",
-    "quickFiltersLabel": "Quick filters",
-    "cta": "Find Recipes",
-    "filters": {
-      "quick": "15 min",
-      "highProtein": "High protein",
-      "vegetarian": "Vegetarian",
-      "breakfast": "Breakfast",
-      "lunch": "Lunch",
-      "glutenFree": "Gluten free",
-      "dessert": "Dessert"
-    }
-  },
-  "loading": {
-    "title": "Checking your fridge...",
-    "subtitle": "FridgeAI is scanning your ingredients and building your menu."
-  },
-  "results": {
-    "title": "Recipe ideas",
-    "subtitle": "Based on what you have at home"
-  },
-  "recipe": {
-    "ingredients": "Ingredients",
-    "steps": "Instructions",
-    "substitutions": "Substitutions",
-    "tips": "Tips",
-    "warnings": "Warnings",
-    "nutrition": "Nutrition",
-    "prepTime": "{{minutes}} min",
-    "kcal": "{{calories}} kcal",
-    "proteinG": "{{protein}}g protein",
-    "labels": {
-      "calories": "Calories",
-      "protein": "Protein",
-      "carbs": "Carbs",
-      "fat": "Fat"
-    },
-    "units": {
-      "kcal": "kcal",
-      "g": "g"
-    },
-    "difficulty": {
-      "easy": "Easy",
-      "medium": "Medium",
-      "hard": "Hard"
-    },
-    "cta": {
-      "seeRecipe": "See Recipe"
-    }
-  },
-  "errors": {
-    "generic": "Something went wrong. Please try again.",
-    "noRecipes": "We could not generate recipes for these ingredients.",
-    "declined": "FridgeAI can only help with recipes from ingredients."
-  },
-  "message": {
-    "recipeGenerator": "Recipe generator",
-    "recipeGenerationFailed": "Recipe generation failed",
-    "unknownError": "Unknown error",
-    "unableToHelp": "Unable to help with that request."
-  },
-  "nav": {
-    "home": "Home",
-    "saved": "Saved",
-    "settings": "Settings"
-  }
+	"home": {
+		"titleMain": "Cook something fast",
+		"titleAccent": "from what you have.",
+		"subtitle": "List your ingredients and we will generate recipe ideas.",
+		"ingredientsLabel": "Ingredients",
+		"ingredientsPlaceholder": "I have eggs, cheese, bread...",
+		"quickFiltersLabel": "Quick filters",
+		"cta": "Find Recipes",
+		"filters": {
+			"quick": "15 min",
+			"highProtein": "High protein",
+			"vegetarian": "Vegetarian",
+			"vegan": "Vegan",
+			"breakfast": "Breakfast",
+			"lunch": "Lunch",
+			"glutenFree": "Gluten free",
+			"dessert": "Dessert"
+		},
+		"lockedFilter": {
+			"title": "Filter enabled in settings",
+			"message": "To turn it off, update Diet & Lifestyle settings."
+		}
+	},
+	"loading": {
+		"title": "Checking your fridge...",
+		"subtitle": "FridgeAI is scanning your ingredients and building your menu."
+	},
+	"results": {
+		"title": "Recipe ideas",
+		"subtitle": "Based on what you have at home"
+	},
+	"recipe": {
+		"ingredients": "Ingredients",
+		"steps": "Instructions",
+		"substitutions": "Substitutions",
+		"tips": "Tips",
+		"warnings": "Warnings",
+		"nutrition": "Nutrition",
+		"prepTime": "{{minutes}} min",
+		"kcal": "{{calories}} kcal",
+		"proteinG": "{{protein}}{{massUnit}} protein",
+		"labels": {
+			"calories": "Calories",
+			"protein": "Protein",
+			"carbs": "Carbs",
+			"fat": "Fat"
+		},
+		"units": {
+			"kcal": "kcal",
+			"g": "g",
+			"oz": " oz"
+		},
+		"difficulty": {
+			"easy": "Easy",
+			"medium": "Medium",
+			"hard": "Hard"
+		},
+		"cta": {
+			"seeRecipe": "See Recipe"
+		}
+	},
+	"errors": {
+		"generic": "Something went wrong. Please try again.",
+		"noRecipes": "We could not generate recipes for these ingredients.",
+		"declined": "FridgeAI can only help with recipes from ingredients."
+	},
+	"message": {
+		"recipeGenerator": "Recipe generator",
+		"recipeGenerationFailed": "Recipe generation failed",
+		"unknownError": "Unknown error",
+		"unableToHelp": "Unable to help with that request."
+	},
+	"nav": {
+		"home": "Home",
+		"saved": "Saved",
+		"settings": "Settings"
+	},
+	"settings": {
+		"sections": {
+			"dietLifestyle": "Diet & Lifestyle",
+			"display": "Display"
+		},
+		"dietaryStyle": {
+			"label": "Dietary style",
+			"description": "Default filter for your diet and lifestyle",
+			"options": {
+				"all": "All",
+				"veggie": "Veggie",
+				"vegan": "Vegan"
+			}
+		},
+		"glutenFree": {
+			"label": "Gluten-free",
+			"description": "Filter out recipes with gluten"
+		},
+		"gymMode": {
+			"label": "Gym mode",
+			"description": "Always prioritize high-protein results"
+		},
+		"language": {
+			"label": "App language",
+			"description": "Choose the language for the app interface",
+			"options": {
+				"en": "English",
+				"hr": "Croatian"
+			}
+		},
+		"darkMode": {
+			"label": "Dark mode"
+		},
+		"units": {
+			"label": "Units",
+			"description": "Used in recipe quantities",
+			"options": {
+				"metric": "Metric",
+				"imperial": "Imperial"
+			}
+		}
+	}
 }

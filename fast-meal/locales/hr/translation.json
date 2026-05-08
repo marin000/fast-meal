@@ -1,73 +1,121 @@
 {
-  "home": {
-    "titleMain": "Skuhaj nesto brzo",
-    "titleAccent": "od onoga sto imaš.",
-    "subtitle": "Upiši sastojke i generirat ćemo ideje za recepte.",
-    "ingredientsLabel": "Sastojci",
-    "ingredientsPlaceholder": "Imam jaja, sir, kruh...",
-    "quickFiltersLabel": "Brzi filteri",
-    "cta": "Pronađi recepte",
-    "filters": {
-      "quick": "15 min",
-      "highProtein": "Visok protein",
-      "vegetarian": "Vegetarijansko",
-      "breakfast": "Doručak",
-      "lunch": "Ručak",
-      "glutenFree": "Bez glutena",
-      "dessert": "Desert"
-    }
-  },
-  "loading": {
-    "title": "Pregledavamo tvoj hladnjak...",
-    "subtitle": "FridgeAI skenira sastojke i priprema jelovnik."
-  },
-  "results": {
-    "title": "Ideje za recepte",
-    "subtitle": "Na temelju onoga što imaš kod kuće"
-  },
-  "recipe": {
-    "ingredients": "Sastojci",
-    "steps": "Upute",
-    "substitutions": "Zamjene",
-    "tips": "Savjeti",
-    "warnings": "Napomene",
-    "nutrition": "Nutritivne vrijednosti",
-    "prepTime": "{{minutes}} min",
-    "kcal": "{{calories}} kcal",
-    "proteinG": "{{protein}}g proteina",
-    "labels": {
-      "calories": "Kalorije",
-      "protein": "Proteini",
-      "carbs": "Ugljikohidrati",
-      "fat": "Masti"
-    },
-    "units": {
-      "kcal": "kcal",
-      "g": "g"
-    },
-    "difficulty": {
-      "easy": "Lako",
-      "medium": "Srednje",
-      "hard": "Teško"
-    },
-    "cta": {
-      "seeRecipe": "Pogledaj recept"
-    }
-  },
-  "errors": {
-    "generic": "Nešto je pošlo po krivu. Pokušaj ponovno.",
-    "noRecipes": "Nismo uspjeli generirati recepte iz tih sastojaka.",
-    "declined": "FridgeAI može pomoći samo s receptima iz sastojaka."
-  },
-  "message": {
-    "recipeGenerator": "Generator recepata",
-    "recipeGenerationFailed": "Generiranje recepata nije uspjelo",
-    "unknownError": "Nepoznata greška",
-    "unableToHelp": "Nismo u mogućnosti pomoći s tim zahtjevom."
-  },
-  "nav": {
-    "home": "Početna",
-    "saved": "Spremljeno",
-    "settings": "Postavke"
-  }
+	"home": {
+		"titleMain": "Skuhaj nesto brzo",
+		"titleAccent": "od onoga sto imaš.",
+		"subtitle": "Upiši sastojke i generirat ćemo ideje za recepte.",
+		"ingredientsLabel": "Sastojci",
+		"ingredientsPlaceholder": "Imam jaja, sir, kruh...",
+		"quickFiltersLabel": "Brzi filteri",
+		"cta": "Pronađi recepte",
+		"filters": {
+			"quick": "15 min",
+			"highProtein": "Visok protein",
+			"vegetarian": "Vegetarijansko",
+			"vegan": "Vegansko",
+			"breakfast": "Doručak",
+			"lunch": "Ručak",
+			"glutenFree": "Bez glutena",
+			"dessert": "Desert"
+		},
+		"lockedFilter": {
+			"title": "Filter je uključen u postavkama",
+			"message": "Za isključivanje promijeni postavke Prehrana i stil života."
+		}
+	},
+	"loading": {
+		"title": "Pregledavamo tvoj hladnjak...",
+		"subtitle": "FridgeAI skenira sastojke i priprema jelovnik."
+	},
+	"results": {
+		"title": "Ideje za recepte",
+		"subtitle": "Na temelju onoga što imaš kod kuće"
+	},
+	"recipe": {
+		"ingredients": "Sastojci",
+		"steps": "Upute",
+		"substitutions": "Zamjene",
+		"tips": "Savjeti",
+		"warnings": "Napomene",
+		"nutrition": "Nutritivne vrijednosti",
+		"prepTime": "{{minutes}} min",
+		"kcal": "{{calories}} kcal",
+		"proteinG": "{{protein}}{{massUnit}} proteina",
+		"labels": {
+			"calories": "Kalorije",
+			"protein": "Proteini",
+			"carbs": "Ugljikohidrati",
+			"fat": "Masti"
+		},
+		"units": {
+			"kcal": "kcal",
+			"g": "g",
+			"oz": " oz"
+		},
+		"difficulty": {
+			"easy": "Lako",
+			"medium": "Srednje",
+			"hard": "Teško"
+		},
+		"cta": {
+			"seeRecipe": "Pogledaj recept"
+		}
+	},
+	"errors": {
+		"generic": "Nešto je pošlo po krivu. Pokušaj ponovno.",
+		"noRecipes": "Nismo uspjeli generirati recepte iz tih sastojaka.",
+		"declined": "FridgeAI može pomoći samo s receptima iz sastojaka."
+	},
+	"message": {
+		"recipeGenerator": "Generator recepata",
+		"recipeGenerationFailed": "Generiranje recepata nije uspjelo",
+		"unknownError": "Nepoznata greška",
+		"unableToHelp": "Nismo u mogućnosti pomoći s tim zahtjevom."
+	},
+	"nav": {
+		"home": "Početna",
+		"saved": "Spremljeno",
+		"settings": "Postavke"
+	},
+	"settings": {
+		"sections": {
+			"dietLifestyle": "Prehrana i stil života",
+			"display": "Prikaz"
+		},
+		"dietaryStyle": {
+			"label": "Stil prehrane",
+			"description": "Zadani filter za tvoju prehranu i stil života",
+			"options": {
+				"all": "Sve",
+				"veggie": "Vege",
+				"vegan": "Vegansko"
+			}
+		},
+		"glutenFree": {
+			"label": "Bez glutena",
+			"description": "Filtriraj recepte koji sadrže gluten"
+		},
+		"gymMode": {
+			"label": "Teretana režim",
+			"description": "Uvijek prioritetno prikazuj rezultate s visokim proteinom"
+		},
+		"language": {
+			"label": "Jezik aplikacije",
+			"description": "Odaberi jezik sučelja",
+			"options": {
+				"en": "Engleski",
+				"hr": "Hrvatski"
+			}
+		},
+		"darkMode": {
+			"label": "Tamni način"
+		},
+		"units": {
+			"label": "Jedinice",
+			"description": "Koristi se u količinama sastojaka",
+			"options": {
+				"metric": "Metričke",
+				"imperial": "Imperijalne"
+			}
+		}
+	}
 }

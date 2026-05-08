@@ -1,15 +1,19 @@
 import { useTranslation } from "react-i18next";
 import { Keyboard, Pressable, StyleSheet } from "react-native";
+
 import { AppTextInput, PrimaryButton } from "@/components";
 import { HomeFilters, HomeHeader } from "@/features/home";
+import { useAppAppearance } from "@/hooks/use-app-appearance";
 import { useHomeForm } from "@/hooks/use-home-form";
 
 const HomeScreen = () => {
 	const { t } = useTranslation();
+	const theme = useAppAppearance();
 	const {
 		ingredientsInputValue,
 		setIngredientsInputValue,
 		selectedFilters,
+		lockedQuickFilters,
 		toggleFilterOption,
 		quickFilterOptions,
 		canSubmit,
@@ -17,7 +21,10 @@ const HomeScreen = () => {
 	} = useHomeForm();
 
 	return (
-		<Pressable style={styles.screen} onPress={Keyboard.dismiss}>
+		<Pressable
+			style={[styles.screen, { backgroundColor: theme.background }]}
+			onPress={Keyboard.dismiss}
+		>
 			<HomeHeader />
 
 			<AppTextInput
@@ -30,6 +37,7 @@ const HomeScreen = () => {
 			<HomeFilters
 				options={quickFilterOptions}
 				selectedOptions={selectedFilters}
+				lockedOptions={lockedQuickFilters}
 				onToggleOption={toggleFilterOption}
 			/>
 

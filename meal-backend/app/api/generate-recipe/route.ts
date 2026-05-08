@@ -23,18 +23,19 @@ export async function POST(req: Request) {
 		return Response.json(
 			{
 				error:
-					"Invalid request body. Expected { ingredients: string[], preferences?: string[] }",
+					"Invalid request body. Expected { ingredients: string[], preferences?: string[], units?: 'metric' | 'imperial' }",
 			},
 			{ status: 400 },
 		);
 	}
 
-	const { ingredients, preferences } = parsedBody;
+	const { ingredients, preferences, units } = parsedBody;
 
 	const prompt = `${mealPromptBase.trim()}
 
   User ingredients: ${JSON.stringify(ingredients, null, 2)}
-  User preferences / filters: ${JSON.stringify(preferences, null, 2)}`;
+  User preferences / filters: ${JSON.stringify(preferences, null, 2)}
+  User units preference: ${JSON.stringify(units)}`;
 
 	const response = await fetch(`${config.openAiApiBaseUrl}/v1/responses`, {
 		method: "POST",

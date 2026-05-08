@@ -1,44 +1,39 @@
-import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, View } from 'react-native';
-
-import type { RecipeDifficulty } from '@/interface';
-
-interface DifficultyPalette {
-  soft: string;
-  solid: string;
-}
-
-const palettes: Record<RecipeDifficulty, DifficultyPalette> = {
-  easy: { soft: 'rgba(45, 138, 78, 0.12)', solid: '#2D8A4E' },
-  medium: { soft: 'rgba(198, 138, 14, 0.14)', solid: '#C68A0E' },
-  hard: { soft: 'rgba(192, 57, 43, 0.12)', solid: '#C0392B' },
-};
+import { useTranslation } from "react-i18next";
+import { StyleSheet, Text, View } from "react-native";
+import { useAppAppearance } from "@/hooks/use-app-appearance";
+import type { RecipeDifficulty } from "@/interface";
 
 interface DifficultyBadgeProps {
-  difficulty: RecipeDifficulty;
-  variant?: 'soft' | 'overlay';
+	difficulty: RecipeDifficulty;
+	variant?: "soft" | "overlay";
 }
 
-export const DifficultyBadge = ({ difficulty, variant = 'soft' }: DifficultyBadgeProps) => {
-  const { t } = useTranslation();
-  const palette = palettes[difficulty];
-  const backgroundColor = variant === 'overlay' ? '#FFFFFF' : palette.soft;
+export const DifficultyBadge = ({
+	difficulty,
+	variant = "soft",
+}: DifficultyBadgeProps) => {
+	const { t } = useTranslation();
+	const theme = useAppAppearance();
+	const palette = theme.difficulty[difficulty];
+	const backgroundColor = variant === "overlay" ? theme.card : palette.soft;
 
-  return (
-    <View style={[styles.badge, { backgroundColor }]}>
-      <Text style={[styles.text, { color: palette.solid }]}>{t(`recipe.difficulty.${difficulty}`)}</Text>
-    </View>
-  );
+	return (
+		<View style={[styles.badge, { backgroundColor }]}>
+			<Text style={[styles.text, { color: palette.solid }]}>
+				{t(`recipe.difficulty.${difficulty}`)}
+			</Text>
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
-  badge: {
-    borderRadius: 999,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-  },
-  text: {
-    fontSize: 11,
-    fontWeight: '800',
-  },
+	badge: {
+		borderRadius: 999,
+		paddingHorizontal: 10,
+		paddingVertical: 4,
+	},
+	text: {
+		fontSize: 11,
+		fontWeight: "800",
+	},
 });

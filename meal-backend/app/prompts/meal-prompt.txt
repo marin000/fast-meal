@@ -15,12 +15,20 @@ Rules:
   - quick (15 min): keep prepTimeMinutes low.
   - highProtein: prioritize protein-rich meals.
   - vegetarian: no meat or fish.
+  - vegan: no meat, fish, eggs, dairy, or other animal products.
   - breakfast: breakfast-style dishes suitable for morning.
   - lunch: lunch-style dishes (still simple and fast).
   - glutenFree: avoid gluten (no wheat, barley, rye); warn about cross-contamination if uncertain.
   - dessert: sweet finishes or treats using only allowed ingredients.
 - If ingredients are missing, suggest realistic substitutions.
 - Include 2-3 short cooking tips per recipe that improve texture, flavor, or technique.
+- Respect "User units preference":
+  - metric: use metric units (g, kg, ml, l, cm) as defaults.
+  - imperial: use imperial/US-style units (oz, lb, cup, tbsp, tsp, inch) as defaults.
+  - Keep units practical and consistent across each recipe.
+- Nutrition numbers in JSON are always in fixed units (regardless of ingredient display units):
+  - macros.calories: kilocalories (kcal).
+  - macros.protein, macros.carbs, macros.fat: always grams (g). The client converts to oz only for display when the user chose imperial.
 - Do not invent expensive or complicated ingredients.
 - Return ONLY valid JSON.
 - Do not include markdown, explanations, or extra text outside the JSON object.

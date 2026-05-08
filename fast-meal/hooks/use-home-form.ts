@@ -1,40 +1,58 @@
-import { useRouter } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useRouter } from "expo-router";
+import { useMemo, useState } from "react";
 
-import { quickFilterOptions, type QuickFilterOption } from '@/constants/home';
+import { type QuickFilterOption, quickFilterOptions } from "@/constants/home";
+import { usePreferences } from "@/context";
 
 export const useHomeForm = () => {
-  const router = useRouter();
-  const [ingredientsInputValue, setIngredientsInputValue] = useState('');
-  const [selectedFilters, setSelectedFilters] = useState<QuickFilterOption[]>([]);
+	const router = useRouter();
+	const { lockedQuickFilters, units } = usePreferences();
+	const [ingredientsInputValue, setIngredientsInputValue] = useState("");
+	const [selectedFilters, setSelectedFilters] = useState<QuickFilterOption[]>(
+		[],
+	);
 
-  const toggleFilterOption = (filter: QuickFilterOption) => {
-    setSelectedFilters((previousFilters) =>
-      previousFilters.includes(filter)
-        ? previousFilters.filter((item) => item !== filter)
-        : [...previousFilters, filter],
-    );
-  };
+	const toggleFilterOption = (filter: QuickFilterOption) => {
+		if (lockedQuickFilters.includes(filter)) return;
 
-  const canSubmit = useMemo(() => ingredientsInputValue.trim().length > 0, [ingredientsInputValue]);
+		setSelectedFilters((previousFilters) =>
+			previousFilters.includes(filter)
+				? previousFilters.filter((item) => item !== filter)
+				: [...previousFilters, filter],
+		);
+	};
 
-  const submitForm = () => {
-    router.push({
-      pathname: '/recipes',
-      params: {
-        ingredients: ingredientsInputValue.trim(),
-        preferences: selectedFilters.join(','),
-      },
-    });
-  };
+	const canSubmit = useMemo(
+		() => ingredientsInputValue.trim().length > 0,
+		[ingredientsInputValue],
+	);
+	const selectedFiltersWithLocks = useMemo(
+		() =>
+			[
+				...new Set([...selectedFilters, ...lockedQuickFilters]),
+			] as QuickFilterOption[],
+		[selectedFilters, lockedQuickFilters],
+	);
 
-  return {
-    ingredientsInputValue,
-    setIngredientsInputValue,
-    selectedFilters,
-    toggleFilterOption,
-    quickFilterOptions,
-    canSubmit,
-    submitForm,
-  };
+	const submitForm = () => {
+		router.push({
+			pathname: "/recipes",
+			params: {
+				ingredients: ingredientsInputValue.trim(),
+				preferences: selectedFiltersWithLocks.join(","),
+				units,
+			},
+		});
+	};
+
+	return {
+		ingredientsInputValue,
+		setIngredientsInputValue,
+		selectedFilters: selectedFiltersWithLocks,
+		toggleFilterOption,
+		quickFilterOptions,
+		lockedQuickFilters,
+		canSubmit,
+		submitForm,
+	};
 };

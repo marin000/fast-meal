@@ -3,6 +3,7 @@ export const quickFilterOptions = [
 	"highProtein",
 	"glutenFree",
 	"vegetarian",
+	"vegan",
 	"breakfast",
 	"lunch",
 	"dessert",
