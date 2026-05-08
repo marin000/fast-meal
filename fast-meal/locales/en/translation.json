@@ -10,9 +10,11 @@
     "filters": {
       "quick": "15 min",
       "highProtein": "High protein",
-      "budget": "Budget",
       "vegetarian": "Vegetarian",
-      "gymMode": "Gym mode"
+      "breakfast": "Breakfast",
+      "lunch": "Lunch",
+      "glutenFree": "Gluten free",
+      "dessert": "Dessert"
     }
   },
   "loading": {

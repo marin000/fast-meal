@@ -10,9 +10,11 @@
     "filters": {
       "quick": "15 min",
       "highProtein": "Visok protein",
-      "budget": "Povoljno",
       "vegetarian": "Vegetarijansko",
-      "gymMode": "Teretana režim"
+      "breakfast": "Doručak",
+      "lunch": "Ručak",
+      "glutenFree": "Bez glutena",
+      "dessert": "Desert"
     }
   },
   "loading": {

@@ -11,7 +11,14 @@ Rules:
 - Use only the ingredients provided by the user, plus basic pantry items such as salt, pepper, oil, water, and spices.
 - Keep recipes simple, fast, and practical.
 - Prefer recipes that take 5-20 minutes.
-- If the user wants gym mode or high protein, prioritize protein-rich meals.
+- Interpret user preferences from the preferences array when provided:
+  - quick (15 min): keep prepTimeMinutes low.
+  - highProtein: prioritize protein-rich meals.
+  - vegetarian: no meat or fish.
+  - breakfast: breakfast-style dishes suitable for morning.
+  - lunch: lunch-style dishes (still simple and fast).
+  - glutenFree: avoid gluten (no wheat, barley, rye); warn about cross-contamination if uncertain.
+  - dessert: sweet finishes or treats using only allowed ingredients.
 - If ingredients are missing, suggest realistic substitutions.
 - Include 2-3 short cooking tips per recipe that improve texture, flavor, or technique.
 - Do not invent expensive or complicated ingredients.
