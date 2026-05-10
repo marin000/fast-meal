@@ -7,7 +7,7 @@ import { type FooterTab, footerItems } from "@/constants/nav";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 
 interface BottomFooterNavProps {
-	activeTab: FooterTab;
+	activeTab: FooterTab | null;
 	onTabPress: (tab: FooterTab) => void;
 }
 

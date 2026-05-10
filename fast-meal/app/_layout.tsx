@@ -26,23 +26,27 @@ const RootLayoutContent = () => {
 		? appDarkBackgroundColor
 		: appLightBackgroundColor;
 
-	const getActiveTab = (): FooterTab => {
+	const getActiveTab = (): FooterTab | null => {
 		if (pathname.startsWith("/saved")) return "saved";
 		if (pathname.startsWith("/settings")) return "settings";
-		return "home";
+		if (pathname === "/" || pathname === "/index" || pathname === "") {
+			return "home";
+		}
+		return null;
 	};
 
 	const isRecipeDetail =
 		pathname.startsWith("/recipes/") && pathname !== "/recipes";
 	const handleTabPress = (tab: FooterTab) => {
-		if (tab === getActiveTab()) return;
+		const active = getActiveTab();
+		if (tab === active) return;
 		if (tab === "home") {
-			router.push("/");
+			router.navigate("/");
 			return;
 		}
 
 		if (tab === "settings") {
-			router.push("/settings");
+			router.navigate("/settings");
 		}
 	};
 
