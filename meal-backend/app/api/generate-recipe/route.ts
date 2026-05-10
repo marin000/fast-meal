@@ -1,11 +1,15 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { getCache } from "@vercel/functions";
 import { config } from "@/app/config/config";
 import {
-	extractRecipesFromOpenAiResponse,
-	parseRequestBody,
-} from "@/app/utils";
+	CACHE_TTL_SECONDS,
+	MODEL,
+	PROMPT_VERSION,
+} from "@/app/constants/openAI";
+import { generateRecipeService } from "@/app/service/generate-recipe-service";
+import { parseRequestBody } from "@/app/utils";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -30,6 +34,17 @@ export async function POST(req: Request) {
 	}
 
 	const { ingredients, preferences, units } = parsedBody;
+	const cache = getCache();
+	const cacheKey = generateRecipeService.buildCacheKey({
+		ingredients,
+		preferences,
+		units,
+	});
+	const cachedRecipes = await cache.get(cacheKey);
+
+	if (cachedRecipes) {
+		return Response.json({ recipes: cachedRecipes });
+	}
 
 	const prompt = `${mealPromptBase.trim()}
 
@@ -44,7 +59,7 @@ export async function POST(req: Request) {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify({
-			model: "gpt-4.1-mini",
+			model: MODEL,
 			input: prompt,
 		}),
 	});
@@ -52,7 +67,12 @@ export async function POST(req: Request) {
 	const data = await response.json();
 
 	try {
-		const { recipes } = extractRecipesFromOpenAiResponse(data);
+		const { recipes } =
+			generateRecipeService.extractRecipesFromOpenAiResponse(data);
+		await cache.set(cacheKey, recipes, {
+			ttl: CACHE_TTL_SECONDS,
+			tags: ["recipes", `prompt:${PROMPT_VERSION}`],
+		});
 		return Response.json({ recipes });
 	} catch (error) {
 		const message =
