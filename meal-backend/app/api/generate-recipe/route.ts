@@ -9,6 +9,10 @@ import {
 	PROMPT_VERSION,
 } from "@/app/constants/openAI";
 import { generateRecipeService } from "@/app/service/generate-recipe-service";
+import {
+	getPersistedRecipesByCacheKey,
+	upsertRecipeCacheEntry,
+} from "@/app/service/mongo-recipe-cache";
 import { parseRequestBody } from "@/app/utils";
 
 export const runtime = "nodejs";
@@ -46,11 +50,26 @@ export async function POST(req: Request) {
 		return Response.json({ recipes: cachedRecipes });
 	}
 
+	if (process.env.MONGODB_URI) {
+		try {
+			const persistedRecipes = await getPersistedRecipesByCacheKey(cacheKey);
+			if (persistedRecipes && persistedRecipes.length > 0) {
+				await cache.set(cacheKey, persistedRecipes, {
+					ttl: CACHE_TTL_SECONDS,
+					tags: ["recipes", `prompt:${PROMPT_VERSION}`],
+				});
+				return Response.json({ recipes: persistedRecipes });
+			}
+		} catch {
+			console.error("Failed to get persisted recipes from MongoDB");
+		}
+	}
+
 	const prompt = `${mealPromptBase.trim()}
 
-  User ingredients: ${JSON.stringify(ingredients, null, 2)}
-  User preferences / filters: ${JSON.stringify(preferences, null, 2)}
-  User units preference: ${JSON.stringify(units)}`;
+    User ingredients: ${JSON.stringify(ingredients, null, 2)}
+    User preferences / filters: ${JSON.stringify(preferences, null, 2)}
+    User units preference: ${JSON.stringify(units)}`;
 
 	const response = await fetch(`${config.openAiApiBaseUrl}/v1/responses`, {
 		method: "POST",
@@ -73,6 +92,13 @@ export async function POST(req: Request) {
 			ttl: CACHE_TTL_SECONDS,
 			tags: ["recipes", `prompt:${PROMPT_VERSION}`],
 		});
+		if (process.env.MONGODB_URI && recipes.length > 0) {
+			try {
+				await upsertRecipeCacheEntry(cacheKey, recipes);
+			} catch {
+				console.error("Failed to upsert recipe cache entry");
+			}
+		}
 		return Response.json({ recipes });
 	} catch (error) {
 		const message =
