@@ -5,10 +5,20 @@ import { normalizeRecipe, parseSaveRecipeBody } from "@/app/utils";
 import { SavedRecipe } from "@/models";
 
 export async function POST(req: Request): Promise<Response> {
-	const body = await req.json();
+	let body: unknown;
+	try {
+		body = await req.json();
+	} catch {
+		console.warn("[api/recipes] POST invalid JSON body");
+		return Response.json({ error: "Invalid JSON body" }, { status: 400 });
+	}
+
 	const parsed = parseSaveRecipeBody(body);
 
 	if (!parsed) {
+		console.warn(
+			"[api/recipes] POST parseSaveRecipeBody failed — expected { deviceId, recipe }",
+		);
 		return Response.json(
 			{
 				error:
@@ -22,23 +32,36 @@ export async function POST(req: Request): Promise<Response> {
 	const normalizedRecipe = normalizeRecipe(recipe);
 
 	await deviceService.ensureDeviceRecord(deviceId);
-
-	const created = await SavedRecipe.create({
+	console.log("[api/recipes] saveRecipe", {
 		deviceId,
 		cacheKey,
-		recipe: normalizedRecipe,
+		title: normalizedRecipe.title,
 	});
 
-	return Response.json(
-		{
-			id: created._id.toString(),
-			deviceId: created.deviceId,
-			cacheKey: created.cacheKey ?? undefined,
-			recipe: created.recipe,
-			createdAt: created.createdAt.toISOString(),
-		},
-		{ status: 201 },
-	);
+	try {
+		const created = await SavedRecipe.create({
+			deviceId,
+			cacheKey,
+			recipe: normalizedRecipe,
+		});
+
+		return Response.json(
+			{
+				id: created._id.toString(),
+				deviceId: created.deviceId,
+				cacheKey: created.cacheKey ?? undefined,
+				recipe: created.recipe,
+				createdAt: created.createdAt.toISOString(),
+			},
+			{ status: 201 },
+		);
+	} catch (error) {
+		console.error("[api/recipes] SavedRecipe.create failed", error);
+		return Response.json(
+			{ error: "Could not save recipe (database error)" },
+			{ status: 500 },
+		);
+	}
 }
 
 export async function GET(req: Request): Promise<Response> {

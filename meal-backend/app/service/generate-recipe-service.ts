@@ -11,15 +11,18 @@ const buildCacheKey = ({
 	ingredients,
 	preferences,
 	units,
+	language,
 }: {
 	ingredients: string[];
 	preferences: string[];
 	units: "metric" | "imperial";
+	language: "en" | "hr";
 }): string => {
 	const normalizedPayload = {
 		ingredients: normalizeStringList(ingredients),
 		preferences: normalizeStringList(preferences),
 		units,
+		language,
 		model: MODEL,
 		promptVersion: PROMPT_VERSION,
 	};

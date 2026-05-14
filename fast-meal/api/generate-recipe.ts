@@ -4,33 +4,30 @@ import type {
 	GenerateRecipeResponse,
 } from "@/interface";
 import { mockResponseFull } from "@/mocks";
+import { formatApiErrorBody } from "@/utils/api-error-text";
 import { parseIngredientsInput } from "@/utils/helper";
 
-const rawBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL;
-
-if (!rawBaseUrl) {
-	throw new Error(
-		"Missing required environment variable: EXPO_PUBLIC_API_BASE_URL",
-	);
-}
-
-const apiBaseUrl = rawBaseUrl.replace(/\/+$/, "");
+const apiEndpoint = `${process.env.EXPO_PUBLIC_API_BASE_URL}/api/generate-recipe`;
 
 export const generateRecipe = async ({
+	deviceId,
 	ingredientsInput,
 	selectedFilters,
 	units,
+	language,
 }: GenerateRecipeInput): Promise<GenerateRecipeResponse> => {
-	// await new Promise((resolve) => setTimeout(resolve, 9000));
+	// await new Promise((resolve) => setTimeout(resolve, 2000));
 	// return mockResponseFull;
 
 	const requestBody: GenerateRecipeRequestBody = {
+		deviceId,
 		ingredients: parseIngredientsInput(ingredientsInput),
 		preferences: [...selectedFilters],
 		units,
+		language,
 	};
 
-	const response = await fetch(`${apiBaseUrl}/api/generate-recipe`, {
+	const response = await fetch(`${apiEndpoint}`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -40,8 +37,20 @@ export const generateRecipe = async ({
 
 	if (!response.ok) {
 		const errorText = await response.text();
+		if (response.status === 429) {
+			let message: string = errorText;
+			try {
+				const parsed = JSON.parse(errorText) as { error?: string };
+				if (typeof parsed.error === "string") {
+					message = parsed.error;
+				}
+			} catch {
+				console.error(`Invalid JSON from server: ${errorText}`);
+			}
+			throw new Error(message);
+		}
 		throw new Error(
-			`Recipe generation failed (${response.status}): ${errorText}`,
+			`Recipe generation failed (${response.status}): ${formatApiErrorBody(response.status, errorText)}`,
 		);
 	}
 

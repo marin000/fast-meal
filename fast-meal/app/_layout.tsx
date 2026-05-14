@@ -14,7 +14,12 @@ import {
 	navigationDarkTheme,
 	navigationLightTheme,
 } from "@/constants/navigation-theme";
-import { PreferencesProvider, usePreferences } from "@/context";
+import {
+	DeviceIdProvider,
+	FeedbackMessageProvider,
+	PreferencesProvider,
+	usePreferences,
+} from "@/context";
 
 const RootLayoutContent = () => {
 	const { darkMode } = usePreferences();
@@ -37,6 +42,7 @@ const RootLayoutContent = () => {
 
 	const isRecipeDetail =
 		pathname.startsWith("/recipes/") && pathname !== "/recipes";
+	const isSavedRecipeDetail = /^\/saved\/.+/.test(pathname);
 	const handleTabPress = (tab: FooterTab) => {
 		const active = getActiveTab();
 		if (tab === active) return;
@@ -47,6 +53,11 @@ const RootLayoutContent = () => {
 
 		if (tab === "settings") {
 			router.navigate("/settings");
+			return;
+		}
+
+		if (tab === "saved") {
+			router.navigate("/saved");
 		}
 	};
 
@@ -67,9 +78,10 @@ const RootLayoutContent = () => {
 					>
 						<Stack.Screen name="index" />
 						<Stack.Screen name="settings" />
+						<Stack.Screen name="saved" />
 					</Stack>
 				</View>
-				{!isRecipeDetail && (
+				{!isRecipeDetail && !isSavedRecipeDetail && (
 					<Footer activeTab={getActiveTab()} onTabPress={handleTabPress} />
 				)}
 			</View>
@@ -81,7 +93,11 @@ const RootLayoutContent = () => {
 const RootLayout = () => {
 	return (
 		<PreferencesProvider>
-			<RootLayoutContent />
+			<DeviceIdProvider>
+				<FeedbackMessageProvider>
+					<RootLayoutContent />
+				</FeedbackMessageProvider>
+			</DeviceIdProvider>
 		</PreferencesProvider>
 	);
 };

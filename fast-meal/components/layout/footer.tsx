@@ -30,18 +30,22 @@ export const Footer = ({ activeTab, onTabPress }: BottomFooterNavProps) => {
 			<View style={styles.container}>
 				{footerItems.map((item) => {
 					const isActive = item.id === activeTab;
-					const isTabAvailable = item.id !== "saved";
 
 					return (
 						<Pressable
 							key={item.id}
 							accessibilityRole="button"
-							disabled={!isTabAvailable}
 							onPress={() => onTabPress(item.id)}
 							style={styles.item}
 						>
 							<Ionicons
-								name={item.iconName}
+								name={
+									item.id === "saved"
+										? isActive
+											? "bookmark"
+											: "bookmark-outline"
+										: item.iconName
+								}
 								size={18}
 								color={
 									isActive ? theme.footerTabActive : theme.footerTabInactive

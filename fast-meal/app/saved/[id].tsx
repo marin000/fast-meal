@@ -1,7 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-
+import { useTranslation } from "react-i18next";
+import {
+	ActivityIndicator,
+	Pressable,
+	ScrollView,
+	StyleSheet,
+	Text,
+	View,
+} from "react-native";
+import { useFeedbackMessage } from "@/context/feedback-message-context";
+import { useSavedRecipesList } from "@/context/saved-recipes-context";
 import {
 	RecipeHero,
 	RecipeIngredients,
@@ -12,62 +21,54 @@ import {
 	RecipeWarnings,
 } from "@/features/recipes";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
-import { useRecipesContext } from "@/store/use-recipes-context";
 
-const RecipeDetailScreen = () => {
+const SavedRecipeDetailScreen = () => {
+	const { t } = useTranslation();
+	const { id } = useLocalSearchParams<{ id: string }>();
 	const router = useRouter();
 	const theme = useAppAppearance();
-	const { index: indexParam } = useLocalSearchParams<{ index: string }>();
-	const recipeIndex = Number(indexParam);
-	const {
-		recipes,
-		getSavedBackendIdForIndex,
-		saveRecipeAtIndex,
-		removeSavedRecipeAtIndex,
-		isBusyForIndex,
-	} = useRecipesContext();
-	const recipe = recipes[recipeIndex];
+	const { showMessage } = useFeedbackMessage();
+	const { items, isLoading, removeById } = useSavedRecipesList();
 
-	if (!recipe) {
-		return null;
-	}
+	const item = items.find((entry) => entry.id === id);
 
-	const savedId = getSavedBackendIdForIndex(recipeIndex);
-	const isSaved = savedId !== null;
-	const isBusy = isBusyForIndex(recipeIndex);
-
-	const heroRight = (
+	const heroRight = item ? (
 		<View style={styles.heroActions}>
-			<Pressable
-				accessibilityRole="button"
-				disabled={isBusy || isSaved}
-				onPress={() => saveRecipeAtIndex(recipeIndex)}
+			<View
 				style={[
 					styles.heroIconButton,
-					{ backgroundColor: theme.substitutionBoxBg },
+					{ backgroundColor: theme.substitutionBoxBg, opacity: 0.85 },
 				]}
 			>
-				<Ionicons
-					name={isSaved ? "bookmark" : "bookmark-outline"}
-					size={18}
-					color={isSaved ? theme.primary : theme.text}
-				/>
+				<Ionicons name="bookmark" size={18} color={theme.primary} />
+			</View>
+			<Pressable
+				accessibilityRole="button"
+				onPress={async () => {
+					await removeById(item.id);
+					showMessage(t("saved.toast.deleted"), "success");
+					router.back();
+				}}
+				style={[
+					styles.heroIconButton,
+					{ backgroundColor: theme.surfaceOverlay },
+				]}
+			>
+				<Ionicons name="trash-outline" size={18} color={theme.iconMuted} />
 			</Pressable>
-			{isSaved ? (
-				<Pressable
-					accessibilityRole="button"
-					disabled={isBusy}
-					onPress={() => removeSavedRecipeAtIndex(recipeIndex)}
-					style={[
-						styles.heroIconButton,
-						{ backgroundColor: theme.surfaceOverlay },
-					]}
-				>
-					<Ionicons name="trash-outline" size={18} color={theme.iconMuted} />
-				</Pressable>
-			) : null}
 		</View>
-	);
+	) : null;
+
+	if (isLoading && !item) {
+		return (
+			<View style={[styles.centered, { backgroundColor: theme.background }]}>
+				<ActivityIndicator size="large" color={theme.primary} />
+			</View>
+		);
+	}
+
+	if (!item) return null;
+	const { recipe } = item;
 
 	return (
 		<ScrollView
@@ -100,9 +101,14 @@ const RecipeDetailScreen = () => {
 	);
 };
 
-export default RecipeDetailScreen;
+export default SavedRecipeDetailScreen;
 
 const styles = StyleSheet.create({
+	centered: {
+		alignItems: "center",
+		flex: 1,
+		justifyContent: "center",
+	},
 	container: {
 		gap: 20,
 		paddingBottom: 32,

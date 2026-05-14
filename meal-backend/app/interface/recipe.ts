@@ -1,7 +1,9 @@
 export interface GenerateRecipeRequestBody {
+	deviceId: string;
 	ingredients: string[];
 	preferences: string[];
 	units: "metric" | "imperial";
+	language: "en" | "hr";
 }
 
 export interface RecipeIngredient {
@@ -41,6 +43,7 @@ export interface Recipe {
 
 export interface GenerateRecipeResponse {
 	recipes: Recipe[];
+	cacheKey?: string;
 	declined?: boolean;
 	message?: string;
 }

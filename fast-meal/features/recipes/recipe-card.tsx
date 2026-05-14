@@ -6,19 +6,31 @@ import { DifficultyBadge } from "@/components";
 import { usePreferences } from "@/context";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { Recipe } from "@/interface";
+import { useRecipesContext } from "@/store/use-recipes-context";
 import { macroMassFromGrams } from "@/utils/macro-display";
 
 interface RecipeCardProps {
 	recipe: Recipe;
+	recipeIndex: number;
 	onPress: () => void;
 }
 
-export const RecipeCard = ({ recipe, onPress }: RecipeCardProps) => {
+export const RecipeCard = ({
+	recipe,
+	recipeIndex,
+	onPress,
+}: RecipeCardProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 	const { units } = usePreferences();
 	const imperial = units === "imperial";
 	const massUnit = imperial ? t("recipe.units.oz") : t("recipe.units.g");
+	const { getSavedBackendIdForIndex, saveRecipeAtIndex, isBusyForIndex } =
+		useRecipesContext();
+
+	const savedId = getSavedBackendIdForIndex(recipeIndex);
+	const isSaved = savedId !== null;
+	const isBusy = isBusyForIndex(recipeIndex);
 
 	return (
 		<View
@@ -33,11 +45,35 @@ export const RecipeCard = ({ recipe, onPress }: RecipeCardProps) => {
 			<View style={[styles.accent, { backgroundColor: theme.primary }]} />
 
 			<View style={styles.body}>
-				<View style={styles.titleRow}>
-					<Text style={[styles.title, { color: theme.text }]} numberOfLines={2}>
-						{recipe.title}
-					</Text>
-					<DifficultyBadge difficulty={recipe.difficulty} />
+				<View style={styles.topRow}>
+					<View style={[styles.titleRow, styles.titleRowGrow]}>
+						<Text
+							style={[styles.title, { color: theme.text }]}
+							numberOfLines={2}
+						>
+							{recipe.title}
+						</Text>
+						<DifficultyBadge difficulty={recipe.difficulty} />
+					</View>
+					<View style={styles.iconActions}>
+						{!isSaved && (
+							<Pressable
+								accessibilityRole="button"
+								disabled={isBusy}
+								onPress={() => saveRecipeAtIndex(recipeIndex)}
+								style={[
+									styles.iconButton,
+									{ backgroundColor: theme.substitutionBoxBg },
+								]}
+							>
+								<Ionicons
+									name="bookmark-outline"
+									size={16}
+									color={theme.text}
+								/>
+							</Pressable>
+						)}
+					</View>
 				</View>
 
 				<Text
@@ -103,17 +139,37 @@ const styles = StyleSheet.create({
 		gap: 10,
 		padding: 16,
 	},
+	topRow: {
+		flexDirection: "row",
+		gap: 10,
+		justifyContent: "space-between",
+	},
 	titleRow: {
 		alignItems: "flex-start",
 		flexDirection: "row",
 		gap: 12,
 		justifyContent: "space-between",
 	},
+	titleRowGrow: {
+		flex: 1,
+		minWidth: 0,
+	},
 	title: {
 		flex: 1,
 		fontSize: 17,
 		fontWeight: "900",
 		lineHeight: 22,
+	},
+	iconActions: {
+		flexDirection: "row",
+		gap: 8,
+	},
+	iconButton: {
+		alignItems: "center",
+		borderRadius: 999,
+		height: 36,
+		justifyContent: "center",
+		width: 36,
 	},
 	description: {
 		fontSize: 13,

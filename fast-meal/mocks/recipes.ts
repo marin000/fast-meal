@@ -116,6 +116,7 @@ export const mockResponseMinimal: GenerateRecipeResponse = {
       warnings: [],
     },
   ],
+  cacheKey: "mock-cache",
 };
 
 export const mockResponseDeclined: GenerateRecipeResponse = {

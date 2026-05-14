@@ -63,7 +63,8 @@
 	"errors": {
 		"generic": "Nešto je pošlo po krivu. Pokušaj ponovno.",
 		"noRecipes": "Nismo uspjeli generirati recepte iz tih sastojaka.",
-		"declined": "FridgeAI može pomoći samo s receptima iz sastojaka."
+		"declined": "FridgeAI može pomoći samo s receptima iz sastojaka.",
+		"dailyLimit": "Dnevni limit dostignut. Pokušaj ponovno sutra."
 	},
 	"message": {
 		"recipeGenerator": "Generator recepata",
@@ -75,6 +76,18 @@
 		"home": "Početna",
 		"saved": "Spremljeno",
 		"settings": "Postavke"
+	},
+	"saved": {
+		"kicker": "Moja zbirka",
+		"title": "Spremljeni recepti",
+		"emptyTitle": "Još ništa nije spremljeno",
+		"emptySubtitle": "Spremi recept ikonom oznake na bilo kojem receptu.",
+		"toast": {
+			"saved": "Recept je spremljen",
+			"deleted": "Recept je uklonjen",
+			"saveFailed": "Nismo uspjeli spremiti recept",
+			"deleteFailed": "Nismo uspjeli ukloniti recept"
+		}
 	},
 	"settings": {
 		"sections": {

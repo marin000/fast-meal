@@ -8,6 +8,7 @@ import {
 	MODEL,
 	PROMPT_VERSION,
 } from "@/app/constants/openAI";
+import { deviceService } from "@/app/service/device";
 import { generateRecipeService } from "@/app/service/generate-recipe-service";
 import {
 	getPersistedRecipesByCacheKey,
@@ -31,23 +32,51 @@ export async function POST(req: Request) {
 		return Response.json(
 			{
 				error:
-					"Invalid request body. Expected { ingredients: string[], preferences?: string[], units?: 'metric' | 'imperial' }",
+					"Invalid request body. Expected { deviceId: string, ingredients: string[], preferences?: string[], units?: 'metric' | 'imperial', language?: 'en' | 'hr' }",
 			},
 			{ status: 400 },
 		);
 	}
 
-	const { ingredients, preferences, units } = parsedBody;
+	const { deviceId, ingredients, preferences, units, language } = parsedBody;
+
+	await deviceService.ensureDeviceRecord(deviceId);
+	const remaining = await deviceService.getRemainingGenerationsToday(deviceId);
+	if (remaining <= 0) {
+		return Response.json(
+			{
+				error: "Daily recipe generation limit reached. Try again tomorrow.",
+				code: "DAILY_LIMIT",
+			},
+			{ status: 429 },
+		);
+	}
+
 	const cache = getCache();
 	const cacheKey = generateRecipeService.buildCacheKey({
 		ingredients,
 		preferences,
 		units,
+		language,
 	});
+	const logStoredServing = (where: "runtime-cache" | "mongodb") => {
+		console.log("[generate-recipe] serving without OpenAI", { where, cacheKey });
+	};
 	const cachedRecipes = await cache.get(cacheKey);
 
 	if (cachedRecipes) {
-		return Response.json({ recipes: cachedRecipes });
+		const consumed = await deviceService.tryConsumeGeneration(deviceId);
+		if (!consumed) {
+			return Response.json(
+				{
+					error: "Daily recipe generation limit reached.",
+					code: "DAILY_LIMIT",
+				},
+				{ status: 429 },
+			);
+		}
+		logStoredServing("runtime-cache");
+		return Response.json({ recipes: cachedRecipes, cacheKey });
 	}
 
 	if (process.env.MONGODB_URI) {
@@ -58,19 +87,36 @@ export async function POST(req: Request) {
 					ttl: CACHE_TTL_SECONDS,
 					tags: ["recipes", `prompt:${PROMPT_VERSION}`],
 				});
-				return Response.json({ recipes: persistedRecipes });
+				const consumed = await deviceService.tryConsumeGeneration(deviceId);
+				if (!consumed) {
+					return Response.json(
+						{
+							error: "Daily recipe generation limit reached.",
+							code: "DAILY_LIMIT",
+						},
+						{ status: 429 },
+					);
+				}
+				logStoredServing("mongodb");
+				return Response.json({ recipes: persistedRecipes, cacheKey });
 			}
 		} catch {
 			console.error("Failed to get persisted recipes from MongoDB");
 		}
 	}
 
+	const recipeLanguageLabel =
+		language === "hr" ? "Croatian (hr)" : "English (en)";
+
 	const prompt = `${mealPromptBase.trim()}
 
     User ingredients: ${JSON.stringify(ingredients, null, 2)}
     User preferences / filters: ${JSON.stringify(preferences, null, 2)}
-    User units preference: ${JSON.stringify(units)}`;
+    User units preference: ${JSON.stringify(units)}
+    User interface language: ${JSON.stringify(language)} (${recipeLanguageLabel})
+    Write every human-readable field in the recipes JSON (titles, descriptions, ingredient names, steps, tags, substitutions, tips, warnings) in ${recipeLanguageLabel}. Keep JSON keys in English.`;
 
+	console.log("[generate-recipe] calling OpenAI API", { cacheKey });
 	const response = await fetch(`${config.openAiApiBaseUrl}/v1/responses`, {
 		method: "POST",
 		headers: {
@@ -88,6 +134,18 @@ export async function POST(req: Request) {
 	try {
 		const { recipes } =
 			generateRecipeService.extractRecipesFromOpenAiResponse(data);
+		if (recipes.length > 0) {
+			const consumed = await deviceService.tryConsumeGeneration(deviceId);
+			if (!consumed) {
+				return Response.json(
+					{
+						error: "Daily recipe generation limit reached.",
+						code: "DAILY_LIMIT",
+					},
+					{ status: 429 },
+				);
+			}
+		}
 		await cache.set(cacheKey, recipes, {
 			ttl: CACHE_TTL_SECONDS,
 			tags: ["recipes", `prompt:${PROMPT_VERSION}`],
@@ -99,7 +157,7 @@ export async function POST(req: Request) {
 				console.error("Failed to upsert recipe cache entry");
 			}
 		}
-		return Response.json({ recipes });
+		return Response.json({ recipes, cacheKey });
 	} catch (error) {
 		const message =
 			error instanceof Error ? error.message : "Failed to parse model output";

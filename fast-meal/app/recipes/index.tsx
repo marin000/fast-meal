@@ -29,6 +29,7 @@ const RecipesListScreen = () => {
 					<RecipeCard
 						key={`${recipe.title}-${index}`}
 						recipe={recipe}
+						recipeIndex={index}
 						onPress={() => openRecipe(index)}
 					/>
 				))}

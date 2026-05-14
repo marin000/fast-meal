@@ -1,17 +1,22 @@
 import type { QuickFilterOption } from "@/constants/home";
+import type { AppLanguage } from "@/constants/settings";
 
 export type DisplayUnits = "metric" | "imperial";
 
 export interface GenerateRecipeInput {
+	deviceId: string;
 	ingredientsInput: string;
 	selectedFilters: readonly QuickFilterOption[];
 	units: DisplayUnits;
+	language: AppLanguage;
 }
 
 export interface GenerateRecipeRequestBody {
+	deviceId: string;
 	ingredients: string[];
 	preferences: QuickFilterOption[];
 	units: DisplayUnits;
+	language: AppLanguage;
 }
 
 export interface RecipeIngredient {
@@ -51,6 +56,15 @@ export interface Recipe {
 
 export interface GenerateRecipeResponse {
 	recipes: Recipe[];
+	cacheKey?: string;
 	declined?: boolean;
 	message?: string;
+}
+
+export interface SavedRecipeListItem {
+	id: string;
+	deviceId: string;
+	cacheKey?: string;
+	recipe: Recipe;
+	createdAt: string;
 }

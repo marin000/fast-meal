@@ -17,9 +17,9 @@ export const RecipeSubstitutions = ({ items }: RecipeSubstitutionsProps) => {
 	return (
 		<RecipeSection label={t("recipe.substitutions")}>
 			<View style={styles.list}>
-				{items.map((substitution) => (
+				{items.map((substitution, index) => (
 					<View
-						key={substitution.ingredient}
+						key={`${index}-${substitution.ingredient}`}
 						style={[styles.box, { backgroundColor: theme.substitutionBoxBg }]}
 					>
 						<Ionicons

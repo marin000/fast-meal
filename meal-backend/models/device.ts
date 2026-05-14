@@ -4,7 +4,7 @@ const deviceSchema = new Schema(
 	{
 		deviceId: { type: String, required: true, unique: true, index: true },
 		plan: { type: String, default: "free" },
-		dailyUsageCount: { type: Number, default: 0 },
+		dailyUsageCount: { type: Number, default: 2 },
 		dailyUsageDate: { type: String, default: "" },
 	},
 	{ timestamps: true, collection: "devices" },

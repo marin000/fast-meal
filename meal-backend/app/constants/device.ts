@@ -1,0 +1,1 @@
+export const DAILY_FREE_GENERATION_ALLOWANCE = 2;

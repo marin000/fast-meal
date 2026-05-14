@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -9,21 +10,33 @@ import type { Recipe } from "@/interface";
 interface RecipeHeroProps {
 	recipe: Recipe;
 	onBack: () => void;
+	rightActions?: ReactNode;
 }
 
-export const RecipeHero = ({ recipe, onBack }: RecipeHeroProps) => {
+export const RecipeHero = ({
+	recipe,
+	onBack,
+	rightActions,
+}: RecipeHeroProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 
 	return (
 		<View style={styles.hero}>
-			<Pressable
-				accessibilityRole="button"
-				onPress={onBack}
-				style={[styles.backButton, { backgroundColor: theme.surfaceOverlay }]}
-			>
-				<Ionicons name="chevron-back" size={20} color={theme.text} />
-			</Pressable>
+			<View style={styles.toolbar}>
+				<Pressable
+					accessibilityRole="button"
+					onPress={onBack}
+					style={[styles.backButton, { backgroundColor: theme.surfaceOverlay }]}
+				>
+					<Ionicons name="chevron-back" size={20} color={theme.text} />
+				</Pressable>
+				{rightActions != null ? (
+					<View style={styles.rightActions}>{rightActions}</View>
+				) : (
+					<View style={styles.toolbarSpacer} />
+				)}
+			</View>
 
 			<View style={styles.titleBlock}>
 				<View style={[styles.accent, { backgroundColor: theme.primary }]} />
@@ -57,6 +70,22 @@ const styles = StyleSheet.create({
 		gap: 14,
 		paddingHorizontal: 20,
 		paddingTop: 4,
+	},
+	toolbar: {
+		alignItems: "center",
+		flexDirection: "row",
+		gap: 10,
+		justifyContent: "space-between",
+	},
+	toolbarSpacer: {
+		flex: 1,
+	},
+	rightActions: {
+		alignItems: "center",
+		flexDirection: "row",
+		flex: 1,
+		gap: 8,
+		justifyContent: "flex-end",
 	},
 	backButton: {
 		alignItems: "center",

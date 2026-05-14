@@ -1,1 +1,6 @@
-export { generateRecipe } from './generate-recipe';
+export { generateRecipe } from "./generate-recipe";
+export {
+	deleteSavedRecipeOnBackend,
+	fetchSavedRecipes,
+	saveRecipeToBackend,
+} from "./saved-recipes";

@@ -5,7 +5,7 @@ import {
 	darkAppearance,
 	lightAppearance,
 } from "@/constants/app-appearance";
-import { usePreferences } from "@/context";
+import { usePreferences } from "@/context/preferences-context";
 
 export const useAppAppearance = (): AppAppearance => {
 	const { darkMode } = usePreferences();

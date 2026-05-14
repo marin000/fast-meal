@@ -63,7 +63,8 @@
 	"errors": {
 		"generic": "Something went wrong. Please try again.",
 		"noRecipes": "We could not generate recipes for these ingredients.",
-		"declined": "FridgeAI can only help with recipes from ingredients."
+		"declined": "FridgeAI can only help with recipes from ingredients.",
+		"dailyLimit": "Daily limit reached. Try again tomorrow."
 	},
 	"message": {
 		"recipeGenerator": "Recipe generator",
@@ -75,6 +76,18 @@
 		"home": "Home",
 		"saved": "Saved",
 		"settings": "Settings"
+	},
+	"saved": {
+		"kicker": "My collection",
+		"title": "Saved recipes",
+		"emptyTitle": "Nothing saved yet",
+		"emptySubtitle": "Tap the bookmark on any recipe to save it here.",
+		"toast": {
+			"saved": "Recipe saved",
+			"deleted": "Recipe removed",
+			"saveFailed": "Could not save recipe",
+			"deleteFailed": "Could not remove recipe"
+		}
 	},
 	"settings": {
 		"sections": {
