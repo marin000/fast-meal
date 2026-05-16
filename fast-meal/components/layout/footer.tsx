@@ -44,7 +44,9 @@ export const Footer = ({ activeTab, onTabPress }: BottomFooterNavProps) => {
 										? isActive
 											? "bookmark"
 											: "bookmark-outline"
-										: item.iconName
+										: item.id === "shoppingList" && isActive
+											? "cart"
+											: item.iconName
 								}
 								size={18}
 								color={
@@ -87,7 +89,9 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		gap: 4,
 		justifyContent: "center",
-		minWidth: 70,
+		flex: 1,
+		maxWidth: 88,
+		minWidth: 0,
 	},
 	label: {
 		fontSize: 13,

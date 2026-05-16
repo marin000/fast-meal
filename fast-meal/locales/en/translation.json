@@ -75,7 +75,22 @@
 	"nav": {
 		"home": "Home",
 		"saved": "Saved",
+		"shoppingList": "List",
 		"settings": "Settings"
+	},
+	"shopping": {
+		"kicker": "My list",
+		"title": "Shopping List",
+		"addPlaceholder": "Add an ingredient...",
+		"completed": "Completed ({{count}})",
+		"emptyTitle": "Your list is empty",
+		"emptySubtitle": "Add ingredients you need to buy",
+		"addFromRecipe": "Add ingredients to list",
+		"toast": {
+			"added": "{{count}} items added to your list",
+			"added_one": "1 item added to your list",
+			"alreadyOnList": "Those ingredients are already on your list"
+		}
 	},
 	"saved": {
 		"kicker": "My collection",

@@ -20,6 +20,7 @@ import {
 	RecipeTips,
 	RecipeWarnings,
 } from "@/features/recipes";
+import { AddToShoppingListButton } from "@/features/shopping-list";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 
 const SavedRecipeDetailScreen = () => {
@@ -87,6 +88,7 @@ const SavedRecipeDetailScreen = () => {
 				</Text>
 
 				<RecipeNutrition macros={recipe.macros} />
+				<AddToShoppingListButton recipe={recipe} />
 				<RecipeIngredients items={recipe.ingredients} />
 				<RecipeInstructions steps={recipe.steps} />
 				{recipe.substitutions.length > 0 && (

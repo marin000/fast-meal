@@ -75,7 +75,22 @@
 	"nav": {
 		"home": "Početna",
 		"saved": "Spremljeno",
+		"shoppingList": "Lista",
 		"settings": "Postavke"
+	},
+	"shopping": {
+		"kicker": "Moja lista",
+		"title": "Lista za kupnju",
+		"addPlaceholder": "Dodaj sastojak...",
+		"completed": "Dovršeno ({{count}})",
+		"emptyTitle": "Lista je prazna",
+		"emptySubtitle": "Dodaj sastojke koje trebaš kupiti",
+		"addFromRecipe": "Dodaj sastojke na listu",
+		"toast": {
+			"added": "{{count}} sastojaka dodano na listu",
+			"added_one": "1 sastojak dodan na listu",
+			"alreadyOnList": "Sastojci su već na listi"
+		}
 	},
 	"saved": {
 		"kicker": "Moja zbirka",

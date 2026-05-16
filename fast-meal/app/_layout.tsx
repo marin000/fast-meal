@@ -19,6 +19,7 @@ import {
 	FeedbackMessageProvider,
 	GenerationQuotaProvider,
 	PreferencesProvider,
+	ShoppingListProvider,
 	usePreferences,
 } from "@/context";
 
@@ -34,6 +35,7 @@ const RootLayoutContent = () => {
 
 	const getActiveTab = (): FooterTab | null => {
 		if (pathname.startsWith("/saved")) return "saved";
+		if (pathname.startsWith("/shopping-list")) return "shoppingList";
 		if (pathname.startsWith("/settings")) return "settings";
 		if (pathname === "/" || pathname === "/index" || pathname === "") {
 			return "home";
@@ -59,6 +61,12 @@ const RootLayoutContent = () => {
 
 		if (tab === "saved") {
 			router.navigate("/saved");
+			return;
+		}
+
+		if (tab === "shoppingList") {
+			router.navigate("/shopping-list");
+			return;
 		}
 	};
 
@@ -80,6 +88,7 @@ const RootLayoutContent = () => {
 						<Stack.Screen name="index" />
 						<Stack.Screen name="settings" />
 						<Stack.Screen name="saved" />
+						<Stack.Screen name="shopping-list/index" />
 					</Stack>
 				</View>
 				{!isRecipeDetail && !isSavedRecipeDetail && (
@@ -96,9 +105,11 @@ const RootLayout = () => {
 		<PreferencesProvider>
 			<DeviceIdProvider>
 				<GenerationQuotaProvider>
-					<FeedbackMessageProvider>
-						<RootLayoutContent />
-					</FeedbackMessageProvider>
+					<ShoppingListProvider>
+						<FeedbackMessageProvider>
+							<RootLayoutContent />
+						</FeedbackMessageProvider>
+					</ShoppingListProvider>
 				</GenerationQuotaProvider>
 			</DeviceIdProvider>
 		</PreferencesProvider>

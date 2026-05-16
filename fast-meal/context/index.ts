@@ -13,3 +13,7 @@ export {
 	SavedRecipesProvider,
 	useSavedRecipesList,
 } from "./saved-recipes-context";
+export {
+	ShoppingListProvider,
+	useShoppingList,
+} from "./shopping-list-context";
