@@ -1,11 +1,19 @@
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { type QuickFilterOption, quickFilterOptions } from "@/constants/home";
-import { usePreferences } from "@/context";
+import {
+	useFeedbackMessage,
+	useGenerationQuota,
+	usePreferences,
+} from "@/context";
 
 export const useHomeForm = () => {
+	const { t } = useTranslation();
 	const router = useRouter();
+	const { showMessage } = useFeedbackMessage();
+	const { remainingGenerations } = useGenerationQuota();
 	const { lockedQuickFilters, units } = usePreferences();
 	const [ingredientsInputValue, setIngredientsInputValue] = useState("");
 	const [selectedFilters, setSelectedFilters] = useState<QuickFilterOption[]>(
@@ -35,6 +43,11 @@ export const useHomeForm = () => {
 	);
 
 	const submitForm = () => {
+		if (remainingGenerations !== null && remainingGenerations <= 0) {
+			showMessage(t("errors.dailyLimit"), "info");
+			return;
+		}
+
 		router.push({
 			pathname: "/recipes",
 			params: {

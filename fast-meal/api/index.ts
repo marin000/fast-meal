@@ -1,3 +1,4 @@
+export { DailyLimitError, fetchRemainingGenerations } from "./device";
 export { generateRecipe } from "./generate-recipe";
 export {
 	deleteSavedRecipeOnBackend,

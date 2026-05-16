@@ -4,6 +4,10 @@ export {
 	FeedbackMessageProvider,
 	useFeedbackMessage,
 } from "./feedback-message-context";
+export {
+	GenerationQuotaProvider,
+	useGenerationQuota,
+} from "./generation-quota-context";
 export { PreferencesProvider, usePreferences } from "./preferences-context";
 export {
 	SavedRecipesProvider,

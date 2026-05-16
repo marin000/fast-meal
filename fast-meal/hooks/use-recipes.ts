@@ -3,9 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 
-import { generateRecipe } from "@/api";
+import { DailyLimitError, generateRecipe } from "@/api";
 import type { QuickFilterOption } from "@/constants/home";
-import { useDeviceId, usePreferences } from "@/context";
+import {
+	useDeviceId,
+	useFeedbackMessage,
+	useGenerationQuota,
+	usePreferences,
+} from "@/context";
 import type { Recipe } from "@/interface";
 import { coerceParam } from "@/utils/helper";
 
@@ -19,6 +24,8 @@ export const useRecipes = () => {
 	const { t } = useTranslation();
 	const router = useRouter();
 	const { deviceId } = useDeviceId();
+	const { showMessage } = useFeedbackMessage();
+	const { refreshQuota } = useGenerationQuota();
 	const { language } = usePreferences();
 	const params = useLocalSearchParams() as RecipesParams;
 	const [recipes, setRecipes] = useState<Recipe[] | null>(null);
@@ -66,21 +73,25 @@ export const useRecipes = () => {
 				setCacheKey(
 					typeof response.cacheKey === "string" ? response.cacheKey : null,
 				);
+				await refreshQuota();
 			} catch (error) {
+				if (error instanceof DailyLimitError) {
+					showMessage(t("errors.dailyLimit"), "info");
+					await refreshQuota();
+					goBack();
+					return;
+				}
+
 				const detail =
 					error instanceof Error ? error.message : t("message.unknownError");
-				const isDailyLimit =
-					error instanceof Error && /limit/i.test(error.message);
-				Alert.alert(
-					isDailyLimit ? t("errors.dailyLimit") : t("errors.generic"),
-					detail,
-					[{ text: "OK", onPress: goBack }],
-				);
+				Alert.alert(t("errors.generic"), detail, [
+					{ text: "OK", onPress: goBack },
+				]);
 			}
 		};
 
 		void fetchRecipes();
-	}, [deviceId, language, params, router, t]);
+	}, [deviceId, language, params, refreshQuota, router, showMessage, t]);
 
 	return { recipes, cacheKey };
 };

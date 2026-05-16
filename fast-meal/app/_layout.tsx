@@ -17,6 +17,7 @@ import {
 import {
 	DeviceIdProvider,
 	FeedbackMessageProvider,
+	GenerationQuotaProvider,
 	PreferencesProvider,
 	usePreferences,
 } from "@/context";
@@ -94,9 +95,11 @@ const RootLayout = () => {
 	return (
 		<PreferencesProvider>
 			<DeviceIdProvider>
-				<FeedbackMessageProvider>
-					<RootLayoutContent />
-				</FeedbackMessageProvider>
+				<GenerationQuotaProvider>
+					<FeedbackMessageProvider>
+						<RootLayoutContent />
+					</FeedbackMessageProvider>
+				</GenerationQuotaProvider>
 			</DeviceIdProvider>
 		</PreferencesProvider>
 	);

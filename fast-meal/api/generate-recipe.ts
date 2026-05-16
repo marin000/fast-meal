@@ -1,11 +1,13 @@
+import { DailyLimitError } from "@/api/device";
 import type {
 	GenerateRecipeInput,
 	GenerateRecipeRequestBody,
 	GenerateRecipeResponse,
 } from "@/interface";
-import { mockResponseFull } from "@/mocks";
 import { formatApiErrorBody } from "@/utils/api-error-text";
 import { parseIngredientsInput } from "@/utils/helper";
+
+export { DailyLimitError } from "@/api/device";
 
 const apiEndpoint = `${process.env.EXPO_PUBLIC_API_BASE_URL}/api/generate-recipe`;
 
@@ -47,7 +49,7 @@ export const generateRecipe = async ({
 			} catch {
 				console.error(`Invalid JSON from server: ${errorText}`);
 			}
-			throw new Error(message);
+			throw new DailyLimitError(message);
 		}
 		throw new Error(
 			`Recipe generation failed (${response.status}): ${formatApiErrorBody(response.status, errorText)}`,
