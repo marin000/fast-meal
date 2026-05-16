@@ -1,4 +1,7 @@
-import { DAILY_FREE_GENERATION_ALLOWANCE } from "@/app/constants/device";
+import {
+	DAILY_FREE_GENERATION_ALLOWANCE,
+	isDailyGenerationLimitDisabled,
+} from "@/app/constants/device";
 import type { DeviceResponse } from "@/app/interface";
 import { Device } from "@/models";
 
@@ -33,6 +36,8 @@ const remainingFromDoc = (doc: {
 export async function getRemainingGenerationsToday(
 	deviceId: string,
 ): Promise<number> {
+	if (isDailyGenerationLimitDisabled()) return DAILY_FREE_GENERATION_ALLOWANCE;
+
 	await ensureDeviceRecord(deviceId);
 	const doc = await Device.findOne({ deviceId }).lean();
 	if (!doc) return 0;
@@ -44,6 +49,8 @@ export async function getRemainingGenerationsToday(
  * Uses an atomic pipeline update so concurrent requests cannot overspend.
  */
 export async function tryConsumeGeneration(deviceId: string): Promise<boolean> {
+	if (isDailyGenerationLimitDisabled()) return true;
+
 	await ensureDeviceRecord(deviceId);
 	const today = getTodayUtcYmd();
 

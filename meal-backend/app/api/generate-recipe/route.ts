@@ -59,9 +59,6 @@ export async function POST(req: Request) {
 		units,
 		language,
 	});
-	const logStoredServing = (where: "runtime-cache" | "mongodb") => {
-		console.log("[generate-recipe] serving without OpenAI", { where, cacheKey });
-	};
 	const cachedRecipes = await cache.get(cacheKey);
 
 	if (cachedRecipes) {
@@ -75,7 +72,6 @@ export async function POST(req: Request) {
 				{ status: 429 },
 			);
 		}
-		logStoredServing("runtime-cache");
 		return Response.json({ recipes: cachedRecipes, cacheKey });
 	}
 
@@ -97,7 +93,6 @@ export async function POST(req: Request) {
 						{ status: 429 },
 					);
 				}
-				logStoredServing("mongodb");
 				return Response.json({ recipes: persistedRecipes, cacheKey });
 			}
 		} catch {
@@ -113,10 +108,8 @@ export async function POST(req: Request) {
     User ingredients: ${JSON.stringify(ingredients, null, 2)}
     User preferences / filters: ${JSON.stringify(preferences, null, 2)}
     User units preference: ${JSON.stringify(units)}
-    User interface language: ${JSON.stringify(language)} (${recipeLanguageLabel})
-    Write every human-readable field in the recipes JSON (titles, descriptions, ingredient names, steps, tags, substitutions, tips, warnings) in ${recipeLanguageLabel}. Keep JSON keys in English.`;
+    User interface language: ${JSON.stringify(language)} (${recipeLanguageLabel}). Use this as the recipe language (overrides ingredient-list detection).`;
 
-	console.log("[generate-recipe] calling OpenAI API", { cacheKey });
 	const response = await fetch(`${config.openAiApiBaseUrl}/v1/responses`, {
 		method: "POST",
 		headers: {
