@@ -14,6 +14,17 @@ export const parseIngredientsInput = (input: string): string[] => {
 		.filter((item) => item.length > 0);
 };
 
+export const mergeIngredientNames = (
+	existing: string,
+	names: string[],
+): string => {
+	if (names.length === 0) return existing;
+
+	const joined = names.join(", ");
+	const trimmed = existing.trim();
+	return trimmed ? `${trimmed}, ${joined}` : joined;
+};
+
 export const coerceParam = (value: string | string[] | undefined): string => {
 	if (Array.isArray(value)) return value[0] ?? "";
 	return value ?? "";
@@ -75,4 +86,15 @@ export const getExpirationRowAppearance = (
 		backgroundColor: palette.soft,
 		accentColor: palette.solid,
 	};
+};
+
+export const getExpirationDaysLeft = (iso: string): number => {
+	const expiration = new Date(iso);
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	const expDay = new Date(expiration);
+	expDay.setHours(0, 0, 0, 0);
+	return Math.ceil(
+		(expDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+	);
 };

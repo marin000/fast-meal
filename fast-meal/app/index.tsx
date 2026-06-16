@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, Pressable, StyleSheet } from "react-native";
+import { Keyboard, ScrollView, StyleSheet } from "react-native";
 
-import { AppTextInput, PrimaryButton } from "@/components";
+import { AppTextInput, FridgeIcon, PrimaryButton } from "@/components";
+import { useFridgeProducts, useHomeIngredients } from "@/context";
+import { FridgePickerModal } from "@/features/fridge-products";
 import { HomeFilters, HomeHeader } from "@/features/home";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import { useHomeForm } from "@/hooks/use-home-form";
@@ -9,6 +12,9 @@ import { useHomeForm } from "@/hooks/use-home-form";
 const HomeScreen = () => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
+	const { items } = useFridgeProducts();
+	const { appendIngredients } = useHomeIngredients();
+	const [pickerVisible, setPickerVisible] = useState(false);
 	const {
 		ingredientsInputValue,
 		setIngredientsInputValue,
@@ -20,46 +26,69 @@ const HomeScreen = () => {
 		submitForm,
 	} = useHomeForm();
 
+	const handlePickerConfirm = (names: string[]) => {
+		appendIngredients(names);
+		setPickerVisible(false);
+	};
+
 	return (
-		<Pressable
-			style={[styles.screen, { backgroundColor: theme.background }]}
-			onPress={Keyboard.dismiss}
-		>
-			<HomeHeader />
+		<>
+			<ScrollView
+				style={{ backgroundColor: theme.background, flex: 1 }}
+				contentContainerStyle={styles.container}
+				keyboardShouldPersistTaps="handled"
+				onScrollBeginDrag={Keyboard.dismiss}
+			>
+				<HomeHeader />
 
-			<AppTextInput
-				label={t("home.ingredientsLabel")}
-				placeholder={t("home.ingredientsPlaceholder")}
-				value={ingredientsInputValue}
-				onChangeText={setIngredientsInputValue}
-			/>
+				<AppTextInput
+					label={t("home.ingredientsLabel")}
+					placeholder={t("home.ingredientsPlaceholder")}
+					value={ingredientsInputValue}
+					onChangeText={setIngredientsInputValue}
+				/>
 
-			<HomeFilters
-				options={quickFilterOptions}
-				selectedOptions={selectedFilters}
-				lockedOptions={lockedQuickFilters}
-				onToggleOption={toggleFilterOption}
-			/>
+				{items.length > 0 ? (
+					<PrimaryButton
+						label={t("fridge.useFromFridge")}
+						onPress={() => setPickerVisible(true)}
+						compact
+						leftIcon={<FridgeIcon size={16} color="#FFFFFF" />}
+					/>
+				) : null}
 
-			<PrimaryButton
-				label={t("home.cta")}
-				onPress={submitForm}
-				disabled={!canSubmit}
-				leftIconName="sparkles"
-				rightIconName="arrow-forward"
+				<HomeFilters
+					options={quickFilterOptions}
+					selectedOptions={selectedFilters}
+					lockedOptions={lockedQuickFilters}
+					onToggleOption={toggleFilterOption}
+				/>
+
+				<PrimaryButton
+					label={t("home.cta")}
+					onPress={submitForm}
+					disabled={!canSubmit}
+					leftIconName="sparkles"
+					rightIconName="arrow-forward"
+				/>
+			</ScrollView>
+
+			<FridgePickerModal
+				visible={pickerVisible}
+				onClose={() => setPickerVisible(false)}
+				onConfirm={handlePickerConfirm}
 			/>
-		</Pressable>
+		</>
 	);
 };
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-	screen: {
-		flex: 1,
+	container: {
 		gap: 24,
 		paddingBottom: 110,
 		paddingHorizontal: 20,
-		paddingVertical: 24,
+		paddingTop: 8,
 	},
 });

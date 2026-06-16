@@ -1,10 +1,17 @@
+import { useRouter } from "expo-router";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
 
-import { useFeedbackMessage } from "@/context/feedback-message-context";
-import { useFridgeProducts } from "@/context/fridge-products-context";
+import { PrimaryButton } from "@/components";
+import {
+	useFeedbackMessage,
+	useFridgeProducts,
+	useHomeIngredients,
+} from "@/context";
 import {
 	AddFridgeProductForm,
+	FridgePickerModal,
 	FridgeProductList,
 	FridgeScreenHeader,
 } from "@/features/fridge-products";
@@ -12,9 +19,12 @@ import { useAppAppearance } from "@/hooks/use-app-appearance";
 
 const FridgeScreen = () => {
 	const { t } = useTranslation();
+	const router = useRouter();
 	const theme = useAppAppearance();
 	const { items, isLoading, addProduct, removeById } = useFridgeProducts();
+	const { appendIngredients } = useHomeIngredients();
 	const { showMessage } = useFeedbackMessage();
+	const [pickerVisible, setPickerVisible] = useState(false);
 
 	const handleAdd = async (input: {
 		name: string;
@@ -38,6 +48,12 @@ const FridgeScreen = () => {
 		}
 	};
 
+	const handlePickerConfirm = (names: string[]) => {
+		appendIngredients(names);
+		setPickerVisible(false);
+		router.navigate("/");
+	};
+
 	if (isLoading) {
 		return (
 			<View style={[styles.centered, { backgroundColor: theme.background }]}>
@@ -52,11 +68,28 @@ const FridgeScreen = () => {
 			contentContainerStyle={styles.container}
 			keyboardShouldPersistTaps="handled"
 		>
-			<FridgeScreenHeader />
+			<FridgeScreenHeader
+				action={
+					items.length > 0 ? (
+						<PrimaryButton
+							label={t("fridge.useForRecipes")}
+							onPress={() => setPickerVisible(true)}
+							compact
+							leftIconName="sparkles"
+						/>
+					) : null
+				}
+			/>
 			<AddFridgeProductForm onAdd={handleAdd} />
 			<FridgeProductList
 				items={items}
 				onRemove={(id) => void handleRemove(id)}
+			/>
+
+			<FridgePickerModal
+				visible={pickerVisible}
+				onClose={() => setPickerVisible(false)}
+				onConfirm={handlePickerConfirm}
 			/>
 		</ScrollView>
 	);

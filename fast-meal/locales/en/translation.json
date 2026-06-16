@@ -84,8 +84,8 @@
 		"settings": "Settings"
 	},
 	"fridge": {
-		"kicker": "My fridge",
-		"title": "Fridge Items",
+		"kicker": "What's inside",
+		"title": "My fridge",
 		"productsTitle": "Products",
 		"addPlaceholder": "Product name...",
 		"expirationLabel": "Expires (optional)",
@@ -94,6 +94,20 @@
 		"boughtOn": "Bought {{date}}",
 		"emptyTitle": "Your fridge is empty",
 		"emptySubtitle": "Add products you have at home",
+		"useFromFridge": "Use from Fridge",
+		"useForRecipes": "Use for recipes",
+		"picker": {
+			"title": "Add from Fridge",
+			"description": "Select which products to add as ingredients",
+			"selectAll": "Select all",
+			"deselectAll": "Deselect all",
+			"confirm_one": "Add {{count}} product to ingredients",
+			"confirm_other": "Add {{count}} products to ingredients",
+			"addedToIngredients": "Added to ingredients",
+			"expired": "Expired",
+			"expiresToday": "Expires today",
+			"daysLeft": "{{count}}d left"
+		},
 		"toast": {
 			"added": "Product added",
 			"deleted": "Product removed",

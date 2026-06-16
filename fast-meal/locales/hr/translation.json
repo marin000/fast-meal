@@ -84,8 +84,8 @@
 		"settings": "Postavke"
 	},
 	"fridge": {
-		"kicker": "Moj hladnjak",
-		"title": "Proizvodi u hladnjaku",
+		"kicker": "Što imaš u hladnjaku",
+		"title": "Moj hladnjak",
 		"productsTitle": "Proizvodi",
 		"addPlaceholder": "Naziv proizvoda...",
 		"expirationLabel": "Istječe (opcionalno)",
@@ -94,6 +94,20 @@
 		"boughtOn": "Kupljeno {{date}}",
 		"emptyTitle": "Hladnjak je prazan",
 		"emptySubtitle": "Dodaj proizvode koje imaš kod kuće",
+		"useFromFridge": "Koristi iz hladnjaka",
+		"useForRecipes": "Koristi za recepte",
+		"picker": {
+			"title": "Dodaj iz hladnjaka",
+			"description": "Odaberi proizvode koje želiš dodati kao sastojke",
+			"selectAll": "Odaberi sve",
+			"deselectAll": "Poništi odabir",
+			"confirm_one": "Dodaj {{count}} proizvod u sastojke",
+			"confirm_other": "Dodaj {{count}} proizvoda u sastojke",
+			"addedToIngredients": "Dodano u sastojke",
+			"expired": "Isteklo",
+			"expiresToday": "Istječe danas",
+			"daysLeft": "Još {{count}} d"
+		},
 		"toast": {
 			"added": "Proizvod je dodan",
 			"deleted": "Proizvod je uklonjen",

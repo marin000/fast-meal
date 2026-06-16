@@ -1,3 +1,4 @@
+export { AppModal } from "./app-modal";
 export { ChipSelector } from "./chip-selector";
 export { DateField } from "./date-field";
 export { DifficultyBadge } from "./difficulty-badge";

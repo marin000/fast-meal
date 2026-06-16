@@ -19,6 +19,7 @@ import {
 	FeedbackMessageProvider,
 	FridgeProductsProvider,
 	GenerationQuotaProvider,
+	HomeIngredientsProvider,
 	PreferencesProvider,
 	ShoppingListProvider,
 	usePreferences,
@@ -114,11 +115,13 @@ const RootLayout = () => {
 			<DeviceIdProvider>
 				<GenerationQuotaProvider>
 					<FridgeProductsProvider>
-						<ShoppingListProvider>
-							<FeedbackMessageProvider>
-								<RootLayoutContent />
-							</FeedbackMessageProvider>
-						</ShoppingListProvider>
+						<HomeIngredientsProvider>
+							<ShoppingListProvider>
+								<FeedbackMessageProvider>
+									<RootLayoutContent />
+								</FeedbackMessageProvider>
+							</ShoppingListProvider>
+						</HomeIngredientsProvider>
 					</FridgeProductsProvider>
 				</GenerationQuotaProvider>
 			</DeviceIdProvider>

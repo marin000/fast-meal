@@ -6,6 +6,7 @@ import { type QuickFilterOption, quickFilterOptions } from "@/constants/home";
 import {
 	useFeedbackMessage,
 	useGenerationQuota,
+	useHomeIngredients,
 	usePreferences,
 } from "@/context";
 
@@ -15,7 +16,8 @@ export const useHomeForm = () => {
 	const { showMessage } = useFeedbackMessage();
 	const { remainingGenerations } = useGenerationQuota();
 	const { lockedQuickFilters, units } = usePreferences();
-	const [ingredientsInputValue, setIngredientsInputValue] = useState("");
+	const { ingredients: ingredientsInputValue, setIngredients: setIngredientsInputValue } =
+		useHomeIngredients();
 	const [selectedFilters, setSelectedFilters] = useState<QuickFilterOption[]>(
 		[],
 	);
