@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { FridgeIcon } from "@/components/ui/fridge-icon";
 import { type FooterTab, footerItems } from "@/constants/nav";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 
@@ -38,21 +39,31 @@ export const Footer = ({ activeTab, onTabPress }: BottomFooterNavProps) => {
 							onPress={() => onTabPress(item.id)}
 							style={styles.item}
 						>
-							<Ionicons
-								name={
-									item.id === "saved"
-										? isActive
-											? "bookmark"
-											: "bookmark-outline"
-										: item.id === "shoppingList" && isActive
-											? "cart"
-											: item.iconName
-								}
-								size={18}
-								color={
-									isActive ? theme.footerTabActive : theme.footerTabInactive
-								}
-							/>
+							{item.id === "fridge" ? (
+								<FridgeIcon
+									size={18}
+									color={
+										isActive ? theme.footerTabActive : theme.footerTabInactive
+									}
+									filled={isActive}
+								/>
+							) : (
+								<Ionicons
+									name={
+										item.id === "saved"
+											? isActive
+												? "bookmark"
+												: "bookmark-outline"
+											: item.id === "shoppingList" && isActive
+												? "cart"
+												: item.iconName
+									}
+									size={18}
+									color={
+										isActive ? theme.footerTabActive : theme.footerTabInactive
+									}
+								/>
+							)}
 							<Text
 								style={[
 									styles.label,
@@ -90,11 +101,11 @@ const styles = StyleSheet.create({
 		gap: 4,
 		justifyContent: "center",
 		flex: 1,
-		maxWidth: 88,
+		maxWidth: 72,
 		minWidth: 0,
 	},
 	label: {
-		fontSize: 13,
+		fontSize: 11,
 		fontWeight: "700",
 	},
 });

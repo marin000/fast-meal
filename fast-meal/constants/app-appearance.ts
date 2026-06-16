@@ -4,6 +4,12 @@ export interface DifficultyAppearance {
 	hard: { soft: string; solid: string };
 }
 
+export interface ExpirationAppearance {
+	ok: { soft: string; solid: string };
+	soon: { soft: string; solid: string };
+	expired: { soft: string; solid: string };
+}
+
 export interface AppAppearance {
 	background: string;
 	card: string;
@@ -40,7 +46,10 @@ export interface AppAppearance {
 	toggleTrack: string;
 	toggleTrackActive: string;
 	settingsRowDivider: string;
+	success: string;
 	warning: string;
+	danger: string;
+	expiration: ExpirationAppearance;
 	difficulty: DifficultyAppearance;
 }
 
@@ -80,7 +89,14 @@ export const lightAppearance: AppAppearance = {
 	toggleTrack: "#EEF3EE",
 	toggleTrackActive: "#2D8A4E",
 	settingsRowDivider: "#E8EDE8",
-	warning: "#A14A18",
+	success: "#2D8A4E",
+	warning: "#D97706",
+	danger: "#DC2626",
+	expiration: {
+		ok: { soft: "rgba(45, 138, 78, 0.12)", solid: "#2D8A4E" },
+		soon: { soft: "rgba(217, 119, 6, 0.16)", solid: "#D97706" },
+		expired: { soft: "rgba(220, 38, 38, 0.14)", solid: "#DC2626" },
+	},
 	difficulty: {
 		easy: { soft: "rgba(45, 138, 78, 0.12)", solid: "#2D8A4E" },
 		medium: { soft: "rgba(198, 138, 14, 0.14)", solid: "#C68A0E" },
@@ -124,7 +140,14 @@ export const darkAppearance: AppAppearance = {
 	toggleTrack: "#1C2E1E",
 	toggleTrackActive: "#4CAF72",
 	settingsRowDivider: "rgba(232, 245, 233, 0.1)",
+	success: "#4CAF72",
 	warning: "#FFB74D",
+	danger: "#EF5350",
+	expiration: {
+		ok: { soft: "rgba(76, 175, 114, 0.22)", solid: "#4CAF72" },
+		soon: { soft: "rgba(255, 183, 77, 0.2)", solid: "#FFB74D" },
+		expired: { soft: "rgba(239, 83, 80, 0.22)", solid: "#EF5350" },
+	},
 	difficulty: {
 		easy: { soft: "rgba(76, 175, 114, 0.22)", solid: "#4CAF72" },
 		medium: { soft: "rgba(245, 166, 35, 0.2)", solid: "#F5A623" },

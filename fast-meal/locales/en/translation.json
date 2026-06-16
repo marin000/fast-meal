@@ -1,4 +1,8 @@
 {
+	"common": {
+		"addDate": "Add date",
+		"clearDate": "Clear"
+	},
 	"home": {
 		"titleMain": "Cook something fast",
 		"titleAccent": "from what you have.",
@@ -74,9 +78,28 @@
 	},
 	"nav": {
 		"home": "Home",
+		"fridge": "Fridge",
 		"saved": "Saved",
 		"shoppingList": "List",
 		"settings": "Settings"
+	},
+	"fridge": {
+		"kicker": "My fridge",
+		"title": "Fridge Items",
+		"productsTitle": "Products",
+		"addPlaceholder": "Product name...",
+		"expirationLabel": "Expires (optional)",
+		"purchasedLabel": "Bought (optional)",
+		"expiresOn": "Expires {{date}}",
+		"boughtOn": "Bought {{date}}",
+		"emptyTitle": "Your fridge is empty",
+		"emptySubtitle": "Add products you have at home",
+		"toast": {
+			"added": "Product added",
+			"deleted": "Product removed",
+			"addFailed": "Could not add product",
+			"deleteFailed": "Could not remove product"
+		}
 	},
 	"shopping": {
 		"kicker": "My list",

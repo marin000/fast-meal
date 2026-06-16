@@ -1,6 +1,8 @@
 export { ChipSelector } from "./chip-selector";
+export { DateField } from "./date-field";
 export { DifficultyBadge } from "./difficulty-badge";
 export { FridgeAiLogo } from "./fridge-ai-logo";
+export { FridgeIcon } from "./fridge-icon";
 export { PrimaryButton } from "./primary-button";
 export { AppTextInput } from "./text-input";
 export { ToggleSwitch } from "./toggle-switch";

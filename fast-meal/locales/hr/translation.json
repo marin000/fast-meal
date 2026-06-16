@@ -1,4 +1,8 @@
 {
+	"common": {
+		"addDate": "Dodaj datum",
+		"clearDate": "Ukloni"
+	},
 	"home": {
 		"titleMain": "Skuhaj nesto brzo",
 		"titleAccent": "od onoga sto imaš.",
@@ -74,9 +78,28 @@
 	},
 	"nav": {
 		"home": "Početna",
+		"fridge": "Hladnjak",
 		"saved": "Spremljeno",
 		"shoppingList": "Lista",
 		"settings": "Postavke"
+	},
+	"fridge": {
+		"kicker": "Moj hladnjak",
+		"title": "Proizvodi u hladnjaku",
+		"productsTitle": "Proizvodi",
+		"addPlaceholder": "Naziv proizvoda...",
+		"expirationLabel": "Istječe (opcionalno)",
+		"purchasedLabel": "Kupljeno (opcionalno)",
+		"expiresOn": "Istječe {{date}}",
+		"boughtOn": "Kupljeno {{date}}",
+		"emptyTitle": "Hladnjak je prazan",
+		"emptySubtitle": "Dodaj proizvode koje imaš kod kuće",
+		"toast": {
+			"added": "Proizvod je dodan",
+			"deleted": "Proizvod je uklonjen",
+			"addFailed": "Nismo uspjeli dodati proizvod",
+			"deleteFailed": "Nismo uspjeli ukloniti proizvod"
+		}
 	},
 	"shopping": {
 		"kicker": "Moja lista",

@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@react-navigation/native";
-import { Stack, usePathname, useRouter } from "expo-router";
+import { type Href, Stack, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 import { StyleSheet, View } from "react-native";
@@ -17,6 +17,7 @@ import {
 import {
 	DeviceIdProvider,
 	FeedbackMessageProvider,
+	FridgeProductsProvider,
 	GenerationQuotaProvider,
 	PreferencesProvider,
 	ShoppingListProvider,
@@ -35,6 +36,7 @@ const RootLayoutContent = () => {
 
 	const getActiveTab = (): FooterTab | null => {
 		if (pathname.startsWith("/saved")) return "saved";
+		if (pathname.startsWith("/fridge")) return "fridge";
 		if (pathname.startsWith("/shopping-list")) return "shoppingList";
 		if (pathname.startsWith("/settings")) return "settings";
 		if (pathname === "/" || pathname === "/index" || pathname === "") {
@@ -64,6 +66,11 @@ const RootLayoutContent = () => {
 			return;
 		}
 
+		if (tab === "fridge") {
+			router.navigate("/fridge" as Href);
+			return;
+		}
+
 		if (tab === "shoppingList") {
 			router.navigate("/shopping-list");
 			return;
@@ -87,6 +94,7 @@ const RootLayoutContent = () => {
 					>
 						<Stack.Screen name="index" />
 						<Stack.Screen name="settings" />
+						<Stack.Screen name="fridge/index" />
 						<Stack.Screen name="saved" />
 						<Stack.Screen name="shopping-list/index" />
 					</Stack>
@@ -105,11 +113,13 @@ const RootLayout = () => {
 		<PreferencesProvider>
 			<DeviceIdProvider>
 				<GenerationQuotaProvider>
-					<ShoppingListProvider>
-						<FeedbackMessageProvider>
-							<RootLayoutContent />
-						</FeedbackMessageProvider>
-					</ShoppingListProvider>
+					<FridgeProductsProvider>
+						<ShoppingListProvider>
+							<FeedbackMessageProvider>
+								<RootLayoutContent />
+							</FeedbackMessageProvider>
+						</ShoppingListProvider>
+					</FridgeProductsProvider>
 				</GenerationQuotaProvider>
 			</DeviceIdProvider>
 		</PreferencesProvider>
