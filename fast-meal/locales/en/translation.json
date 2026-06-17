@@ -83,6 +83,11 @@
 		"shoppingList": "List",
 		"settings": "Settings"
 	},
+	"notifications": {
+		"expirationTitle": "Product expires today",
+		"expirationBody": "{{name}} expires today — use it in a recipe!",
+		"permissionDenied": "Enable notifications in system settings to get expiration reminders."
+	},
 	"fridge": {
 		"kicker": "What's inside",
 		"title": "My fridge",

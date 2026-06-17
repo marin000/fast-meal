@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import "../  i18n";
 
 import { Footer, Header } from "@/components";
+import { ExpirationNotificationSetup } from "@/components/expiration-notification-setup";
 import type { FooterTab } from "@/constants/nav";
 import {
 	appDarkBackgroundColor,
@@ -83,6 +84,7 @@ const RootLayoutContent = () => {
 			value={isDarkMode ? navigationDarkTheme : navigationLightTheme}
 		>
 			<View style={[styles.container, { backgroundColor: appBackgroundColor }]}>
+				<ExpirationNotificationSetup />
 				<View style={[styles.headerContainer, { paddingTop: top + 10 }]}>
 					<Header />
 				</View>

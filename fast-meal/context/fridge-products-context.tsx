@@ -14,6 +14,7 @@ import {
 } from "@/api/fridge-products";
 import { useDeviceId } from "@/context/device-id-context";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
+import { syncExpirationNotifications } from "@/services/expiration-notifications";
 
 interface AddFridgeProductInput {
 	name: string;
@@ -52,6 +53,7 @@ export const FridgeProductsProvider = ({
 		try {
 			const list = await fetchFridgeProducts(deviceId);
 			setItems(list);
+			void syncExpirationNotifications(list);
 		} catch {
 			setItems([]);
 		} finally {
@@ -72,7 +74,11 @@ export const FridgeProductsProvider = ({
 				expirationDate: input.expirationDate,
 				purchasedAt: input.purchasedAt,
 			});
-			setItems((prev) => [created, ...prev]);
+			setItems((prev) => {
+				const next = [created, ...prev];
+				void syncExpirationNotifications(next);
+				return next;
+			});
 		},
 		[deviceId],
 	);
@@ -81,7 +87,11 @@ export const FridgeProductsProvider = ({
 		async (id: string) => {
 			if (!deviceId) return;
 			await deleteFridgeProduct(deviceId, id);
-			setItems((prev) => prev.filter((item) => item.id !== id));
+			setItems((prev) => {
+				const next = prev.filter((item) => item.id !== id);
+				void syncExpirationNotifications(next);
+				return next;
+			});
 		},
 		[deviceId],
 	);

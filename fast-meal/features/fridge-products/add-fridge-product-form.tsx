@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
 import { DateField } from "@/components";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
-import { toIsoDate } from "@/utils/helper";
+import { ensureExpirationNotificationPermission } from "@/services/expiration-notifications";
+import { toIsoDate } from "@/utils/date";
 
 interface AddFridgeProductFormProps {
 	onAdd: (input: {
@@ -28,6 +29,10 @@ export const AddFridgeProductForm = ({ onAdd }: AddFridgeProductFormProps) => {
 
 		setIsSubmitting(true);
 		try {
+			if (expirationDate) {
+				await ensureExpirationNotificationPermission();
+			}
+
 			await onAdd({
 				name: trimmed,
 				expirationDate: expirationDate ? toIsoDate(expirationDate) : undefined,

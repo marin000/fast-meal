@@ -4,7 +4,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
-import { formatDisplayDate, getExpirationRowAppearance, getExpirationStatus } from "@/utils/helper";
+import { formatDisplayDate } from "@/utils/date";
+import { getExpirationRowAppearance, getExpirationStatus } from "@/utils/helper";
 
 interface FridgeProductRowProps {
 	item: FridgeProductListItem;

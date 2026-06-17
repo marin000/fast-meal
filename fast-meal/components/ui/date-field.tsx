@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { useAppAppearance } from "@/hooks/use-app-appearance";
-import { formatDisplayDate } from "@/utils/helper";
+import { formatDisplayDate } from "@/utils/date";
 
 interface DateFieldProps {
 	label: string;

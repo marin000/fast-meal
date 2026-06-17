@@ -83,6 +83,11 @@
 		"shoppingList": "Lista",
 		"settings": "Postavke"
 	},
+	"notifications": {
+		"expirationTitle": "Proizvod istječe danas",
+		"expirationBody": "{{name}} istječe danas — iskoristi ga u receptu!",
+		"permissionDenied": "Uključi obavijesti u postavkama sustava za podsjetnike o isteku."
+	},
 	"fridge": {
 		"kicker": "Što imaš u hladnjaku",
 		"title": "Moj hladnjak",
