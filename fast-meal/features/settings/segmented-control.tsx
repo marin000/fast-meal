@@ -4,9 +4,10 @@ import { useAppAppearance } from "@/hooks/use-app-appearance";
 
 interface SegmentedControlProps<T extends string> {
 	options: readonly T[];
-	selectedOption: T;
+	selectedOption?: T;
 	onPressOption: (value: T) => void;
 	getOptionLabel: (value: T) => string;
+	equalWidth?: boolean;
 }
 
 export const SegmentedControl = <T extends string>({
@@ -14,6 +15,7 @@ export const SegmentedControl = <T extends string>({
 	selectedOption,
 	onPressOption,
 	getOptionLabel,
+	equalWidth = false,
 }: SegmentedControlProps<T>) => {
 	const theme = useAppAppearance();
 
@@ -30,6 +32,7 @@ export const SegmentedControl = <T extends string>({
 						onPress={() => onPressOption(option)}
 						style={[
 							styles.segmentItem,
+							equalWidth && styles.segmentItemEqualWidth,
 							{
 								backgroundColor: isSelected
 									? theme.segmentActiveBg
@@ -46,6 +49,7 @@ export const SegmentedControl = <T extends string>({
 										: theme.segmentInactiveText,
 								},
 							]}
+							numberOfLines={1}
 						>
 							{getOptionLabel(option)}
 						</Text>
@@ -64,12 +68,17 @@ const styles = StyleSheet.create({
 		overflow: "hidden",
 	},
 	segmentItem: {
+		alignItems: "center",
 		paddingHorizontal: 10,
 		paddingVertical: 8,
+	},
+	segmentItemEqualWidth: {
+		flex: 1,
 	},
 	segmentLabel: {
 		fontSize: 12,
 		fontWeight: "700",
+		textAlign: "center",
 		textTransform: "capitalize",
 	},
 });

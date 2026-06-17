@@ -4,13 +4,14 @@ import { useTranslation } from "react-i18next";
 import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
 
 import { PrimaryButton } from "@/components";
+import type { FridgeProductUnit } from "@/constants/fridge";
 import {
 	useFeedbackMessage,
 	useFridgeProducts,
 	useHomeIngredients,
 } from "@/context";
 import {
-	AddFridgeProductForm,
+	AddFridgeProductModal,
 	FridgePickerModal,
 	FridgeProductList,
 	FridgeScreenHeader,
@@ -24,10 +25,13 @@ const FridgeScreen = () => {
 	const { items, isLoading, addProduct, removeById } = useFridgeProducts();
 	const { appendIngredients } = useHomeIngredients();
 	const { showMessage } = useFeedbackMessage();
+	const [addModalVisible, setAddModalVisible] = useState(false);
 	const [pickerVisible, setPickerVisible] = useState(false);
 
 	const handleAdd = async (input: {
 		name: string;
+		quantity?: number;
+		unit?: FridgeProductUnit;
 		expirationDate?: string;
 		purchasedAt?: string;
 	}) => {
@@ -69,7 +73,8 @@ const FridgeScreen = () => {
 			keyboardShouldPersistTaps="handled"
 		>
 			<FridgeScreenHeader
-				action={
+				onAddProduct={() => setAddModalVisible(true)}
+				recipesAction={
 					items.length > 0 ? (
 						<PrimaryButton
 							label={t("fridge.useForRecipes")}
@@ -80,10 +85,15 @@ const FridgeScreen = () => {
 					) : null
 				}
 			/>
-			<AddFridgeProductForm onAdd={handleAdd} />
 			<FridgeProductList
 				items={items}
 				onRemove={(id) => void handleRemove(id)}
+			/>
+
+			<AddFridgeProductModal
+				visible={addModalVisible}
+				onClose={() => setAddModalVisible(false)}
+				onAdd={handleAdd}
 			/>
 
 			<FridgePickerModal

@@ -5,7 +5,14 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
 import { formatDisplayDate } from "@/utils/date";
-import { getExpirationRowAppearance, getExpirationStatus } from "@/utils/helper";
+import {
+	formatFridgeProductQuantity,
+	translateMeasurementUnit,
+} from "@/utils/fridge-product";
+import {
+	getExpirationRowAppearance,
+	getExpirationStatus,
+} from "@/utils/helper";
 
 interface FridgeProductRowProps {
 	item: FridgeProductListItem;
@@ -20,6 +27,11 @@ export const FridgeProductRow = ({ item, onRemove }: FridgeProductRowProps) => {
 		: undefined;
 
 	const rowAppearance = getExpirationRowAppearance(theme, expirationStatus);
+	const quantityLabel = formatFridgeProductQuantity(
+		item.quantity,
+		item.unit,
+		(unitKey) => translateMeasurementUnit(t, unitKey),
+	);
 
 	return (
 		<View
@@ -35,6 +47,11 @@ export const FridgeProductRow = ({ item, onRemove }: FridgeProductRowProps) => {
 				<Text style={[styles.name, { color: theme.text }]} numberOfLines={2}>
 					{item.name}
 				</Text>
+				{quantityLabel ? (
+					<Text style={[styles.meta, { color: theme.textMuted }]}>
+						{quantityLabel}
+					</Text>
+				) : null}
 				{item.expirationDate ? (
 					<Text style={[styles.meta, { color: rowAppearance.accentColor }]}>
 						{t("fridge.expiresOn", {

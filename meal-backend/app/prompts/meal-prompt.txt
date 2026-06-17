@@ -26,9 +26,10 @@ Rules:
 - If ingredients are missing, suggest realistic substitutions.
 - Include 2-3 short cooking tips per recipe that improve texture, flavor, or technique.
 - Respect "User units preference":
-  - metric: use metric units (g, kg, ml, l, cm) as defaults.
-  - imperial: use imperial/US-style units (oz, lb, cup, tbsp, tsp, inch) as defaults.
+  - metric: use metric units (g, ml, pc) as defaults.
+  - imperial: use imperial/US-style units (oz, cup, tbsp, tsp, pc) as defaults.
   - Keep units practical and consistent across each recipe.
+  - In JSON, always use these short canonical unit codes in the "unit" field (never localized words like "žlica" or "kom"): g, ml, pc, oz, cup, tbsp, tsp. The client translates them for display.
 - Nutrition numbers in JSON are always in fixed units (regardless of ingredient display units):
   - macros.calories: kilocalories (kcal).
   - macros.protein, macros.carbs, macros.fat: always grams (g). The client converts to oz only for display when the user chose imperial.

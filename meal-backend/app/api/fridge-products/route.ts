@@ -13,6 +13,8 @@ const toFridgeProductListItem = (doc: {
 	_id: mongoose.Types.ObjectId;
 	deviceId: string;
 	name: string;
+	quantity?: number;
+	unit?: string;
 	expirationDate?: Date;
 	purchasedAt?: Date;
 	createdAt: Date;
@@ -21,6 +23,8 @@ const toFridgeProductListItem = (doc: {
 	id: doc._id.toString(),
 	deviceId: doc.deviceId,
 	name: doc.name,
+	quantity: doc.quantity,
+	unit: doc.unit as FridgeProductListItem["unit"],
 	expirationDate: doc.expirationDate
 		? toIsoString(doc.expirationDate)
 		: undefined,
@@ -42,18 +46,18 @@ export async function POST(req: Request): Promise<Response> {
 
 	if (!parsed) {
 		console.warn(
-			"[api/fridge-products] POST parseFridgeProductBody failed — expected { deviceId, name, expirationDate?, purchasedAt? }",
+			"[api/fridge-products] POST parseFridgeProductBody failed — expected { deviceId, name, quantity?, unit?, expirationDate?, purchasedAt? }",
 		);
 		return Response.json(
 			{
 				error:
-					"Invalid request body. Expected { deviceId: string, name: string, expirationDate?: string, purchasedAt?: string }",
+					"Invalid request body. Expected { deviceId: string, name: string, quantity?: number, unit?: string, expirationDate?: string, purchasedAt?: string }",
 			},
 			{ status: 400 },
 		);
 	}
 
-	const { deviceId, name, expirationDate, purchasedAt } = parsed;
+	const { deviceId, name, quantity, unit, expirationDate, purchasedAt } = parsed;
 
 	await deviceService.ensureDeviceRecord(deviceId);
 	console.log("[api/fridge-products] create", { deviceId, name });
@@ -62,6 +66,8 @@ export async function POST(req: Request): Promise<Response> {
 		const created = await FridgeProduct.create({
 			deviceId,
 			name,
+			quantity,
+			unit,
 			expirationDate,
 			purchasedAt,
 		});
@@ -96,6 +102,8 @@ export async function GET(req: Request): Promise<Response> {
 			_id: doc._id,
 			deviceId: doc.deviceId,
 			name: doc.name,
+			quantity: doc.quantity,
+			unit: doc.unit,
 			expirationDate: doc.expirationDate,
 			purchasedAt: doc.purchasedAt,
 			createdAt: doc.createdAt,

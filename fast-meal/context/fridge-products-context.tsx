@@ -12,12 +12,15 @@ import {
 	deleteFridgeProduct,
 	fetchFridgeProducts,
 } from "@/api/fridge-products";
+import type { FridgeProductUnit } from "@/constants/fridge";
 import { useDeviceId } from "@/context/device-id-context";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
 import { syncExpirationNotifications } from "@/services/expiration-notifications";
 
 interface AddFridgeProductInput {
 	name: string;
+	quantity?: number;
+	unit?: FridgeProductUnit;
 	expirationDate?: string;
 	purchasedAt?: string;
 }
@@ -71,6 +74,8 @@ export const FridgeProductsProvider = ({
 			const created = await createFridgeProduct({
 				deviceId,
 				name: input.name,
+				quantity: input.quantity,
+				unit: input.unit,
 				expirationDate: input.expirationDate,
 				purchasedAt: input.purchasedAt,
 			});

@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { RecipeIngredient } from "@/interface";
+import { translateMeasurementUnit } from "@/utils/fridge-product";
 
 import { RecipeSection } from "./section";
 
@@ -31,7 +32,8 @@ export const RecipeIngredients = ({ items }: RecipeIngredientsProps) => {
 							]}
 						>
 							<Text style={[styles.amount, { color: theme.primary }]}>
-								{ingredient.quantity} {ingredient.unit}
+								{ingredient.quantity}{" "}
+								{translateMeasurementUnit(t, ingredient.unit)}
 							</Text>
 							<Text style={[styles.name, { color: theme.text }]}>
 								{ingredient.name}

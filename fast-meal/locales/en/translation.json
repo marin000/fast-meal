@@ -92,7 +92,28 @@
 		"kicker": "What's inside",
 		"title": "My fridge",
 		"productsTitle": "Products",
+		"addProduct": "Add product",
 		"addPlaceholder": "Product name...",
+		"addModal": {
+			"title": "Add product",
+			"submit": "Add product",
+			"nameLabel": "Product name",
+			"quantityLabel": "Quantity (optional)",
+			"quantityPlaceholder": "e.g. 2",
+			"quantityInvalid": "Enter a valid positive number",
+			"unitPlaceholder": "Unit",
+			"unitRequired": "Select a unit when quantity is set",
+			"expirationTab": "Expiration",
+			"purchasedTab": "Bought"
+		},
+		"units": {
+			"g": "g",
+			"ml": "ml",
+			"pc": "pc",
+			"oz": "oz",
+			"cup": "cup",
+			"tbsp": "tbsp"
+		},
 		"expirationLabel": "Expires (optional)",
 		"purchasedLabel": "Bought (optional)",
 		"expiresOn": "Expires {{date}}",
@@ -165,7 +186,7 @@
 			"description": "Filter out recipes with gluten"
 		},
 		"gymMode": {
-			"label": "Gym mode",
+			"label": "Fitness mode",
 			"description": "Always prioritize high-protein results"
 		},
 		"language": {

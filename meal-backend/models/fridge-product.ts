@@ -4,6 +4,8 @@ const fridgeProductSchema = new Schema(
 	{
 		deviceId: { type: String, required: true, index: true },
 		name: { type: String, required: true, trim: true },
+		quantity: { type: Number, min: 0 },
+		unit: { type: String, trim: true },
 		expirationDate: { type: Date },
 		purchasedAt: { type: Date },
 	},

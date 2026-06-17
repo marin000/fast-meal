@@ -1,4 +1,4 @@
-export * from "./add-fridge-product-form";
+export * from "./add-fridge-product-modal";
 export * from "./fridge-picker-modal";
 export * from "./fridge-product-list";
 export * from "./fridge-product-picker-row";

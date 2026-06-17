@@ -1,6 +1,19 @@
+export const FRIDGE_PRODUCT_UNITS = [
+	"g",
+	"ml",
+	"pc",
+	"oz",
+	"cup",
+	"tbsp",
+] as const;
+
+export type FridgeProductUnit = (typeof FRIDGE_PRODUCT_UNITS)[number];
+
 export interface CreateFridgeProductRequestBody {
 	deviceId: string;
 	name: string;
+	quantity?: number;
+	unit?: FridgeProductUnit;
 	expirationDate?: string;
 	purchasedAt?: string;
 }
@@ -9,6 +22,8 @@ export interface FridgeProductListItem {
 	id: string;
 	deviceId: string;
 	name: string;
+	quantity?: number;
+	unit?: FridgeProductUnit;
 	expirationDate?: string;
 	purchasedAt?: string;
 	createdAt: string;

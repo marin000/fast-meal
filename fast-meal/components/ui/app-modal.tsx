@@ -1,6 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
 import type { ReactNode } from "react";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+	Keyboard,
+	KeyboardAvoidingView,
+	Modal,
+	Platform,
+	Pressable,
+	ScrollView,
+	StyleSheet,
+	Text,
+	View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useAppAppearance } from "@/hooks/use-app-appearance";
@@ -12,6 +23,7 @@ interface AppModalProps {
 	description?: string;
 	children: ReactNode;
 	footer?: ReactNode;
+	avoidKeyboard?: boolean;
 }
 
 export const AppModal = ({
@@ -21,9 +33,96 @@ export const AppModal = ({
 	description,
 	children,
 	footer,
+	avoidKeyboard = false,
 }: AppModalProps) => {
 	const theme = useAppAppearance();
 	const { bottom } = useSafeAreaInsets();
+	const [keyboardVisible, setKeyboardVisible] = useState(false);
+	const scrollable = avoidKeyboard;
+
+	useEffect(() => {
+		if (!visible || !avoidKeyboard) {
+			setKeyboardVisible(false);
+			return;
+		}
+
+		const showEvent =
+			Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+		const hideEvent =
+			Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+		const showSubscription = Keyboard.addListener(showEvent, () => {
+			setKeyboardVisible(true);
+		});
+		const hideSubscription = Keyboard.addListener(hideEvent, () => {
+			setKeyboardVisible(false);
+		});
+
+		return () => {
+			showSubscription.remove();
+			hideSubscription.remove();
+		};
+	}, [avoidKeyboard, visible]);
+
+	const sheet = (
+		<View
+			style={[
+				styles.sheet,
+				{
+					backgroundColor: theme.card,
+					borderTopColor: theme.cardBorder,
+					paddingBottom: bottom + 16,
+				},
+			]}
+		>
+			<View style={[styles.handle, { backgroundColor: theme.border }]} />
+
+			{(title || description) && (
+				<View style={styles.header}>
+					<View style={styles.headerText}>
+						{title ? (
+							<Text style={[styles.title, { color: theme.text }]}>{title}</Text>
+						) : null}
+						{description ? (
+							<Text style={[styles.description, { color: theme.textMuted }]}>
+								{description}
+							</Text>
+						) : null}
+					</View>
+
+					<Pressable
+						accessibilityRole="button"
+						accessibilityLabel="Close"
+						onPress={onClose}
+						style={[
+							styles.closeButton,
+							{ backgroundColor: theme.surfaceOverlay },
+						]}
+					>
+						<Ionicons name="close" size={16} color={theme.iconMuted} />
+					</Pressable>
+				</View>
+			)}
+
+			{scrollable ? (
+				<ScrollView
+					style={styles.body}
+					contentContainerStyle={styles.bodyContent}
+					keyboardShouldPersistTaps="handled"
+					showsVerticalScrollIndicator={false}
+					bounces={false}
+				>
+					{children}
+				</ScrollView>
+			) : (
+				<View style={styles.body}>{children}</View>
+			)}
+
+			{footer && !keyboardVisible ? (
+				<View style={styles.footer}>{footer}</View>
+			) : null}
+		</View>
+	);
 
 	return (
 		<Modal
@@ -32,62 +131,30 @@ export const AppModal = ({
 			animationType="slide"
 			onRequestClose={onClose}
 		>
-			<View style={styles.overlay}>
-				<Pressable
-					accessibilityRole="button"
-					accessibilityLabel="Close modal"
-					style={styles.backdrop}
-					onPress={onClose}
-				/>
-
-				<View
-					style={[
-						styles.sheet,
-						{
-							backgroundColor: theme.card,
-							borderTopColor: theme.cardBorder,
-							paddingBottom: bottom + 16,
-						},
-					]}
+			{avoidKeyboard ? (
+				<KeyboardAvoidingView
+					style={styles.overlay}
+					behavior={Platform.OS === "ios" ? "padding" : "height"}
 				>
-					<View style={[styles.handle, { backgroundColor: theme.border }]} />
-
-					{(title || description) && (
-						<View style={styles.header}>
-							<View style={styles.headerText}>
-								{title ? (
-									<Text style={[styles.title, { color: theme.text }]}>
-										{title}
-									</Text>
-								) : null}
-								{description ? (
-									<Text
-										style={[styles.description, { color: theme.textMuted }]}
-									>
-										{description}
-									</Text>
-								) : null}
-							</View>
-
-							<Pressable
-								accessibilityRole="button"
-								accessibilityLabel="Close"
-								onPress={onClose}
-								style={[
-									styles.closeButton,
-									{ backgroundColor: theme.surfaceOverlay },
-								]}
-							>
-								<Ionicons name="close" size={16} color={theme.iconMuted} />
-							</Pressable>
-						</View>
-					)}
-
-					<View style={styles.body}>{children}</View>
-
-					{footer ? <View style={styles.footer}>{footer}</View> : null}
+					<Pressable
+						accessibilityRole="button"
+						accessibilityLabel="Close modal"
+						style={styles.backdrop}
+						onPress={onClose}
+					/>
+					{sheet}
+				</KeyboardAvoidingView>
+			) : (
+				<View style={styles.overlay}>
+					<Pressable
+						accessibilityRole="button"
+						accessibilityLabel="Close modal"
+						style={styles.backdrop}
+						onPress={onClose}
+					/>
+					{sheet}
 				</View>
-			</View>
+			)}
 		</Modal>
 	);
 };
@@ -149,6 +216,9 @@ const styles = StyleSheet.create({
 	body: {
 		flexGrow: 0,
 		flexShrink: 1,
+	},
+	bodyContent: {
+		flexGrow: 0,
 	},
 	footer: {
 		marginTop: 16,

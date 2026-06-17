@@ -125,7 +125,7 @@ export const darkAppearance: AppAppearance = {
 	footerBg: "#132116",
 	footerBorder: "rgba(232, 245, 233, 0.1)",
 	footerTabActive: "#E8F5E9",
-	footerTabInactive: "#4D6B52",
+	footerTabInactive: "#7FA87F",
 	iconMuted: "#7FA87F",
 	nutritionBarTrack: "rgba(232, 245, 233, 0.12)",
 	rowDivider: "rgba(232, 245, 233, 0.1)",

@@ -92,7 +92,28 @@
 		"kicker": "Što imaš u hladnjaku",
 		"title": "Moj hladnjak",
 		"productsTitle": "Proizvodi",
+		"addProduct": "Dodaj proizvod",
 		"addPlaceholder": "Naziv proizvoda...",
+		"addModal": {
+			"title": "Dodaj proizvod",
+			"submit": "Dodaj proizvod",
+			"nameLabel": "Naziv proizvoda",
+			"quantityLabel": "Količina (opcionalno)",
+			"quantityPlaceholder": "npr. 2",
+			"quantityInvalid": "Unesi valjani pozitivan broj",
+			"unitPlaceholder": "Jedinica",
+			"unitRequired": "Odaberi jedinicu kad je količina unesena",
+			"expirationTab": "Istječe",
+			"purchasedTab": "Kupljeno"
+		},
+		"units": {
+			"g": "g",
+			"ml": "ml",
+			"pc": "kom",
+			"oz": "oz",
+			"cup": "šalica",
+			"tbsp": "žlica"
+		},
 		"expirationLabel": "Istječe (opcionalno)",
 		"purchasedLabel": "Kupljeno (opcionalno)",
 		"expiresOn": "Istječe {{date}}",
@@ -165,7 +186,7 @@
 			"description": "Filtriraj recepte koji sadrže gluten"
 		},
 		"gymMode": {
-			"label": "Teretana režim",
+			"label": "Fitnes režim",
 			"description": "Uvijek prioritetno prikazuj rezultate s visokim proteinom"
 		},
 		"language": {

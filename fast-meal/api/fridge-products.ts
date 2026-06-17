@@ -1,3 +1,4 @@
+import type { FridgeProductUnit } from "@/constants/fridge";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
 import { formatApiErrorBody } from "@/utils/api-error-text";
 
@@ -27,6 +28,8 @@ export const fetchFridgeProducts = async (
 export const createFridgeProduct = async (params: {
 	deviceId: string;
 	name: string;
+	quantity?: number;
+	unit?: FridgeProductUnit;
 	expirationDate?: string;
 	purchasedAt?: string;
 }): Promise<FridgeProductListItem> => {
@@ -36,6 +39,9 @@ export const createFridgeProduct = async (params: {
 		body: JSON.stringify({
 			deviceId: params.deviceId,
 			name: params.name,
+			...(params.quantity !== undefined && params.unit
+				? { quantity: params.quantity, unit: params.unit }
+				: {}),
 			...(params.expirationDate
 				? { expirationDate: params.expirationDate }
 				: {}),

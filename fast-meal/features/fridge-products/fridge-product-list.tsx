@@ -36,9 +36,6 @@ export const FridgeProductList = ({
 
 	return (
 		<View style={styles.section}>
-			<Text style={[styles.sectionTitle, { color: theme.textMuted }]}>
-				{t("fridge.productsTitle")}
-			</Text>
 			{items.map((item) => (
 				<FridgeProductRow
 					key={item.id}
@@ -53,13 +50,6 @@ export const FridgeProductList = ({
 const styles = StyleSheet.create({
 	section: {
 		gap: 8,
-	},
-	sectionTitle: {
-		fontSize: 11,
-		fontWeight: "700",
-		letterSpacing: 0.8,
-		marginBottom: 4,
-		textTransform: "uppercase",
 	},
 	empty: {
 		alignItems: "center",
