@@ -4,9 +4,9 @@
 		"clearDate": "Ukloni"
 	},
 	"home": {
-		"titleMain": "Skuhaj nesto brzo",
+		"titleMain": "Skuhaj nešto brzo",
 		"titleAccent": "od onoga sto imaš.",
-		"subtitle": "Upiši sastojke i generirat ćemo ideje za recepte.",
+		"subtitle": "Upiši sastojke i generiraj ideje za recepte.",
 		"ingredientsLabel": "Sastojci",
 		"ingredientsPlaceholder": "Imam jaja, sir, kruh...",
 		"quickFiltersLabel": "Brzi filteri",

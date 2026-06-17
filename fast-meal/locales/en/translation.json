@@ -6,7 +6,7 @@
 	"home": {
 		"titleMain": "Cook something fast",
 		"titleAccent": "from what you have.",
-		"subtitle": "List your ingredients and we will generate recipe ideas.",
+		"subtitle": "List your ingredients and generate recipe ideas.",
 		"ingredientsLabel": "Ingredients",
 		"ingredientsPlaceholder": "I have eggs, cheese, bread...",
 		"quickFiltersLabel": "Quick filters",

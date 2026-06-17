@@ -1,7 +1,7 @@
 import Constants from "expo-constants";
 import { Platform } from "react-native";
 
-import { EXPIRATION_NOTIFICATION_HOUR } from "@/constants/notifications";
+import { EXPIRATION_NOTIFICATION_HOUR, isTestExpirationNotificationsEnabled, TEST_NOTIFICATION_DELAY_MS } from "@/constants/notifications";
 import { getDaysUntilExpiration, startOfLocalDay } from "./date";
 
 type NotificationsModule = typeof import("expo-notifications");
@@ -33,7 +33,13 @@ export const getExpirationNotificationTrigger = (
 	expirationIso: string,
 ): Date | null => {
 	const daysUntil = getDaysUntilExpiration(expirationIso);
-	if (daysUntil === null || daysUntil < 0) return null;
+	if (daysUntil === null) return null;
+
+	if (isTestExpirationNotificationsEnabled()) {
+		return new Date(Date.now() + TEST_NOTIFICATION_DELAY_MS);
+	}
+
+	if (daysUntil < 0) return null;
 
 	const expiration = new Date(expirationIso);
 	const trigger = startOfLocalDay(expiration);

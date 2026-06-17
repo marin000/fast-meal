@@ -3,6 +3,10 @@ export const EXPIRATION_NOTIFICATION_ID_PREFIX = "fridge-expiration-";
 export const PERMISSION_ASKED_KEY =
 	"@fast-meal/expiration-notification-permission-asked";
 export const ANDROID_CHANNEL_ID = "expiration-reminders";
+export const TEST_NOTIFICATION_DELAY_MS = 5_000;
+
+export const isTestExpirationNotificationsEnabled = (): boolean =>
+	process.env.EXPO_PUBLIC_TEST_EXPIRATION_NOTIFICATIONS === "true";
 
 export const getExpirationNotificationIdentifier = (
 	productId: string,
