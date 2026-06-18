@@ -1,9 +1,12 @@
 import { deviceService } from "@/app/service/device";
+import { connectMongo } from "@/app/service/mongodb";
 import { Device } from "@/models";
 
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
+	await connectMongo();
+
 	const deviceId = new URL(req.url).searchParams.get("deviceId")?.trim();
 
 	if (!deviceId) {
@@ -23,6 +26,8 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+	await connectMongo();
+
 	let body: unknown;
 	try {
 		body = await req.json();

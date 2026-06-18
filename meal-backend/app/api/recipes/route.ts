@@ -1,10 +1,15 @@
 import mongoose from "mongoose";
 import type { Recipe, SavedRecipeListItem } from "@/app/interface";
 import { deviceService } from "@/app/service/device";
+import { connectMongo } from "@/app/service/mongodb";
 import { normalizeRecipe, parseSaveRecipeBody } from "@/app/utils";
 import { SavedRecipe } from "@/models";
 
+export const runtime = "nodejs";
+
 export async function POST(req: Request): Promise<Response> {
+	await connectMongo();
+
 	let body: unknown;
 	try {
 		body = await req.json();
@@ -65,6 +70,8 @@ export async function POST(req: Request): Promise<Response> {
 }
 
 export async function GET(req: Request): Promise<Response> {
+	await connectMongo();
+
 	const { searchParams } = new URL(req.url);
 	const deviceId = searchParams.get("deviceId")?.trim();
 
@@ -94,6 +101,8 @@ export async function GET(req: Request): Promise<Response> {
 }
 
 export async function DELETE(req: Request): Promise<Response> {
+	await connectMongo();
+
 	const { searchParams } = new URL(req.url);
 	const deviceId = searchParams.get("deviceId")?.trim();
 	const id = searchParams.get("id")?.trim();

@@ -14,6 +14,7 @@ import {
 	getPersistedRecipesByCacheKey,
 	upsertRecipeCacheEntry,
 } from "@/app/service/mongo-recipe-cache";
+import { connectMongo } from "@/app/service/mongodb";
 import { parseRequestBody } from "@/app/utils";
 
 export const runtime = "nodejs";
@@ -40,6 +41,7 @@ export async function POST(req: Request) {
 
 	const { deviceId, ingredients, preferences, units, language } = parsedBody;
 
+	await connectMongo();
 	await deviceService.ensureDeviceRecord(deviceId);
 	const remaining = await deviceService.getRemainingGenerationsToday(deviceId);
 	if (remaining <= 0) {
