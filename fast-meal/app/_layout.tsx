@@ -3,7 +3,11 @@ import { type Href, Stack, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 import { StyleSheet, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+	initialWindowMetrics,
+	SafeAreaProvider,
+	useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import "../  i18n";
 
 import { Footer, Header } from "@/components";
@@ -25,10 +29,12 @@ import {
 	ShoppingListProvider,
 	usePreferences,
 } from "@/context";
+import { useAndroidSystemBars } from "@/hooks/use-android-system-bars";
 
 const RootLayoutContent = () => {
 	const { darkMode } = usePreferences();
 	const { top } = useSafeAreaInsets();
+	useAndroidSystemBars();
 	const pathname = usePathname();
 	const router = useRouter();
 	const isDarkMode = darkMode;
@@ -113,21 +119,23 @@ const RootLayoutContent = () => {
 
 const RootLayout = () => {
 	return (
-		<PreferencesProvider>
-			<DeviceIdProvider>
-				<GenerationQuotaProvider>
-					<FridgeProductsProvider>
-						<HomeIngredientsProvider>
-							<ShoppingListProvider>
-								<FeedbackMessageProvider>
-									<RootLayoutContent />
-								</FeedbackMessageProvider>
-							</ShoppingListProvider>
-						</HomeIngredientsProvider>
-					</FridgeProductsProvider>
-				</GenerationQuotaProvider>
-			</DeviceIdProvider>
-		</PreferencesProvider>
+		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
+			<PreferencesProvider>
+				<DeviceIdProvider>
+					<GenerationQuotaProvider>
+						<FridgeProductsProvider>
+							<HomeIngredientsProvider>
+								<ShoppingListProvider>
+									<FeedbackMessageProvider>
+										<RootLayoutContent />
+									</FeedbackMessageProvider>
+								</ShoppingListProvider>
+							</HomeIngredientsProvider>
+						</FridgeProductsProvider>
+					</GenerationQuotaProvider>
+				</DeviceIdProvider>
+			</PreferencesProvider>
+		</SafeAreaProvider>
 	);
 };
 

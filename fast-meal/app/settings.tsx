@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
 		gap: 12,
-		paddingBottom: 110,
+		paddingBottom: 24,
 		paddingHorizontal: 20,
 		paddingTop: 24,
 	},

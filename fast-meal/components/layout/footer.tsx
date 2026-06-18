@@ -85,11 +85,7 @@ export const Footer = ({ activeTab, onTabPress }: BottomFooterNavProps) => {
 const styles = StyleSheet.create({
 	wrapper: {
 		borderTopWidth: 1,
-		bottom: 0,
-		left: 0,
 		paddingHorizontal: 8,
-		position: "absolute",
-		right: 0,
 	},
 	container: {
 		flexDirection: "row",

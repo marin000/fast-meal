@@ -81,7 +81,7 @@ export default SavedRecipesScreen;
 const styles = StyleSheet.create({
 	container: {
 		gap: 16,
-		paddingBottom: 120,
+		paddingBottom: 24,
 		paddingHorizontal: 20,
 		paddingTop: 8,
 	},

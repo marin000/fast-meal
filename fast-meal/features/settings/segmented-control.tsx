@@ -79,6 +79,5 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		fontWeight: "700",
 		textAlign: "center",
-		textTransform: "capitalize",
 	},
 });

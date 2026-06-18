@@ -87,7 +87,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
 	container: {
 		gap: 24,
-		paddingBottom: 110,
+		paddingBottom: 24,
 		paddingHorizontal: 20,
 		paddingTop: 8,
 	},
