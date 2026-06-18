@@ -12,7 +12,8 @@
     "web": "expo start --web",
     "lint": "biome check .",
     "format": "biome format .",
-    "format-fix": "biome check --write ./src"
+    "format-fix": "biome check --write ./src",
+    "generate-icons": "node scripts/generate-app-icons.mjs"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.11",
     "@types/react": "~19.1.0",
+    "sharp": "^0.35.1",
     "tailwindcss": "^3.4.19",
     "typescript": "~5.9.2"
   },
