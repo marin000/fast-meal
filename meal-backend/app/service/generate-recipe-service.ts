@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import { ERROR_MESSAGES } from "@/app/constants/messages";
 import { MODEL, PROMPT_VERSION } from "@/app/constants/openAI";
 import {
 	normalizeRecipe,
@@ -48,14 +49,14 @@ export const extractRecipesFromOpenAiResponse = (
 	const text = envelope.output?.[0]?.content?.[0]?.text;
 
 	if (typeof text !== "string") {
-		throw new Error("Invalid OpenAI response: missing output text");
+		throw new Error(ERROR_MESSAGES.OPENAI_MISSING_OUTPUT_TEXT);
 	}
 
 	const cleaned = stripCodeFences(text);
 	const parsed = JSON.parse(cleaned);
 
 	if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.recipes)) {
-		throw new Error("Invalid recipe JSON: missing recipes array");
+		throw new Error(ERROR_MESSAGES.OPENAI_MISSING_RECIPES_ARRAY);
 	}
 
 	const declined = parsed.declined === true;

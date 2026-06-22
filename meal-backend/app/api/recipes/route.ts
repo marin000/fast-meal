@@ -1,4 +1,9 @@
 import mongoose from "mongoose";
+import {
+	ERROR_LOG_MESSAGES,
+	ERROR_MESSAGES,
+	WARNING_MESSAGES,
+} from "@/app/constants/messages";
 import type { Recipe, SavedRecipeListItem } from "@/app/interface";
 import { deviceService } from "@/app/service/device";
 import { connectMongo } from "@/app/service/mongodb";
@@ -14,21 +19,19 @@ export async function POST(req: Request): Promise<Response> {
 	try {
 		body = await req.json();
 	} catch {
-		console.warn("[api/recipes] POST invalid JSON body");
-		return Response.json({ error: "Invalid JSON body" }, { status: 400 });
+		console.warn(WARNING_MESSAGES.RECIPES_POST_INVALID_JSON);
+		return Response.json(
+			{ error: ERROR_MESSAGES.INVALID_JSON_BODY },
+			{ status: 400 },
+		);
 	}
 
 	const parsed = parseSaveRecipeBody(body);
 
 	if (!parsed) {
-		console.warn(
-			"[api/recipes] POST parseSaveRecipeBody failed — expected { deviceId, recipe }",
-		);
+		console.warn(WARNING_MESSAGES.RECIPES_POST_PARSE_FAILED);
 		return Response.json(
-			{
-				error:
-					"Invalid request body. Expected { deviceId: string, recipe: object, cacheKey?: string }",
-			},
+			{ error: ERROR_MESSAGES.RECIPE_INVALID_REQUEST_BODY },
 			{ status: 400 },
 		);
 	}
@@ -61,9 +64,9 @@ export async function POST(req: Request): Promise<Response> {
 			{ status: 201 },
 		);
 	} catch (error) {
-		console.error("[api/recipes] SavedRecipe.create failed", error);
+		console.error(ERROR_LOG_MESSAGES.RECIPES_CREATE_FAILED, error);
 		return Response.json(
-			{ error: "Could not save recipe (database error)" },
+			{ error: ERROR_MESSAGES.RECIPE_SAVE_FAILED },
 			{ status: 500 },
 		);
 	}
@@ -77,7 +80,7 @@ export async function GET(req: Request): Promise<Response> {
 
 	if (!deviceId) {
 		return Response.json(
-			{ error: "Missing required query parameter: deviceId" },
+			{ error: ERROR_MESSAGES.MISSING_DEVICE_ID_QUERY },
 			{ status: 400 },
 		);
 	}
@@ -109,13 +112,13 @@ export async function DELETE(req: Request): Promise<Response> {
 
 	if (!deviceId || !id) {
 		return Response.json(
-			{ error: "Missing required query parameters: deviceId and id" },
+			{ error: ERROR_MESSAGES.MISSING_DEVICE_ID_AND_ID_QUERY },
 			{ status: 400 },
 		);
 	}
 
 	if (!mongoose.Types.ObjectId.isValid(id)) {
-		return Response.json({ error: "Invalid id" }, { status: 400 });
+		return Response.json({ error: ERROR_MESSAGES.INVALID_ID }, { status: 400 });
 	}
 
 	const result = await SavedRecipe.findOneAndDelete({
@@ -124,7 +127,10 @@ export async function DELETE(req: Request): Promise<Response> {
 	});
 
 	if (!result) {
-		return Response.json({ error: "Saved recipe not found" }, { status: 404 });
+		return Response.json(
+			{ error: ERROR_MESSAGES.SAVED_RECIPE_NOT_FOUND },
+			{ status: 404 },
+		);
 	}
 
 	return Response.json({ ok: true });

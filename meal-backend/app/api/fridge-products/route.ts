@@ -1,40 +1,16 @@
 import mongoose from "mongoose";
+import {
+	ERROR_LOG_MESSAGES,
+	ERROR_MESSAGES,
+	WARNING_MESSAGES,
+} from "@/app/constants/messages";
 import type { FridgeProductListItem } from "@/app/interface";
 import { deviceService } from "@/app/service/device";
 import { connectMongo } from "@/app/service/mongodb";
-import { parseFridgeProductBody } from "@/app/utils";
+import { parseFridgeProductBody, toFridgeProductListItem } from "@/app/utils";
 import { FridgeProduct } from "@/models";
 
 export const runtime = "nodejs";
-
-const toIsoString = (value: unknown): string => {
-	if (value instanceof Date) return value.toISOString();
-	return new Date(value as string | number).toISOString();
-};
-
-const toFridgeProductListItem = (doc: {
-	_id: mongoose.Types.ObjectId;
-	deviceId: string;
-	name: string;
-	quantity?: number;
-	unit?: string;
-	expirationDate?: Date;
-	purchasedAt?: Date;
-	createdAt: Date;
-	updatedAt: Date;
-}): FridgeProductListItem => ({
-	id: doc._id.toString(),
-	deviceId: doc.deviceId,
-	name: doc.name,
-	quantity: doc.quantity,
-	unit: doc.unit as FridgeProductListItem["unit"],
-	expirationDate: doc.expirationDate
-		? toIsoString(doc.expirationDate)
-		: undefined,
-	purchasedAt: doc.purchasedAt ? toIsoString(doc.purchasedAt) : undefined,
-	createdAt: toIsoString(doc.createdAt),
-	updatedAt: toIsoString(doc.updatedAt),
-});
 
 export async function POST(req: Request): Promise<Response> {
 	await connectMongo();
@@ -43,26 +19,25 @@ export async function POST(req: Request): Promise<Response> {
 	try {
 		body = await req.json();
 	} catch {
-		console.warn("[api/fridge-products] POST invalid JSON body");
-		return Response.json({ error: "Invalid JSON body" }, { status: 400 });
+		console.warn(WARNING_MESSAGES.FRIDGE_PRODUCTS_POST_INVALID_JSON);
+		return Response.json(
+			{ error: ERROR_MESSAGES.INVALID_JSON_BODY },
+			{ status: 400 },
+		);
 	}
 
 	const parsed = parseFridgeProductBody(body);
 
 	if (!parsed) {
-		console.warn(
-			"[api/fridge-products] POST parseFridgeProductBody failed — expected { deviceId, name, quantity?, unit?, expirationDate?, purchasedAt? }",
-		);
+		console.warn(WARNING_MESSAGES.FRIDGE_PRODUCTS_POST_PARSE_FAILED);
 		return Response.json(
-			{
-				error:
-					"Invalid request body. Expected { deviceId: string, name: string, quantity?: number, unit?: string, expirationDate?: string, purchasedAt?: string }",
-			},
+			{ error: ERROR_MESSAGES.FRIDGE_PRODUCT_INVALID_REQUEST_BODY },
 			{ status: 400 },
 		);
 	}
 
-	const { deviceId, name, quantity, unit, expirationDate, purchasedAt } = parsed;
+	const { deviceId, name, quantity, unit, expirationDate, purchasedAt } =
+		parsed;
 
 	await deviceService.ensureDeviceRecord(deviceId);
 	console.log("[api/fridge-products] create", { deviceId, name });
@@ -79,9 +54,9 @@ export async function POST(req: Request): Promise<Response> {
 
 		return Response.json(toFridgeProductListItem(created), { status: 201 });
 	} catch (error) {
-		console.error("[api/fridge-products] FridgeProduct.create failed", error);
+		console.error(ERROR_LOG_MESSAGES.FRIDGE_PRODUCTS_CREATE_FAILED, error);
 		return Response.json(
-			{ error: "Could not save fridge product (database error)" },
+			{ error: ERROR_MESSAGES.FRIDGE_PRODUCT_SAVE_FAILED },
 			{ status: 500 },
 		);
 	}
@@ -95,7 +70,7 @@ export async function GET(req: Request): Promise<Response> {
 
 	if (!deviceId) {
 		return Response.json(
-			{ error: "Missing required query parameter: deviceId" },
+			{ error: ERROR_MESSAGES.MISSING_DEVICE_ID_QUERY },
 			{ status: 400 },
 		);
 	}
@@ -104,18 +79,8 @@ export async function GET(req: Request): Promise<Response> {
 		.sort({ createdAt: -1 })
 		.lean();
 
-	const fridgeProducts: FridgeProductListItem[] = docs.map((doc) =>
-		toFridgeProductListItem({
-			_id: doc._id,
-			deviceId: doc.deviceId,
-			name: doc.name,
-			quantity: doc.quantity,
-			unit: doc.unit,
-			expirationDate: doc.expirationDate,
-			purchasedAt: doc.purchasedAt,
-			createdAt: doc.createdAt,
-			updatedAt: doc.updatedAt,
-		}),
+	const fridgeProducts: FridgeProductListItem[] = docs.map(
+		toFridgeProductListItem,
 	);
 
 	return Response.json({ fridgeProducts });
@@ -130,13 +95,13 @@ export async function DELETE(req: Request): Promise<Response> {
 
 	if (!deviceId || !id) {
 		return Response.json(
-			{ error: "Missing required query parameters: deviceId and id" },
+			{ error: ERROR_MESSAGES.MISSING_DEVICE_ID_AND_ID_QUERY },
 			{ status: 400 },
 		);
 	}
 
 	if (!mongoose.Types.ObjectId.isValid(id)) {
-		return Response.json({ error: "Invalid id" }, { status: 400 });
+		return Response.json({ error: ERROR_MESSAGES.INVALID_ID }, { status: 400 });
 	}
 
 	const result = await FridgeProduct.findOneAndDelete({
@@ -146,7 +111,7 @@ export async function DELETE(req: Request): Promise<Response> {
 
 	if (!result) {
 		return Response.json(
-			{ error: "Fridge product not found" },
+			{ error: ERROR_MESSAGES.FRIDGE_PRODUCT_NOT_FOUND },
 			{ status: 404 },
 		);
 	}

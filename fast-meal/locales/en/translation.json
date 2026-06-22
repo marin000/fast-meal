@@ -117,6 +117,7 @@
 		"expirationLabel": "Expires (optional)",
 		"purchasedLabel": "Bought (optional)",
 		"expiresOn": "Expires {{date}}",
+		"expiredOn": "Expired {{date}}",
 		"boughtOn": "Bought {{date}}",
 		"emptyTitle": "Your fridge is empty",
 		"emptySubtitle": "Add products you have at home",

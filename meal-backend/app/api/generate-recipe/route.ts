@@ -1,8 +1,6 @@
-import fs from "node:fs";
-import path from "node:path";
-
 import { getCache } from "@vercel/functions";
 import { config } from "@/app/config/config";
+import { ERROR_LOG_MESSAGES, ERROR_MESSAGES } from "@/app/constants/messages";
 import {
 	CACHE_TTL_SECONDS,
 	MODEL,
@@ -15,15 +13,10 @@ import {
 	upsertRecipeCacheEntry,
 } from "@/app/service/mongo-recipe-cache";
 import { connectMongo } from "@/app/service/mongodb";
-import { parseRequestBody } from "@/app/utils";
+import { buildMealGenerationPrompt, parseRequestBody } from "@/app/utils";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
-
-const mealPromptBase = fs.readFileSync(
-	path.join(process.cwd(), "app/prompts/meal-prompt.txt"),
-	"utf-8",
-);
 
 export async function POST(req: Request) {
 	const body = await req.json();
@@ -31,10 +24,7 @@ export async function POST(req: Request) {
 
 	if (!parsedBody) {
 		return Response.json(
-			{
-				error:
-					"Invalid request body. Expected { deviceId: string, ingredients: string[], preferences?: string[], units?: 'metric' | 'imperial', language?: 'en' | 'hr' }",
-			},
+			{ error: ERROR_MESSAGES.GENERATE_RECIPE_INVALID_REQUEST_BODY },
 			{ status: 400 },
 		);
 	}
@@ -47,7 +37,7 @@ export async function POST(req: Request) {
 	if (remaining <= 0) {
 		return Response.json(
 			{
-				error: "Daily recipe generation limit reached. Try again tomorrow.",
+				error: ERROR_MESSAGES.DAILY_LIMIT_REACHED_TOMORROW,
 				code: "DAILY_LIMIT",
 			},
 			{ status: 429 },
@@ -68,7 +58,7 @@ export async function POST(req: Request) {
 		if (!consumed) {
 			return Response.json(
 				{
-					error: "Daily recipe generation limit reached.",
+					error: ERROR_MESSAGES.DAILY_LIMIT_REACHED,
 					code: "DAILY_LIMIT",
 				},
 				{ status: 429 },
@@ -89,7 +79,7 @@ export async function POST(req: Request) {
 				if (!consumed) {
 					return Response.json(
 						{
-							error: "Daily recipe generation limit reached.",
+							error: ERROR_MESSAGES.DAILY_LIMIT_REACHED,
 							code: "DAILY_LIMIT",
 						},
 						{ status: 429 },
@@ -98,19 +88,16 @@ export async function POST(req: Request) {
 				return Response.json({ recipes: persistedRecipes, cacheKey });
 			}
 		} catch {
-			console.error("Failed to get persisted recipes from MongoDB");
+			console.error(ERROR_LOG_MESSAGES.GENERATE_RECIPE_PERSISTED_GET_FAILED);
 		}
 	}
 
-	const recipeLanguageLabel =
-		language === "hr" ? "Croatian (hr)" : "English (en)";
-
-	const prompt = `${mealPromptBase.trim()}
-
-    User ingredients: ${JSON.stringify(ingredients, null, 2)}
-    User preferences / filters: ${JSON.stringify(preferences, null, 2)}
-    User units preference: ${JSON.stringify(units)}
-    User interface language: ${JSON.stringify(language)} (${recipeLanguageLabel}). Use this as the recipe language (overrides ingredient-list detection).`;
+	const prompt = buildMealGenerationPrompt({
+		ingredients,
+		preferences,
+		units,
+		language,
+	});
 
 	const response = await fetch(`${config.openAiApiBaseUrl}/v1/responses`, {
 		method: "POST",
@@ -134,7 +121,7 @@ export async function POST(req: Request) {
 			if (!consumed) {
 				return Response.json(
 					{
-						error: "Daily recipe generation limit reached.",
+						error: ERROR_MESSAGES.DAILY_LIMIT_REACHED,
 						code: "DAILY_LIMIT",
 					},
 					{ status: 429 },
@@ -149,13 +136,15 @@ export async function POST(req: Request) {
 			try {
 				await upsertRecipeCacheEntry(cacheKey, recipes);
 			} catch {
-				console.error("Failed to upsert recipe cache entry");
+				console.error(ERROR_LOG_MESSAGES.GENERATE_RECIPE_CACHE_UPSERT_FAILED);
 			}
 		}
 		return Response.json({ recipes, cacheKey });
 	} catch (error) {
 		const message =
-			error instanceof Error ? error.message : "Failed to parse model output";
+			error instanceof Error
+				? error.message
+				: ERROR_MESSAGES.FAILED_TO_PARSE_MODEL_OUTPUT;
 		return Response.json({ error: message }, { status: 502 });
 	}
 }

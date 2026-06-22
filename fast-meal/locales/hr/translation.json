@@ -117,6 +117,7 @@
 		"expirationLabel": "Istječe (opcionalno)",
 		"purchasedLabel": "Kupljeno (opcionalno)",
 		"expiresOn": "Istječe {{date}}",
+		"expiredOn": "Isteklo {{date}}",
 		"boughtOn": "Kupljeno {{date}}",
 		"emptyTitle": "Hladnjak je prazan",
 		"emptySubtitle": "Dodaj proizvode koje imaš kod kuće",
