@@ -1,5 +1,5 @@
-import { ERROR_LOG_MESSAGES } from "@/app/constants/messages";
 import { connectMongo } from "@/app/service/mongodb";
+import { ERROR_LOG_MESSAGES } from "@/constants/messages";
 export async function register() {
 	if (process.env.NEXT_RUNTIME !== "nodejs") {
 		return;

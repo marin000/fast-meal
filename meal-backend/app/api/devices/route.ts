@@ -1,6 +1,6 @@
-import { ERROR_MESSAGES } from "@/app/constants/messages";
 import { deviceService } from "@/app/service/device";
 import { connectMongo } from "@/app/service/mongodb";
+import { ERROR_MESSAGES } from "@/constants/messages";
 import { Device } from "@/models";
 
 export const runtime = "nodejs";

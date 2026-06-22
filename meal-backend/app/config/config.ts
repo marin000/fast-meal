@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES } from "@/app/constants/messages";
+import { ERROR_MESSAGES } from "@/constants/messages";
 
 if (!process.env.OPENAI_API_KEY) {
 	throw new Error(ERROR_MESSAGES.MISSING_OPENAI_API_KEY);

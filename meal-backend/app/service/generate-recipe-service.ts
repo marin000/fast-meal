@@ -1,11 +1,11 @@
 import crypto from "node:crypto";
-import { ERROR_MESSAGES } from "@/app/constants/messages";
 import { MODEL, PROMPT_VERSION } from "@/app/constants/openAI";
 import {
 	normalizeRecipe,
 	normalizeStringList,
 	stripCodeFences,
 } from "@/app/utils";
+import { ERROR_MESSAGES } from "@/constants/messages";
 import type { GenerateRecipeResponse } from "../interface";
 
 const buildCacheKey = ({

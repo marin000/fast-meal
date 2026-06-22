@@ -1,6 +1,5 @@
 import { getCache } from "@vercel/functions";
 import { config } from "@/app/config/config";
-import { ERROR_LOG_MESSAGES, ERROR_MESSAGES } from "@/app/constants/messages";
 import {
 	CACHE_TTL_SECONDS,
 	MODEL,
@@ -14,6 +13,7 @@ import {
 } from "@/app/service/mongo-recipe-cache";
 import { connectMongo } from "@/app/service/mongodb";
 import { buildMealGenerationPrompt, parseRequestBody } from "@/app/utils";
+import { ERROR_LOG_MESSAGES, ERROR_MESSAGES } from "@/constants/messages";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
