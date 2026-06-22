@@ -28,7 +28,7 @@
 	},
 	"loading": {
 		"title": "Checking your fridge...",
-		"subtitle": "FridgeAI is scanning your ingredients and building your menu."
+		"subtitle": "FastMeal is scanning your ingredients and building your menu."
 	},
 	"results": {
 		"title": "Recipe ideas",
@@ -67,7 +67,7 @@
 	"errors": {
 		"generic": "Something went wrong. Please try again.",
 		"noRecipes": "We could not generate recipes for these ingredients.",
-		"declined": "FridgeAI can only help with recipes from ingredients.",
+		"declined": "FastMeal can only help with recipes from ingredients.",
 		"dailyLimit": "Daily limit reached. Try again tomorrow.",
 		"generationTimeout": "This is taking longer than usual",
 		"generationTimeoutMessage": "Tap Try again — it often works on the second attempt.",

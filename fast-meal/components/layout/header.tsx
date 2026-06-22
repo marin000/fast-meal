@@ -17,8 +17,8 @@ export const Header = () => {
 				<FridgeAiLogo size={24} />
 			</View>
 			<Text style={styles.brandText}>
-				<Text style={{ color: theme.brandTextBase }}>Fridge</Text>
-				<Text style={{ color: theme.primary }}>AI</Text>
+				<Text style={{ color: theme.brandTextBase }}>Fast</Text>
+				<Text style={{ color: theme.primary }}>Meal</Text>
 			</Text>
 		</View>
 	);

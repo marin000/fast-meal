@@ -1,4 +1,4 @@
-# FridgeAI
+# FastMeal 
 
 ### Table of Contents
 
@@ -14,7 +14,7 @@
 
 ## 1. About The App
 
-FridgeAI is a mobile app that helps you cook fast from what you already have at home. List your ingredients (or pick them from your virtual fridge), apply quick filters like "15 min" or "high protein", and get AI-generated recipe ideas with full instructions, nutrition info, substitutions, and tips.
+Fast meal is a mobile app that helps you cook fast from what you already have at home. List your ingredients (or pick them from your virtual fridge), apply quick filters like "15 min" or "high protein", and get AI-generated recipe ideas with full instructions, nutrition info, substitutions, and tips.
 
 #### Key Features
 
@@ -147,4 +147,4 @@ Then press `i` for iOS simulator, `a` for Android emulator, or scan the QR code 
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
 
-[back to top](#fridgeai)
+[back to top](#FastMeal)

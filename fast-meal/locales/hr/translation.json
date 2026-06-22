@@ -28,7 +28,7 @@
 	},
 	"loading": {
 		"title": "Pregledavamo tvoj hladnjak...",
-		"subtitle": "FridgeAI skenira sastojke i priprema jelovnik."
+		"subtitle": "FastMeal skenira sastojke i priprema jelovnik."
 	},
 	"results": {
 		"title": "Ideje za recepte",
@@ -67,7 +67,7 @@
 	"errors": {
 		"generic": "Nešto je pošlo po krivu. Pokušaj ponovno.",
 		"noRecipes": "Nismo uspjeli generirati recepte iz tih sastojaka.",
-		"declined": "FridgeAI može pomoći samo s receptima iz sastojaka.",
+		"declined": "FastMeal može pomoći samo s receptima iz sastojaka.",
 		"dailyLimit": "Dnevni limit dostignut. Pokušaj ponovno sutra.",
 		"generationTimeout": "Traje duže nego inače",
 		"generationTimeoutMessage": "Dodirni Pokušaj ponovno — često uspije drugi put.",
