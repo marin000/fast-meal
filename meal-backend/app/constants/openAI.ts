@@ -1,3 +1,10 @@
 export const MODEL = "gpt-4.1-mini";
-export const PROMPT_VERSION = "v2";
+export const PROMPT_VERSION = "v4";
 export const CACHE_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
+export const OPENAI_FETCH_TIMEOUT_MS = 55_000;
+export const RECIPE_STANDARD = "standard";
+export const RECIPE_REDUCED = "reduced";
+export const RECIPE_STANDARD_COUNT = "2-3";
+export const RECIPE_REDUCED_COUNT = "1-2";
+export const CROATIAN_LANGUAGE_LABEL = "Croatian (hr)";
+export const ENGLISH_LANGUAGE_LABEL = "English (en)";

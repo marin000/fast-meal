@@ -1,29 +1,56 @@
 import fs from "node:fs";
 import path from "node:path";
-
+import {
+	CROATIAN_LANGUAGE_LABEL,
+	ENGLISH_LANGUAGE_LABEL,
+	RECIPE_REDUCED,
+	RECIPE_REDUCED_COUNT,
+	RECIPE_STANDARD,
+	RECIPE_STANDARD_COUNT,
+} from "@/app/constants/openAI";
 import type { GenerateRecipeRequestBody } from "@/app/interface";
 
-const mealPromptBase = fs.readFileSync(
+const mealPromptTemplate = fs.readFileSync(
 	path.join(process.cwd(), "app/prompts/meal-prompt.txt"),
 	"utf-8",
 );
 
+export type RecipeCountMode = typeof RECIPE_STANDARD | typeof RECIPE_REDUCED;
+
 type MealPromptInput = Pick<
 	GenerateRecipeRequestBody,
 	"ingredients" | "preferences" | "units" | "language"
->;
+> & {
+	recipeCountMode: RecipeCountMode;
+};
+
+const RECIPE_COUNT_LABELS: Record<RecipeCountMode, string> = {
+	standard: RECIPE_STANDARD_COUNT,
+	reduced: RECIPE_REDUCED_COUNT,
+};
 
 const getRecipeLanguageLabel = (
 	language: GenerateRecipeRequestBody["language"],
-): string => (language === "hr" ? "Croatian (hr)" : "English (en)");
+): string =>
+	language === "hr" ? CROATIAN_LANGUAGE_LABEL : ENGLISH_LANGUAGE_LABEL;
+
+export const getRecipeCountMode = (retryAttempt: number): RecipeCountMode =>
+	retryAttempt >= 2 ? RECIPE_REDUCED : RECIPE_STANDARD;
 
 export const buildMealGenerationPrompt = ({
 	ingredients,
 	preferences,
 	units,
 	language,
+	recipeCountMode,
 }: MealPromptInput): string => {
 	const recipeLanguageLabel = getRecipeLanguageLabel(language);
+	const recipeCountRange = RECIPE_COUNT_LABELS[recipeCountMode];
+
+	const mealPromptBase = mealPromptTemplate.replaceAll(
+		"{{recipeCountRange}}",
+		recipeCountRange,
+	);
 
 	return `${mealPromptBase.trim()}
 

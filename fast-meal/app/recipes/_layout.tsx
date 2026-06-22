@@ -5,19 +5,29 @@ import {
 	appLightBackgroundColor,
 } from "@/constants/navigation-theme";
 import { useDeviceId, usePreferences } from "@/context";
-import { LoadingScreen } from "@/features/recipes";
+import { GenerationErrorScreen, LoadingScreen } from "@/features/recipes";
 import { useRecipes } from "@/hooks/use-recipes";
 import { RecipesProvider } from "@/store/use-recipes-context";
 
 const RecipesLayout = () => {
-	const { recipes, cacheKey } = useRecipes();
+	const { recipes, cacheKey, isLoading, fetchError, retry } = useRecipes();
 	const { deviceId } = useDeviceId();
 	const { darkMode } = usePreferences();
 	const appBackgroundColor = darkMode
 		? appDarkBackgroundColor
 		: appLightBackgroundColor;
 
-	if (!recipes || deviceId === null) {
+	if (fetchError) {
+		return (
+			<GenerationErrorScreen
+				kind={fetchError}
+				onRetry={retry}
+				isRetrying={isLoading}
+			/>
+		);
+	}
+
+	if (isLoading || !recipes || deviceId === null) {
 		return <LoadingScreen />;
 	}
 

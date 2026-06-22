@@ -4,6 +4,7 @@ export interface GenerateRecipeRequestBody {
 	preferences: string[];
 	units: "metric" | "imperial";
 	language: "en" | "hr";
+	retryAttempt?: number;
 }
 
 export interface RecipeIngredient {

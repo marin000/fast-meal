@@ -3,6 +3,7 @@ import { config } from "@/app/config/config";
 import {
 	CACHE_TTL_SECONDS,
 	MODEL,
+	OPENAI_FETCH_TIMEOUT_MS,
 	PROMPT_VERSION,
 } from "@/app/constants/openAI";
 import { deviceService } from "@/app/service/device";
@@ -12,7 +13,11 @@ import {
 	upsertRecipeCacheEntry,
 } from "@/app/service/mongo-recipe-cache";
 import { connectMongo } from "@/app/service/mongodb";
-import { buildMealGenerationPrompt, parseRequestBody } from "@/app/utils";
+import {
+	buildMealGenerationPrompt,
+	getRecipeCountMode,
+	parseRequestBody,
+} from "@/app/utils";
 import { ERROR_LOG_MESSAGES, ERROR_MESSAGES } from "@/constants/messages";
 
 export const runtime = "nodejs";
@@ -29,7 +34,9 @@ export async function POST(req: Request) {
 		);
 	}
 
-	const { deviceId, ingredients, preferences, units, language } = parsedBody;
+	const { deviceId, ingredients, preferences, units, language, retryAttempt } =
+		parsedBody;
+	const recipeCountMode = getRecipeCountMode(retryAttempt ?? 1);
 
 	await connectMongo();
 	await deviceService.ensureDeviceRecord(deviceId);
@@ -50,6 +57,7 @@ export async function POST(req: Request) {
 		preferences,
 		units,
 		language,
+		recipeCountMode,
 	});
 	const cachedRecipes = await cache.get(cacheKey);
 
@@ -97,19 +105,42 @@ export async function POST(req: Request) {
 		preferences,
 		units,
 		language,
+		recipeCountMode,
 	});
 
-	const response = await fetch(`${config.openAiApiBaseUrl}/v1/responses`, {
-		method: "POST",
-		headers: {
-			Authorization: `Bearer ${config.openAiApiKey}`,
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			model: MODEL,
-			input: prompt,
-		}),
-	});
+	let response: Response;
+	try {
+		response = await fetch(`${config.openAiApiBaseUrl}/v1/responses`, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${config.openAiApiKey}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				model: MODEL,
+				input: prompt,
+			}),
+			signal: AbortSignal.timeout(OPENAI_FETCH_TIMEOUT_MS),
+		});
+	} catch (error) {
+		if (error instanceof Error && error.name === "TimeoutError") {
+			return Response.json(
+				{
+					error: ERROR_MESSAGES.GENERATION_TIMEOUT,
+					code: "GENERATION_TIMEOUT",
+				},
+				{ status: 504 },
+			);
+		}
+		throw error;
+	}
+
+	if (!response.ok) {
+		return Response.json(
+			{ error: ERROR_MESSAGES.FAILED_TO_PARSE_MODEL_OUTPUT },
+			{ status: 502 },
+		);
+	}
 
 	const data = await response.json();
 

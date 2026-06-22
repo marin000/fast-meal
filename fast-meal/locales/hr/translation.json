@@ -68,7 +68,12 @@
 		"generic": "Nešto je pošlo po krivu. Pokušaj ponovno.",
 		"noRecipes": "Nismo uspjeli generirati recepte iz tih sastojaka.",
 		"declined": "FridgeAI može pomoći samo s receptima iz sastojaka.",
-		"dailyLimit": "Dnevni limit dostignut. Pokušaj ponovno sutra."
+		"dailyLimit": "Dnevni limit dostignut. Pokušaj ponovno sutra.",
+		"generationTimeout": "Traje duže nego inače",
+		"generationTimeoutMessage": "Dodirni Pokušaj ponovno — često uspije drugi put.",
+		"generationFailedMessage": "Trenutno ne možemo generirati recepte. Dodirni Pokušaj ponovno ili se vrati i prilagodi sastojke.",
+		"retry": "Pokušaj ponovno",
+		"goBack": "Natrag"
 	},
 	"message": {
 		"recipeGenerator": "Generator recepata",

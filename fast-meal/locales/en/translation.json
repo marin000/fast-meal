@@ -68,7 +68,12 @@
 		"generic": "Something went wrong. Please try again.",
 		"noRecipes": "We could not generate recipes for these ingredients.",
 		"declined": "FridgeAI can only help with recipes from ingredients.",
-		"dailyLimit": "Daily limit reached. Try again tomorrow."
+		"dailyLimit": "Daily limit reached. Try again tomorrow.",
+		"generationTimeout": "This is taking longer than usual",
+		"generationTimeoutMessage": "Tap Try again — it often works on the second attempt.",
+		"generationFailedMessage": "We couldn't generate recipes right now. Tap Try again or go back and adjust your ingredients.",
+		"retry": "Try again",
+		"goBack": "Go back"
 	},
 	"message": {
 		"recipeGenerator": "Recipe generator",

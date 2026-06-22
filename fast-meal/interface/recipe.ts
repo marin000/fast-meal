@@ -9,6 +9,7 @@ export interface GenerateRecipeInput {
 	selectedFilters: readonly QuickFilterOption[];
 	units: DisplayUnits;
 	language: AppLanguage;
+	retryAttempt?: number;
 }
 
 export interface GenerateRecipeRequestBody {
@@ -17,6 +18,7 @@ export interface GenerateRecipeRequestBody {
 	preferences: QuickFilterOption[];
 	units: DisplayUnits;
 	language: AppLanguage;
+	retryAttempt?: number;
 }
 
 export interface RecipeIngredient {

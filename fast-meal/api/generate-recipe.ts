@@ -9,6 +9,30 @@ import { parseIngredientsInput } from "@/utils/helper";
 
 export { DailyLimitError } from "@/api/device";
 
+export class GenerationTimeoutError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = "GenerationTimeoutError";
+	}
+}
+
+const isGenerationTimeoutResponse = (
+	status: number,
+	errorText: string,
+): boolean => {
+	if (status === 504) return true;
+
+	const lower = errorText.toLowerCase();
+	if (lower.includes("timed out") || lower.includes("timeout")) return true;
+
+	try {
+		const parsed = JSON.parse(errorText) as { code?: string };
+		return parsed.code === "GENERATION_TIMEOUT";
+	} catch {
+		return false;
+	}
+};
+
 const apiEndpoint = `${process.env.EXPO_PUBLIC_API_BASE_URL}/api/generate-recipe`;
 
 export const generateRecipe = async ({
@@ -17,16 +41,15 @@ export const generateRecipe = async ({
 	selectedFilters,
 	units,
 	language,
+	retryAttempt = 1,
 }: GenerateRecipeInput): Promise<GenerateRecipeResponse> => {
-	// await new Promise((resolve) => setTimeout(resolve, 2000));
-	// return mockResponseFull;
-
 	const requestBody: GenerateRecipeRequestBody = {
 		deviceId,
 		ingredients: parseIngredientsInput(ingredientsInput),
 		preferences: [...selectedFilters],
 		units,
 		language,
+		retryAttempt,
 	};
 
 	const response = await fetch(`${apiEndpoint}`, {
@@ -50,6 +73,18 @@ export const generateRecipe = async ({
 				console.error(`Invalid JSON from server: ${errorText}`);
 			}
 			throw new DailyLimitError(message);
+		}
+		if (isGenerationTimeoutResponse(response.status, errorText)) {
+			let message = "Recipe generation took too long. Please try again.";
+			try {
+				const parsed = JSON.parse(errorText) as { error?: string };
+				if (typeof parsed.error === "string") {
+					message = parsed.error;
+				}
+			} catch {
+				// use default message
+			}
+			throw new GenerationTimeoutError(message);
 		}
 		throw new Error(
 			`Recipe generation failed (${response.status}): ${formatApiErrorBody(response.status, errorText)}`,

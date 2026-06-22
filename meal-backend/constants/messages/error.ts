@@ -19,6 +19,7 @@ export const ERROR_MESSAGES = {
 	SAVED_RECIPE_NOT_FOUND: "Saved recipe not found",
 	GENERATE_RECIPE_INVALID_REQUEST_BODY:
 		"Invalid request body. Expected { deviceId: string, ingredients: string[], preferences?: string[], units?: 'metric' | 'imperial', language?: 'en' | 'hr' }",
+	GENERATION_TIMEOUT: "Recipe generation took too long. Please try again.",
 	DAILY_LIMIT_REACHED: "Daily recipe generation limit reached.",
 	DAILY_LIMIT_REACHED_TOMORROW:
 		"Daily recipe generation limit reached. Try again tomorrow.",

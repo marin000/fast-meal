@@ -1,9 +1,9 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 
-import { DailyLimitError, generateRecipe } from "@/api";
+import { DailyLimitError, GenerationTimeoutError, generateRecipe } from "@/api";
 import type { QuickFilterOption } from "@/constants/home";
 import {
 	useDeviceId,
@@ -20,6 +20,8 @@ interface RecipesParams {
 	units?: string | string[];
 }
 
+type FetchErrorKind = "timeout" | "generic";
+
 export const useRecipes = () => {
 	const { t } = useTranslation();
 	const router = useRouter();
@@ -30,12 +32,19 @@ export const useRecipes = () => {
 	const params = useLocalSearchParams() as RecipesParams;
 	const [recipes, setRecipes] = useState<Recipe[] | null>(null);
 	const [cacheKey, setCacheKey] = useState<string | null>(null);
-	const hasRunRef = useRef(false);
+	const [isLoading, setIsLoading] = useState(true);
+	const [fetchError, setFetchError] = useState<FetchErrorKind | null>(null);
+	const [attempt, setAttempt] = useState(0);
+
+	const retry = useCallback(() => {
+		setFetchError(null);
+		setIsLoading(true);
+		setAttempt((current) => current + 1);
+	}, []);
 
 	useEffect(() => {
 		if (!deviceId) return;
-		if (hasRunRef.current) return;
-		hasRunRef.current = true;
+		void attempt;
 
 		const goBack = () => router.back();
 		const showAlert = (titleKey: string) => {
@@ -43,6 +52,9 @@ export const useRecipes = () => {
 		};
 
 		const fetchRecipes = async () => {
+			setIsLoading(true);
+			setFetchError(null);
+
 			try {
 				const ingredientsInput = coerceParam(params.ingredients);
 				const preferencesString = coerceParam(params.preferences);
@@ -57,6 +69,7 @@ export const useRecipes = () => {
 					selectedFilters,
 					units: units === "imperial" ? "imperial" : "metric",
 					language,
+					retryAttempt: attempt + 1,
 				});
 
 				if (response.declined) {
@@ -82,16 +95,30 @@ export const useRecipes = () => {
 					return;
 				}
 
-				const detail =
-					error instanceof Error ? error.message : t("message.unknownError");
-				Alert.alert(t("errors.generic"), detail, [
-					{ text: "OK", onPress: goBack },
-				]);
+				if (error instanceof GenerationTimeoutError) {
+					setFetchError("timeout");
+					return;
+				}
+
+				setFetchError("generic");
+			} finally {
+				setIsLoading(false);
 			}
 		};
 
 		void fetchRecipes();
-	}, [deviceId, language, params, refreshQuota, router, showMessage, t]);
+	}, [
+		attempt,
+		deviceId,
+		language,
+		params.ingredients,
+		params.preferences,
+		params.units,
+		refreshQuota,
+		router,
+		showMessage,
+		t,
+	]);
 
-	return { recipes, cacheKey };
+	return { recipes, cacheKey, isLoading, fetchError, retry };
 };

@@ -5,6 +5,7 @@ import {
 	normalizeStringList,
 	stripCodeFences,
 } from "@/app/utils";
+import type { RecipeCountMode } from "@/app/utils/build-meal-prompt";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import type { GenerateRecipeResponse } from "../interface";
 
@@ -13,11 +14,13 @@ const buildCacheKey = ({
 	preferences,
 	units,
 	language,
+	recipeCountMode,
 }: {
 	ingredients: string[];
 	preferences: string[];
 	units: "metric" | "imperial";
 	language: "en" | "hr";
+	recipeCountMode: RecipeCountMode;
 }): string => {
 	const normalizedPayload = {
 		ingredients: normalizeStringList(ingredients),
@@ -26,6 +29,7 @@ const buildCacheKey = ({
 		language,
 		model: MODEL,
 		promptVersion: PROMPT_VERSION,
+		recipeCountMode,
 	};
 
 	const payloadHash = crypto
