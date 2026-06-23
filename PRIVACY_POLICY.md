@@ -3,11 +3,6 @@
 **Last updated:** June 23, 2025  
 **Effective date:** June 23, 2025
 
-> **Canonical URL:** After you publish this file on GitHub, use that link in Google Play Console and in the app.  
-> Example: `https://github.com/YOUR_USERNAME/fast-meal/blob/main/PRIVACY_POLICY.md`
-
----
-
 ## 1. Who we are
 
 FastMeal (“**we**”, “**us**”, “**our**”) is a mobile application that helps you generate recipes from ingredients you have at home, manage a virtual fridge, save recipes, and maintain a shopping list.
