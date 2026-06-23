@@ -9,6 +9,7 @@ interface PrimaryButtonProps {
 	onPress: () => void;
 	disabled?: boolean;
 	compact?: boolean;
+	shrink?: boolean;
 	leftIcon?: ReactNode;
 	leftIconName?: keyof typeof Ionicons.glyphMap;
 	rightIconName?: keyof typeof Ionicons.glyphMap;
@@ -19,6 +20,7 @@ export const PrimaryButton = ({
 	onPress,
 	disabled = false,
 	compact = false,
+	shrink = false,
 	leftIcon,
 	leftIconName,
 	rightIconName,
@@ -34,6 +36,8 @@ export const PrimaryButton = ({
 			style={[
 				styles.button,
 				compact ? styles.buttonCompact : styles.buttonDefault,
+				compact && shrink && styles.buttonCompactShrink,
+				shrink && styles.buttonShrink,
 				{ backgroundColor: theme.primary },
 				disabled && styles.disabledButton,
 			]}
@@ -43,7 +47,13 @@ export const PrimaryButton = ({
 					(leftIconName ? (
 						<Ionicons name={leftIconName} size={iconSize} color={iconColor} />
 					) : null)}
-				<Text style={[styles.label, compact && styles.labelCompact]}>
+				<Text
+					style={[
+						styles.label,
+						compact && styles.labelCompact,
+						compact && shrink && styles.labelCompactShrink,
+					]}
+				>
 					{label}
 				</Text>
 				{rightIconName ? (
@@ -67,6 +77,13 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 14,
 		paddingVertical: 10,
 	},
+	buttonCompactShrink: {
+		paddingHorizontal: 10,
+		paddingVertical: 8,
+	},
+	buttonShrink: {
+		alignSelf: "flex-start",
+	},
 	disabledButton: {
 		opacity: 0.55,
 	},
@@ -83,5 +100,9 @@ const styles = StyleSheet.create({
 	},
 	labelCompact: {
 		fontSize: 14,
+	},
+	labelCompactShrink: {
+		fontSize: 12,
+		fontWeight: "700",
 	},
 });

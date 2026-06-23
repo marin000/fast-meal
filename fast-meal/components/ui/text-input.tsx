@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { TextInputProps } from "react-native";
 import {
 	Keyboard,
@@ -12,11 +13,13 @@ import { useAppAppearance } from "@/hooks/use-app-appearance";
 
 interface AppTextInputProps extends TextInputProps {
 	label: string;
+	labelRight?: ReactNode;
 	placeholder: string;
 }
 
 export const AppTextInput = ({
 	label,
+	labelRight,
 	placeholder,
 	style,
 	...props
@@ -25,9 +28,12 @@ export const AppTextInput = ({
 
 	return (
 		<View style={styles.container}>
-			<Pressable onPress={Keyboard.dismiss}>
-				<Text style={[styles.label, { color: theme.text }]}>{label}</Text>
-			</Pressable>
+			<View style={styles.labelRow}>
+				<Pressable onPress={Keyboard.dismiss} style={styles.labelPressable}>
+					<Text style={[styles.label, { color: theme.text }]}>{label}</Text>
+				</Pressable>
+				{labelRight}
+			</View>
 			<TextInput
 				multiline
 				numberOfLines={4}
@@ -52,6 +58,15 @@ export const AppTextInput = ({
 const styles = StyleSheet.create({
 	container: {
 		gap: 8,
+	},
+	labelRow: {
+		alignItems: "center",
+		flexDirection: "row",
+		gap: 8,
+		justifyContent: "space-between",
+	},
+	labelPressable: {
+		flexShrink: 1,
 	},
 	label: {
 		fontSize: 13,

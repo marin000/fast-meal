@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, ScrollView, StyleSheet } from "react-native";
+import { Keyboard, ScrollView, StyleSheet, View } from "react-native";
 
 import { AppTextInput, FridgeIcon, PrimaryButton } from "@/components";
 import { useFridgeProducts, useHomeIngredients } from "@/context";
@@ -43,19 +43,23 @@ const HomeScreen = () => {
 
 				<AppTextInput
 					label={t("home.ingredientsLabel")}
+					labelRight={
+						items.length > 0 ? (
+							<View style={styles.fridgeButtonWrap}>
+								<PrimaryButton
+									label={t("fridge.useFromFridge")}
+									onPress={() => setPickerVisible(true)}
+									compact
+									shrink
+									leftIcon={<FridgeIcon size={14} color="#FFFFFF" />}
+								/>
+							</View>
+						) : undefined
+					}
 					placeholder={t("home.ingredientsPlaceholder")}
 					value={ingredientsInputValue}
 					onChangeText={setIngredientsInputValue}
 				/>
-
-				{items.length > 0 ? (
-					<PrimaryButton
-						label={t("fridge.useFromFridge")}
-						onPress={() => setPickerVisible(true)}
-						compact
-						leftIcon={<FridgeIcon size={16} color="#FFFFFF" />}
-					/>
-				) : null}
 
 				<HomeFilters
 					options={quickFilterOptions}
@@ -90,5 +94,10 @@ const styles = StyleSheet.create({
 		paddingBottom: 24,
 		paddingHorizontal: 20,
 		paddingTop: 8,
+	},
+	fridgeButtonWrap: {
+		alignSelf: "flex-end",
+		flexShrink: 1,
+		maxWidth: "58%",
 	},
 });
