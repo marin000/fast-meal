@@ -117,7 +117,10 @@
 			"pc": "kom",
 			"oz": "oz",
 			"cup": "šalica",
-			"tbsp": "žlica"
+			"tbsp": "žlica",
+			"tsp": "žličica",
+			"pinch": "prstohvat",
+			"to_taste": "po ukusu"
 		},
 		"expirationLabel": "Istječe (opcionalno)",
 		"purchasedLabel": "Kupljeno (opcionalno)",

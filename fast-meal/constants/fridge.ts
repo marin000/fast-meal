@@ -16,6 +16,9 @@ export const FRIDGE_PRODUCT_UNITS = [
 	"oz",
 	"cup",
 	"tbsp",
+	"tsp",
+	"pinch",
+	"to_taste",
 ] as const;
 
 export type FridgeProductUnit = (typeof FRIDGE_PRODUCT_UNITS)[number];

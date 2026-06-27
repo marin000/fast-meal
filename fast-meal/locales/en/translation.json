@@ -117,7 +117,10 @@
 			"pc": "pc",
 			"oz": "oz",
 			"cup": "cup",
-			"tbsp": "tbsp"
+			"tbsp": "tbsp",
+			"tsp": "tsp",
+			"pinch": "pinch",
+			"to_taste": "to taste"
 		},
 		"expirationLabel": "Expires (optional)",
 		"purchasedLabel": "Bought (optional)",
