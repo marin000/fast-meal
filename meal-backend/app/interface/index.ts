@@ -1,4 +1,6 @@
 export * from "./device";
 export * from "./fridge-product";
+export * from "./household";
 export * from "./mongo";
 export * from "./recipe";
+export * from "./shopping-list";

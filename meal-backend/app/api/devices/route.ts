@@ -1,5 +1,6 @@
 import { deviceService } from "@/app/service/device";
 import { connectMongo } from "@/app/service/mongodb";
+import { parseDeviceIdBody } from "@/app/utils";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { Device } from "@/models";
 
@@ -42,19 +43,16 @@ export async function POST(req: Request) {
 		);
 	}
 
-	const deviceId =
-		typeof body === "object" &&
-		body !== null &&
-		typeof (body as { deviceId?: unknown }).deviceId === "string"
-			? (body as { deviceId: string }).deviceId.trim()
-			: "";
+	const parsed = parseDeviceIdBody(body);
 
-	if (!deviceId) {
+	if (!parsed) {
 		return Response.json(
 			{ error: ERROR_MESSAGES.DEVICE_INVALID_REQUEST_BODY },
 			{ status: 400 },
 		);
 	}
+
+	const { deviceId } = parsed;
 
 	await deviceService.ensureDeviceRecord(deviceId);
 

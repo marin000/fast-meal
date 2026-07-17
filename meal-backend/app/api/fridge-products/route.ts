@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import type { FridgeProductListItem } from "@/app/interface";
 import { deviceService } from "@/app/service/device";
+import { householdService } from "@/app/service/household";
 import { connectMongo } from "@/app/service/mongodb";
 import { parseFridgeProductBody, toFridgeProductListItem } from "@/app/utils";
 import {
@@ -40,10 +41,12 @@ export async function POST(req: Request): Promise<Response> {
 		parsed;
 
 	await deviceService.ensureDeviceRecord(deviceId);
-	console.log("[api/fridge-products] create", { deviceId, name });
+	const householdId = await householdService.resolveHouseholdId(deviceId);
+	console.log("[api/fridge-products] create", { deviceId, householdId, name });
 
 	try {
 		const created = await FridgeProduct.create({
+			householdId,
 			deviceId,
 			name,
 			quantity,
@@ -75,7 +78,9 @@ export async function GET(req: Request): Promise<Response> {
 		);
 	}
 
-	const docs = await FridgeProduct.find({ deviceId })
+	const householdId = await householdService.resolveHouseholdId(deviceId);
+
+	const docs = await FridgeProduct.find({ householdId })
 		.sort({ createdAt: -1 })
 		.lean();
 
@@ -104,9 +109,11 @@ export async function DELETE(req: Request): Promise<Response> {
 		return Response.json({ error: ERROR_MESSAGES.INVALID_ID }, { status: 400 });
 	}
 
+	const householdId = await householdService.resolveHouseholdId(deviceId);
+
 	const result = await FridgeProduct.findOneAndDelete({
 		_id: new mongoose.Types.ObjectId(id),
-		deviceId,
+		householdId,
 	});
 
 	if (!result) {

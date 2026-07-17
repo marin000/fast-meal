@@ -3,6 +3,7 @@ import {
 	isDailyGenerationLimitDisabled,
 } from "@/app/constants/device";
 import type { DeviceResponse } from "@/app/interface";
+import { householdService } from "@/app/service/household";
 import { Device } from "@/models";
 
 const getTodayUtcYmd = (): string => new Date().toISOString().slice(0, 10);
@@ -20,6 +21,7 @@ export async function ensureDeviceRecord(deviceId: string): Promise<void> {
 		},
 		{ upsert: true },
 	);
+	await householdService.ensureDeviceHousehold(deviceId);
 }
 
 const remainingFromDoc = (doc: {

@@ -1,9 +1,5 @@
 import type { FridgeProductDoc, FridgeProductListItem } from "@/app/interface";
-
-const toIsoString = (value: unknown): string => {
-	if (value instanceof Date) return value.toISOString();
-	return new Date(value as string | number).toISOString();
-};
+import { convertToIsoString } from "@/app/utils/helper";
 
 export const toFridgeProductListItem = (
 	doc: FridgeProductDoc,
@@ -14,9 +10,11 @@ export const toFridgeProductListItem = (
 	quantity: doc.quantity,
 	unit: doc.unit as FridgeProductListItem["unit"],
 	expirationDate: doc.expirationDate
-		? toIsoString(doc.expirationDate)
+		? convertToIsoString(doc.expirationDate)
 		: undefined,
-	purchasedAt: doc.purchasedAt ? toIsoString(doc.purchasedAt) : undefined,
-	createdAt: toIsoString(doc.createdAt),
-	updatedAt: toIsoString(doc.updatedAt),
+	purchasedAt: doc.purchasedAt
+		? convertToIsoString(doc.purchasedAt)
+		: undefined,
+	createdAt: convertToIsoString(doc.createdAt),
+	updatedAt: convertToIsoString(doc.updatedAt),
 });

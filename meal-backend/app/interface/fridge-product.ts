@@ -34,6 +34,7 @@ export interface FridgeProductListItem {
 
 export type FridgeProductDoc = {
 	_id: mongoose.Types.ObjectId;
+	householdId?: string;
 	deviceId: string;
 	name: string;
 	quantity?: number;

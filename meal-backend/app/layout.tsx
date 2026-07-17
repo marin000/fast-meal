@@ -1,24 +1,24 @@
-import type { Metadata } from 'next';
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from "@vercel/analytics/next";
+import type { Metadata } from "next";
 
-import './globals.css';
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Meal Backend',
-  description: 'API backend for the Fast Meal app',
+	title: "Meal Backend",
+	description: "API backend for the Fast Meal app",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">
-        {children}
-        <Analytics />
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en" className="h-full antialiased">
+			<body className="min-h-full flex flex-col">
+				{children}
+				<Analytics />
+			</body>
+		</html>
+	);
 }

@@ -13,6 +13,18 @@ export const ERROR_MESSAGES = {
 		"Invalid request body. Expected { deviceId: string, name: string, quantity?: number, unit?: string, expirationDate?: string, purchasedAt?: string }",
 	FRIDGE_PRODUCT_SAVE_FAILED: "Could not save fridge product (database error)",
 	FRIDGE_PRODUCT_NOT_FOUND: "Fridge product not found",
+	HOUSEHOLD_NOT_FOUND: "Household not found",
+	INVALID_INVITE_CODE: "Invalid invite code",
+	LEAVE_CURRENT_FAMILY_FIRST:
+		"Leave your current family before joining another",
+	RATE_LIMIT_EXCEEDED: "Too many attempts. Please try again later.",
+	SHOPPING_LIST_INVALID_REQUEST_BODY:
+		"Invalid request body. Expected { deviceId: string, name: string }",
+	SHOPPING_LIST_ITEM_NOT_FOUND: "Shopping list item not found",
+	SHOPPING_LIST_SAVE_FAILED:
+		"Could not save shopping list item (database error)",
+	SHOPPING_LIST_TOGGLE_INVALID_REQUEST_BODY:
+		"Invalid request body. Expected { deviceId: string, id: string, checked: boolean }",
 	RECIPE_INVALID_REQUEST_BODY:
 		"Invalid request body. Expected { deviceId: string, recipe: object, cacheKey?: string }",
 	RECIPE_SAVE_FAILED: "Could not save recipe (database error)",
