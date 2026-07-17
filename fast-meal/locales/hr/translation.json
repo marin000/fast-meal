@@ -179,7 +179,29 @@
 	"settings": {
 		"sections": {
 			"dietLifestyle": "Prehrana i stil života",
-			"display": "Prikaz"
+			"display": "Prikaz",
+			"family": "Dijeljenje u kućanstvu"
+		},
+		"family": {
+			"inviteCodeLabel": "Tvoj pozivni kod",
+			"inviteCodeDescription": "Podijeli ovaj kod kako bi članovi obitelji sinkronizirali hladnjak i popis za kupnju.",
+			"shareMessage": "Pridruži se FastMeal kućanstvu s kodom: {{code}}",
+			"shareFailed": "Nismo uspjeli podijeliti pozivni kod",
+			"joinLabel": "Pridruži se kućanstvu",
+			"joinDescription": "Unesi kod drugog člana kućanstva.",
+			"joinPlaceholder": "ABC123",
+			"join": "Pridruži se",
+			"joinSuccess": "Uspješno si se pridružio kućanstvu",
+			"joinFailed": "Nismo uspjeli pridružiti kućanstvu. Provjeri kod i pokušaj ponovno.",
+			"memberCount": "{{count}} uređaja u ovo kućanstvu",
+			"memberCount_one": "1 uređaj u ovom kućanstvu",
+			"leave": "Napusti kućanstvo",
+			"leaveTitle": "Napustiti kućanstvo?",
+			"leaveMessage": "Tvoji proizvodi u hladnjaku ostaju u kućanstvu. Dobit ćeš novi osobni pozivni kod.",
+			"leaveCancel": "Odustani",
+			"leaveConfirm": "Napusti",
+			"leaveSuccess": "Napustio si kućanstvo",
+			"leaveFailed": "Nismo uspjeli napustiti kućanstvo"
 		},
 		"dietaryStyle": {
 			"label": "Stil prehrane",

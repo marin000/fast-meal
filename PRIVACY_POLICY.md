@@ -1,7 +1,7 @@
 # Privacy Policy — FastMeal
 
-**Last updated:** June 23, 2025  
-**Effective date:** June 23, 2025
+**Last updated:** July 10, 2026  
+**Effective date:** July 10, 2026
 
 ## 1. Who we are
 
@@ -23,7 +23,7 @@ This Privacy Policy describes how we collect, use, store, and share information 
 - We do **not** require you to create an account or provide your name, email address, or phone number to use the App.
 - We assign your device a **random identifier** so we can sync saved recipes and fridge items and enforce daily recipe generation limits.
 - When you generate recipes, we send your **ingredient list and preferences** to our servers and to **OpenAI** to produce AI-generated recipe suggestions.
-- Your **shopping list** is stored only on your device and is **not** sent to our servers.
+- Your **shopping list** is synced to our servers so it can be shared when you join a **family household** with an invite code. Solo users have a private household with only their device.
 - We do **not** show advertisements in the App and do **not** sell your personal data.
 
 ---
@@ -37,6 +37,7 @@ This Privacy Policy describes how we collect, use, store, and share information 
 - **Display preferences** such as language and measurement units (metric or imperial)
 - **Fridge inventory** (product names, quantities, units, purchase dates, and expiration dates)
 - **Recipes you choose to save**
+- **Shopping list items** (item names and checked state), synced to your household on our servers
 
 ### 4.2 Information collected automatically
 
@@ -48,10 +49,11 @@ This Privacy Policy describes how we collect, use, store, and share information 
 
 The following data stays on your device and is not transmitted to our servers:
 
-- Shopping list items
 - App language preference
 - Whether you have already been prompted for notification permission
 - A local copy of your device identifier
+
+Shopping list items are stored on our servers (keyed to your household). For solo users, the household contains only your device. If you join a family household with an invite code, shopping list items are shared with other devices in that household. No names, email addresses, or phone numbers are required for family sharing.
 
 Other display settings (such as dietary style, dark mode, and units) are kept in the App while it is running. Relevant preference values are included when you request recipe generation.
 
@@ -69,6 +71,7 @@ We use the information described above to:
 
 - Generate and display recipe suggestions
 - Save and sync recipes and fridge products associated with your device
+- Sync shopping list items within your household (shared with family members when you join a household via invite code)
 - Enforce daily recipe generation limits
 - Remember your language and unit preferences
 - Schedule local expiration reminders on your device
@@ -101,7 +104,7 @@ We share data only as necessary to operate the App:
 | Recipient | Purpose | Data shared |
 |-----------|---------|-------------|
 | **OpenAI** | AI-powered recipe generation | Ingredient lists, dietary preferences, language, and measurement units |
-| **MongoDB** (database provider) | Persistent storage | Device identifier, fridge products, saved recipes, usage counts, and cached recipe data |
+| **MongoDB** (database provider) | Persistent storage | Device identifier, fridge products, saved recipes, shopping list items, usage counts, and cached recipe data |
 | **Vercel** | API hosting, caching, and infrastructure | Request data processed when you use the App |
 
 These providers process data on our behalf and only for the purposes described in this policy. We do **not** sell, rent, or trade your personal information.
@@ -122,7 +125,7 @@ Our service providers may process data in countries outside your country of resi
 
 ## 9. Data retention
 
-- **Server data** (device identifier, fridge items, saved recipes, and usage counts): retained for as long as you use the App and until we delete it. You may request deletion by contacting us at [infinityfunstudios@gmail.com](mailto:infinityfunstudios@gmail.com). We may need your device identifier to locate and delete server-side data associated with your installation.
+- **Server data** (device identifier, fridge items, saved recipes, shopping list items, and usage counts): retained for as long as you use the App and until we delete it. You may request deletion by contacting us at [infinityfunstudios@gmail.com](mailto:infinityfunstudios@gmail.com). We may need your device identifier to locate and delete server-side data associated with your installation.
 - **Recipe cache:** Hashed or normalized recipe inputs and generated results may be cached on our servers for up to **7 days** to improve performance and reduce duplicate AI requests.
 - **On-device data:** Remains on your device until you uninstall the App or clear the App’s storage through your device settings.
 

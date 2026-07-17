@@ -1,5 +1,7 @@
 import { useRouter } from "expo-router";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+
+import { ScreenScrollView } from "@/components";
 
 import { RecipeCard, RecipesHeader } from "@/features/recipes";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
@@ -18,8 +20,8 @@ const RecipesListScreen = () => {
 	};
 
 	return (
-		<ScrollView
-			style={{ backgroundColor: theme.background }}
+		<ScreenScrollView
+			backgroundColor={theme.background}
 			contentContainerStyle={styles.container}
 		>
 			<RecipesHeader />
@@ -34,7 +36,7 @@ const RecipesListScreen = () => {
 					/>
 				))}
 			</View>
-		</ScrollView>
+		</ScreenScrollView>
 	);
 };
 
@@ -43,7 +45,7 @@ export default RecipesListScreen;
 const styles = StyleSheet.create({
 	container: {
 		gap: 16,
-		paddingBottom: 24,
+		paddingBottom: 32,
 		paddingHorizontal: 20,
 		paddingTop: 8,
 	},

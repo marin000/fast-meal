@@ -1,12 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useFocusEffect } from "expo-router";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	ActivityIndicator,
-	ScrollView,
 	StyleSheet,
 	Text,
 	View,
 } from "react-native";
+
+import { ScreenScrollView } from "@/components";
 
 import { useShoppingList } from "@/context/shopping-list-context";
 import {
@@ -18,8 +21,14 @@ import { useAppAppearance } from "@/hooks/use-app-appearance";
 const ShoppingListScreen = () => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
-	const { items, isLoading, addItem, toggleItem, removeItem } =
+	const { items, isLoading, addItem, toggleItem, removeItem, reload } =
 		useShoppingList();
+
+	useFocusEffect(
+		useCallback(() => {
+			void reload();
+		}, [reload]),
+	);
 
 	const activeItems = items.filter((item) => !item.checked);
 	const checkedItems = items.filter((item) => item.checked);
@@ -33,10 +42,9 @@ const ShoppingListScreen = () => {
 	}
 
 	return (
-		<ScrollView
-			style={{ backgroundColor: theme.background }}
+		<ScreenScrollView
+			backgroundColor={theme.background}
 			contentContainerStyle={styles.container}
-			keyboardShouldPersistTaps="handled"
 		>
 			<View style={styles.header}>
 				<Text style={[styles.kicker, { color: theme.textMuted }]}>
@@ -47,7 +55,7 @@ const ShoppingListScreen = () => {
 				</Text>
 			</View>
 
-			<AddShoppingItemInput onAdd={addItem} />
+			<AddShoppingItemInput onAdd={(name) => void addItem(name)} />
 
 			{activeItems.length > 0 && (
 				<View style={styles.section}>
@@ -55,8 +63,8 @@ const ShoppingListScreen = () => {
 						<ShoppingListItemRow
 							key={item.id}
 							item={item}
-							onToggle={() => toggleItem(item.id)}
-							onRemove={() => removeItem(item.id)}
+							onToggle={() => void toggleItem(item.id)}
+							onRemove={() => void removeItem(item.id)}
 						/>
 					))}
 				</View>
@@ -71,8 +79,8 @@ const ShoppingListScreen = () => {
 						<ShoppingListItemRow
 							key={item.id}
 							item={item}
-							onToggle={() => toggleItem(item.id)}
-							onRemove={() => removeItem(item.id)}
+							onToggle={() => void toggleItem(item.id)}
+							onRemove={() => void removeItem(item.id)}
 						/>
 					))}
 				</View>
@@ -91,7 +99,7 @@ const ShoppingListScreen = () => {
 					</Text>
 				</View>
 			)}
-		</ScrollView>
+		</ScreenScrollView>
 	);
 };
 
@@ -100,7 +108,7 @@ export default ShoppingListScreen;
 const styles = StyleSheet.create({
 	container: {
 		gap: 16,
-		paddingBottom: 24,
+		paddingBottom: 32,
 		paddingHorizontal: 20,
 		paddingTop: 8,
 	},

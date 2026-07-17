@@ -179,7 +179,29 @@
 	"settings": {
 		"sections": {
 			"dietLifestyle": "Diet & Lifestyle",
-			"display": "Display"
+			"display": "Display",
+			"family": "Family sharing"
+		},
+		"family": {
+			"inviteCodeLabel": "Your invite code",
+			"inviteCodeDescription": "Share this code so family members can sync fridge and shopping list.",
+			"shareMessage": "Join my FastMeal family with code: {{code}}",
+			"shareFailed": "Could not share invite code",
+			"joinLabel": "Join a family",
+			"joinDescription": "Enter the invite code from another family member.",
+			"joinPlaceholder": "ABC123",
+			"join": "Join",
+			"joinSuccess": "Joined family successfully",
+			"joinFailed": "Could not join family. Check the code and try again.",
+			"memberCount": "{{count}} devices in this family",
+			"memberCount_one": "1 device in this family",
+			"leave": "Leave family",
+			"leaveTitle": "Leave family?",
+			"leaveMessage": "Your fridge items stay with the family. You will get a new personal invite code.",
+			"leaveCancel": "Cancel",
+			"leaveConfirm": "Leave",
+			"leaveSuccess": "You left the family",
+			"leaveFailed": "Could not leave family"
 		},
 		"dietaryStyle": {
 			"label": "Dietary style",

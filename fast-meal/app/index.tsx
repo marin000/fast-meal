@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import { AppTextInput, FridgeIcon, PrimaryButton } from "@/components";
+import {
+	AppTextInput,
+	FridgeIcon,
+	PrimaryButton,
+	ScreenScrollView,
+} from "@/components";
 import { useFridgeProducts, useHomeIngredients } from "@/context";
 import { FridgePickerModal } from "@/features/fridge-products";
 import { HomeFilters, HomeHeader } from "@/features/home";
@@ -33,11 +38,10 @@ const HomeScreen = () => {
 
 	return (
 		<>
-			<ScrollView
-				style={{ backgroundColor: theme.background, flex: 1 }}
+			<ScreenScrollView
+				backgroundColor={theme.background}
 				contentContainerStyle={styles.container}
-				keyboardShouldPersistTaps="handled"
-				onScrollBeginDrag={Keyboard.dismiss}
+				dismissKeyboardOnScroll
 			>
 				<HomeHeader />
 
@@ -75,7 +79,7 @@ const HomeScreen = () => {
 					leftIconName="sparkles"
 					rightIconName="arrow-forward"
 				/>
-			</ScrollView>
+			</ScreenScrollView>
 
 			<FridgePickerModal
 				visible={pickerVisible}
@@ -91,7 +95,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
 	container: {
 		gap: 24,
-		paddingBottom: 24,
+		paddingBottom: 32,
 		paddingHorizontal: 20,
 		paddingTop: 8,
 	},

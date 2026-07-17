@@ -25,6 +25,7 @@ import {
 	FridgeProductsProvider,
 	GenerationQuotaProvider,
 	HomeIngredientsProvider,
+	HouseholdProvider,
 	PreferencesProvider,
 	ShoppingListProvider,
 	usePreferences,
@@ -122,17 +123,19 @@ const RootLayout = () => {
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<PreferencesProvider>
 				<DeviceIdProvider>
-					<GenerationQuotaProvider>
-						<FridgeProductsProvider>
-							<HomeIngredientsProvider>
-								<ShoppingListProvider>
-									<FeedbackMessageProvider>
-										<RootLayoutContent />
-									</FeedbackMessageProvider>
-								</ShoppingListProvider>
-							</HomeIngredientsProvider>
-						</FridgeProductsProvider>
-					</GenerationQuotaProvider>
+					<HouseholdProvider>
+						<GenerationQuotaProvider>
+							<FridgeProductsProvider>
+								<HomeIngredientsProvider>
+									<ShoppingListProvider>
+										<FeedbackMessageProvider>
+											<RootLayoutContent />
+										</FeedbackMessageProvider>
+									</ShoppingListProvider>
+								</HomeIngredientsProvider>
+							</FridgeProductsProvider>
+						</GenerationQuotaProvider>
+					</HouseholdProvider>
 				</DeviceIdProvider>
 			</PreferencesProvider>
 		</SafeAreaProvider>

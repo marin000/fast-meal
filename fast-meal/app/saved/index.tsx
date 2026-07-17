@@ -1,12 +1,8 @@
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
-import {
-	ActivityIndicator,
-	ScrollView,
-	StyleSheet,
-	Text,
-	View,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+
+import { ScreenScrollView } from "@/components";
 
 import { useFeedbackMessage } from "@/context/feedback-message-context";
 import { useSavedRecipesList } from "@/context/saved-recipes-context";
@@ -38,8 +34,8 @@ const SavedRecipesScreen = () => {
 	}
 
 	return (
-		<ScrollView
-			style={{ backgroundColor: theme.background }}
+		<ScreenScrollView
+			backgroundColor={theme.background}
 			contentContainerStyle={styles.container}
 		>
 			<View style={styles.header}>
@@ -72,7 +68,7 @@ const SavedRecipesScreen = () => {
 					))}
 				</View>
 			)}
-		</ScrollView>
+		</ScreenScrollView>
 	);
 };
 
@@ -81,7 +77,7 @@ export default SavedRecipesScreen;
 const styles = StyleSheet.create({
 	container: {
 		gap: 16,
-		paddingBottom: 24,
+		paddingBottom: 32,
 		paddingHorizontal: 20,
 		paddingTop: 8,
 	},

@@ -14,6 +14,7 @@ import {
 } from "@/api/fridge-products";
 import type { FridgeProductUnit } from "@/constants/fridge";
 import { useDeviceId } from "@/context/device-id-context";
+import { useRefetchOnForeground } from "@/hooks/use-refetch-on-foreground";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
 import { syncExpirationNotifications } from "@/services/expiration-notifications";
 
@@ -67,6 +68,10 @@ export const FridgeProductsProvider = ({
 	useEffect(() => {
 		void reload();
 	}, [reload]);
+
+	useRefetchOnForeground(() => {
+		void reload();
+	});
 
 	const addProduct = useCallback(
 		async (input: AddFridgeProductInput) => {

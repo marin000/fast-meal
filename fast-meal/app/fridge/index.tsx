@@ -1,9 +1,9 @@
-import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 
-import { PrimaryButton } from "@/components";
+import { PrimaryButton, ScreenScrollView } from "@/components";
 import type { FridgeProductUnit } from "@/constants/fridge";
 import {
 	useFeedbackMessage,
@@ -22,11 +22,18 @@ const FridgeScreen = () => {
 	const { t } = useTranslation();
 	const router = useRouter();
 	const theme = useAppAppearance();
-	const { items, isLoading, addProduct, removeById } = useFridgeProducts();
+	const { items, isLoading, addProduct, removeById, reload } =
+		useFridgeProducts();
 	const { appendIngredients } = useHomeIngredients();
 	const { showMessage } = useFeedbackMessage();
 	const [addModalVisible, setAddModalVisible] = useState(false);
 	const [pickerVisible, setPickerVisible] = useState(false);
+
+	useFocusEffect(
+		useCallback(() => {
+			void reload();
+		}, [reload]),
+	);
 
 	const handleAdd = async (input: {
 		name: string;
@@ -67,10 +74,9 @@ const FridgeScreen = () => {
 	}
 
 	return (
-		<ScrollView
-			style={{ backgroundColor: theme.background }}
+		<ScreenScrollView
+			backgroundColor={theme.background}
 			contentContainerStyle={styles.container}
-			keyboardShouldPersistTaps="handled"
 		>
 			<FridgeScreenHeader
 				onAddProduct={() => setAddModalVisible(true)}
@@ -101,7 +107,7 @@ const FridgeScreen = () => {
 				onClose={() => setPickerVisible(false)}
 				onConfirm={handlePickerConfirm}
 			/>
-		</ScrollView>
+		</ScreenScrollView>
 	);
 };
 
@@ -110,7 +116,7 @@ export default FridgeScreen;
 const styles = StyleSheet.create({
 	container: {
 		gap: 16,
-		paddingBottom: 24,
+		paddingBottom: 32,
 		paddingHorizontal: 20,
 		paddingTop: 8,
 	},

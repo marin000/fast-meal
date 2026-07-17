@@ -1,4 +1,5 @@
-export { DietLifestyleSection } from "./diet-lifestyle-section";
-export { DisplaySection } from "./display-section";
-export { SegmentedControl } from "./segmented-control";
-export { SettingsRow } from "./settings-row";
+export * from "./diet-lifestyle-section";
+export * from "./display-section";
+export * from "./family-section";
+export * from "./segmented-control";
+export * from "./settings-row";

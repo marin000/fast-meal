@@ -7,6 +7,9 @@ import { useShoppingList } from "@/context/shopping-list-context";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { Recipe } from "@/interface";
 
+const ZERO_ITEMS = 0;
+const ONE_ITEM = 1;
+
 interface AddToShoppingListButtonProps {
 	recipe: Recipe;
 }
@@ -20,14 +23,18 @@ export const AddToShoppingListButton = ({
 	const { addFromRecipe } = useShoppingList();
 
 	const handlePress = () => {
-		const added = addFromRecipe(recipe);
-		if (added > 0) {
-			const key =
-				added === 1 ? "shopping.toast.added_one" : "shopping.toast.added";
-			showMessage(t(key, { count: added }), "success");
-			return;
-		}
-		showMessage(t("shopping.toast.alreadyOnList"), "info");
+		void (async () => {
+			const added = await addFromRecipe(recipe);
+			if (added > ZERO_ITEMS) {
+				const key =
+					added === ONE_ITEM
+						? "shopping.toast.added_one"
+						: "shopping.toast.added";
+				showMessage(t(key, { count: added }), "success");
+				return;
+			}
+			showMessage(t("shopping.toast.alreadyOnList"), "info");
+		})();
 	};
 
 	return (

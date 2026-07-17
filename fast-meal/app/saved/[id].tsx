@@ -4,11 +4,12 @@ import { useTranslation } from "react-i18next";
 import {
 	ActivityIndicator,
 	Pressable,
-	ScrollView,
 	StyleSheet,
 	Text,
 	View,
 } from "react-native";
+
+import { ScreenScrollView } from "@/components";
 import { useFeedbackMessage } from "@/context/feedback-message-context";
 import { useSavedRecipesList } from "@/context/saved-recipes-context";
 import {
@@ -72,8 +73,8 @@ const SavedRecipeDetailScreen = () => {
 	const { recipe } = item;
 
 	return (
-		<ScrollView
-			style={{ backgroundColor: theme.background }}
+		<ScreenScrollView
+			backgroundColor={theme.background}
 			contentContainerStyle={styles.container}
 		>
 			<RecipeHero
@@ -99,7 +100,7 @@ const SavedRecipeDetailScreen = () => {
 					<RecipeWarnings items={recipe.warnings} />
 				)}
 			</View>
-		</ScrollView>
+		</ScreenScrollView>
 	);
 };
 

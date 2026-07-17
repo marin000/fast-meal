@@ -1,16 +1,25 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 
-import { DietLifestyleSection, DisplaySection } from "@/features/settings";
+import { ScreenScrollView } from "@/components";
+import {
+	DietLifestyleSection,
+	DisplaySection,
+	FamilySection,
+} from "@/features/settings";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 
 const SettingsScreen = () => {
 	const theme = useAppAppearance();
 
 	return (
-		<View style={[styles.screen, { backgroundColor: theme.background }]}>
+		<ScreenScrollView
+			backgroundColor={theme.background}
+			contentContainerStyle={styles.screen}
+		>
 			<DietLifestyleSection />
 			<DisplaySection />
-		</View>
+			<FamilySection />
+		</ScreenScrollView>
 	);
 };
 
@@ -18,9 +27,8 @@ export default SettingsScreen;
 
 const styles = StyleSheet.create({
 	screen: {
-		flex: 1,
 		gap: 12,
-		paddingBottom: 24,
+		paddingBottom: 32,
 		paddingHorizontal: 20,
 		paddingTop: 24,
 	},

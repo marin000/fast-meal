@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+
+import { ScreenScrollView } from "@/components";
 
 import {
 	RecipeHero,
@@ -71,8 +73,8 @@ const RecipeDetailScreen = () => {
 	);
 
 	return (
-		<ScrollView
-			style={{ backgroundColor: theme.background }}
+		<ScreenScrollView
+			backgroundColor={theme.background}
 			contentContainerStyle={styles.container}
 		>
 			<RecipeHero
@@ -98,7 +100,7 @@ const RecipeDetailScreen = () => {
 					<RecipeWarnings items={recipe.warnings} />
 				)}
 			</View>
-		</ScrollView>
+		</ScreenScrollView>
 	);
 };
 
