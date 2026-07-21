@@ -42,6 +42,7 @@ export const generateRecipe = async ({
 	units,
 	language,
 	retryAttempt = 1,
+	image,
 }: GenerateRecipeInput): Promise<GenerateRecipeResponse> => {
 	const requestBody: GenerateRecipeRequestBody = {
 		deviceId,
@@ -50,6 +51,7 @@ export const generateRecipe = async ({
 		units,
 		language,
 		retryAttempt,
+		...(image ? { image } : {}),
 	};
 
 	const response = await fetch(`${apiEndpoint}`, {

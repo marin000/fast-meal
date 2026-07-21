@@ -1,3 +1,10 @@
+export type RecipeImageMimeType = "image/jpeg" | "image/png" | "image/webp";
+
+export interface RecipeImagePayload {
+	base64: string;
+	mimeType: RecipeImageMimeType;
+}
+
 export interface GenerateRecipeRequestBody {
 	deviceId: string;
 	ingredients: string[];
@@ -5,6 +12,7 @@ export interface GenerateRecipeRequestBody {
 	units: "metric" | "imperial";
 	language: "en" | "hr";
 	retryAttempt?: number;
+	image?: RecipeImagePayload;
 }
 
 export interface RecipeIngredient {

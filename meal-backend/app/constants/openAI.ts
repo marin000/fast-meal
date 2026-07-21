@@ -1,5 +1,5 @@
 export const MODEL = "gpt-4.1-mini";
-export const PROMPT_VERSION = "v4";
+export const PROMPT_VERSION = "v5";
 export const CACHE_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
 export const OPENAI_FETCH_TIMEOUT_MS = 55_000;
 export const RECIPE_STANDARD = "standard";

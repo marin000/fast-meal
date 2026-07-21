@@ -24,6 +24,7 @@ import {
 	FeedbackMessageProvider,
 	FridgeProductsProvider,
 	GenerationQuotaProvider,
+	HomeIngredientImageProvider,
 	HomeIngredientsProvider,
 	HouseholdProvider,
 	PreferencesProvider,
@@ -127,11 +128,13 @@ const RootLayout = () => {
 						<GenerationQuotaProvider>
 							<FridgeProductsProvider>
 								<HomeIngredientsProvider>
-									<ShoppingListProvider>
-										<FeedbackMessageProvider>
-											<RootLayoutContent />
-										</FeedbackMessageProvider>
-									</ShoppingListProvider>
+									<HomeIngredientImageProvider>
+										<ShoppingListProvider>
+											<FeedbackMessageProvider>
+												<RootLayoutContent />
+											</FeedbackMessageProvider>
+										</ShoppingListProvider>
+									</HomeIngredientImageProvider>
 								</HomeIngredientsProvider>
 							</FridgeProductsProvider>
 						</GenerationQuotaProvider>

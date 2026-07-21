@@ -2,6 +2,7 @@ export * from "./device-id-context";
 export * from "./feedback-message-context";
 export * from "./fridge-products-context";
 export * from "./generation-quota-context";
+export * from "./home-ingredient-image-context";
 export * from "./home-ingredients-context";
 export * from "./household-context";
 export * from "./preferences-context";

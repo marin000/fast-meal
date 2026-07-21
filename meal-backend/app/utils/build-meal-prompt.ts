@@ -22,6 +22,7 @@ type MealPromptInput = Pick<
 	"ingredients" | "preferences" | "units" | "language"
 > & {
 	recipeCountMode: RecipeCountMode;
+	hasImage?: boolean;
 };
 
 const RECIPE_COUNT_LABELS: Record<RecipeCountMode, string> = {
@@ -43,6 +44,7 @@ export const buildMealGenerationPrompt = ({
 	units,
 	language,
 	recipeCountMode,
+	hasImage = false,
 }: MealPromptInput): string => {
 	const recipeLanguageLabel = getRecipeLanguageLabel(language);
 	const recipeCountRange = RECIPE_COUNT_LABELS[recipeCountMode];
@@ -52,10 +54,14 @@ export const buildMealGenerationPrompt = ({
 		recipeCountRange,
 	);
 
+	const imageNote = hasImage
+		? "\n    An image of ingredients / fridge / pantry was provided with this request. Use it as described in the Image input rules."
+		: "";
+
 	return `${mealPromptBase.trim()}
 
     User ingredients: ${JSON.stringify(ingredients, null, 2)}
     User preferences / filters: ${JSON.stringify(preferences, null, 2)}
     User units preference: ${JSON.stringify(units)}
-    User interface language: ${JSON.stringify(language)} (${recipeLanguageLabel}). Use this as the recipe language (overrides ingredient-list detection).`;
+    User interface language: ${JSON.stringify(language)} (${recipeLanguageLabel}). Use this as the recipe language (overrides ingredient-list detection).${imageNote}`;
 };

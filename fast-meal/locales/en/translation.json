@@ -9,8 +9,26 @@
 		"subtitle": "List your ingredients and generate recipe ideas.",
 		"ingredientsLabel": "Ingredients",
 		"ingredientsPlaceholder": "I have eggs, cheese, bread...",
+		"ingredientsPlaceholderWithPhoto": "Optional: I have more…",
 		"quickFiltersLabel": "Quick filters",
 		"cta": "Find Recipes",
+		"image": {
+			"add": "Add fridge photo",
+			"addTitle": "Add fridge photo",
+			"camera": "Camera",
+			"gallery": "Photo library",
+			"cancel": "Cancel",
+			"photoAdded": "Photo added",
+			"replace": "Replace",
+			"remove": "Remove photo",
+			"closePreview": "Close preview",
+			"errors": {
+				"unsupportedType": "Use a JPG, PNG, or WEBP image.",
+				"tooLarge": "Image is too large (max 10 MB).",
+				"processingFailed": "Couldn't process that image. Try another photo.",
+				"permissionDenied": "Allow camera or photo access to add a fridge photo."
+			}
+		},
 		"filters": {
 			"quick": "15 min",
 			"highProtein": "High protein",

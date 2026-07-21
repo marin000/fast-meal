@@ -1,6 +1,6 @@
 # Privacy Policy — FastMeal
 
-**Last updated:** July 10, 2026  
+**Last updated:** July 21, 2026  
 **Effective date:** July 10, 2026
 
 ## 1. Who we are
@@ -22,7 +22,7 @@ This Privacy Policy describes how we collect, use, store, and share information 
 
 - We do **not** require you to create an account or provide your name, email address, or phone number to use the App.
 - We assign your device a **random identifier** so we can sync saved recipes and fridge items and enforce daily recipe generation limits.
-- When you generate recipes, we send your **ingredient list and preferences** to our servers and to **OpenAI** to produce AI-generated recipe suggestions.
+- When you generate recipes, we send your **ingredient list and preferences**, and — if you choose — an optional **photo of ingredients or your fridge**, to our servers and to **OpenAI** to produce AI-generated recipe suggestions.
 - Your **shopping list** is synced to our servers so it can be shared when you join a **family household** with an invite code. Solo users have a private household with only their device.
 - We do **not** show advertisements in the App and do **not** sell your personal data.
 
@@ -33,6 +33,7 @@ This Privacy Policy describes how we collect, use, store, and share information 
 ### 4.1 Information you provide
 
 - **Ingredients** you enter for recipe generation
+- **Optional ingredient / fridge photos** you choose to capture with the camera or select from your photo library for recipe generation
 - **Diet and lifestyle preferences** (for example: vegetarian, vegan, gluten-free, high protein)
 - **Display preferences** such as language and measurement units (metric or imperial)
 - **Fridge inventory** (product names, quantities, units, purchase dates, and expiration dates)
@@ -52,6 +53,7 @@ The following data stays on your device and is not transmitted to our servers:
 - App language preference
 - Whether you have already been prompted for notification permission
 - A local copy of your device identifier
+- Temporary copies of photos you select or capture before you submit a recipe request (cleared after successful generation or when you remove the photo)
 
 Shopping list items are stored on our servers (keyed to your household). For solo users, the household contains only your device. If you join a family household with an invite code, shopping list items are shared with other devices in that household. No names, email addresses, or phone numbers are required for family sharing.
 
@@ -60,8 +62,10 @@ Other display settings (such as dietary style, dark mode, and units) are kept in
 ### 4.4 Device permissions
 
 - **Notifications (optional):** If you grant permission, the App schedules **local** reminders when fridge products are nearing their expiration date. Notifications are scheduled on your device; we do not use a remote push notification service for this feature.
+- **Camera (optional):** If you grant permission, you can take a photo of ingredients or your fridge to help generate recipes. The App only accesses the camera when you choose this feature.
+- **Photo library (optional):** If you grant permission, you can select an existing photo of ingredients or your fridge. The App only accesses photos you explicitly choose.
 
-We do **not** access your location, camera, microphone, contacts, SMS, or call logs.
+We do **not** access your location, microphone, contacts, SMS, or call logs.
 
 ---
 
@@ -69,14 +73,16 @@ We do **not** access your location, camera, microphone, contacts, SMS, or call l
 
 We use the information described above to:
 
-- Generate and display recipe suggestions
+- Generate and display recipe suggestions (including from text ingredients and optional photos you provide)
 - Save and sync recipes and fridge products associated with your device
 - Sync shopping list items within your household (shared with family members when you join a household via invite code)
 - Enforce daily recipe generation limits
 - Remember your language and unit preferences
 - Schedule local expiration reminders on your device
 - Operate, maintain, secure, and improve the Services
-- Cache recipe results to reduce duplicate AI requests and improve performance
+- Cache recipe results (for text-based requests) to reduce duplicate AI requests and improve performance
+
+Photos you submit for recipe generation are used only to identify ingredients and generate recipes. We do **not** use them for advertising, facial recognition, or marketing profiling.
 
 We do **not** use your data for advertising, marketing profiling, or selling to data brokers.
 
@@ -89,11 +95,12 @@ If you are located in the European Economic Area (EEA) or the United Kingdom, we
 | Purpose | Legal basis |
 |--------|-------------|
 | Providing the App and core Services | Performance of a contract / steps taken at your request before entering a contract |
-| AI recipe generation | Performance of a contract |
+| AI recipe generation (text and optional photos) | Performance of a contract |
 | Usage limits, caching, and security | Legitimate interests (operating and protecting the Services) |
 | Local expiration notifications | Your consent (device notification permission) |
+| Camera and photo library access | Your consent (device permission); photos are processed when you choose to submit them for recipe generation |
 
-You may withdraw consent for notifications at any time through your device settings. Withdrawing consent does not affect the lawfulness of processing based on consent before its withdrawal.
+You may withdraw consent for notifications, camera, or photo library access at any time through your device settings. Withdrawing consent does not affect the lawfulness of processing based on consent before its withdrawal.
 
 ---
 
@@ -103,9 +110,9 @@ We share data only as necessary to operate the App:
 
 | Recipient | Purpose | Data shared |
 |-----------|---------|-------------|
-| **OpenAI** | AI-powered recipe generation | Ingredient lists, dietary preferences, language, and measurement units |
-| **MongoDB** (database provider) | Persistent storage | Device identifier, fridge products, saved recipes, shopping list items, usage counts, and cached recipe data |
-| **Vercel** | API hosting, caching, and infrastructure | Request data processed when you use the App |
+| **OpenAI** | AI-powered recipe generation | Ingredient lists, optional ingredient/fridge photos you submit, dietary preferences, language, and measurement units |
+| **MongoDB** (database provider) | Persistent storage | Device identifier, fridge products, saved recipes, shopping list items, usage counts, and cached recipe data (text-based recipe cache; we do not persist submitted photos as a photo library) |
+| **Vercel** | API hosting, caching, and infrastructure | Request data processed when you use the App (including image data in transit when you submit a photo for generation) |
 
 These providers process data on our behalf and only for the purposes described in this policy. We do **not** sell, rent, or trade your personal information.
 
@@ -126,8 +133,9 @@ Our service providers may process data in countries outside your country of resi
 ## 9. Data retention
 
 - **Server data** (device identifier, fridge items, saved recipes, shopping list items, and usage counts): retained for as long as you use the App and until we delete it. You may request deletion by contacting us at [infinityfunstudios@gmail.com](mailto:infinityfunstudios@gmail.com). We may need your device identifier to locate and delete server-side data associated with your installation.
-- **Recipe cache:** Hashed or normalized recipe inputs and generated results may be cached on our servers for up to **7 days** to improve performance and reduce duplicate AI requests.
-- **On-device data:** Remains on your device until you uninstall the App or clear the App’s storage through your device settings.
+- **Recipe cache:** Hashed or normalized **text** recipe inputs and generated results may be cached on our servers for up to **7 days** to improve performance and reduce duplicate AI requests. Recipe requests that include a photo are **not** stored in this recipe cache.
+- **Submitted photos:** Transmitted to our servers and to OpenAI only to fulfill the recipe request. We do not keep a persistent gallery of your photos on our servers. Photos may exist briefly in memory or logs as needed to process the request, then are discarded according to normal infrastructure retention for transient request data.
+- **On-device data:** Remains on your device until you uninstall the App or clear the App’s storage through your device settings. Selected photos are cleared from App memory after successful generation or when you remove them.
 
 ---
 

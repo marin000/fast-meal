@@ -10,9 +10,10 @@ import {
 } from "@/components";
 import { useFridgeProducts, useHomeIngredients } from "@/context";
 import { FridgePickerModal } from "@/features/fridge-products";
-import { HomeFilters, HomeHeader } from "@/features/home";
+import { FridgeImageUpload, HomeFilters, HomeHeader } from "@/features/home";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import { useHomeForm } from "@/hooks/use-home-form";
+import { useIngredientImage } from "@/hooks/use-ingredient-image";
 
 const HomeScreen = () => {
 	const { t } = useTranslation();
@@ -30,6 +31,13 @@ const HomeScreen = () => {
 		canSubmit,
 		submitForm,
 	} = useHomeForm();
+	const {
+		previewUri,
+		imageError,
+		isProcessing,
+		showPickerOptions,
+		removeImage,
+	} = useIngredientImage();
 
 	const handlePickerConfirm = (names: string[]) => {
 		appendIngredients(names);
@@ -60,9 +68,23 @@ const HomeScreen = () => {
 							</View>
 						) : undefined
 					}
-					placeholder={t("home.ingredientsPlaceholder")}
+					placeholder={
+						previewUri
+							? t("home.ingredientsPlaceholderWithPhoto")
+							: t("home.ingredientsPlaceholder")
+					}
 					value={ingredientsInputValue}
 					onChangeText={setIngredientsInputValue}
+					footer={
+						<FridgeImageUpload
+							previewUri={previewUri}
+							isProcessing={isProcessing}
+							imageError={imageError}
+							onAddPress={showPickerOptions}
+							onReplacePress={showPickerOptions}
+							onRemovePress={removeImage}
+						/>
+					}
 				/>
 
 				<HomeFilters
@@ -100,8 +122,6 @@ const styles = StyleSheet.create({
 		paddingTop: 8,
 	},
 	fridgeButtonWrap: {
-		alignSelf: "flex-end",
-		flexShrink: 1,
-		maxWidth: "58%",
+		flexShrink: 0,
 	},
 });

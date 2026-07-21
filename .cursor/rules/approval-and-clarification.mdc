@@ -1,0 +1,38 @@
+---
+description: Ask for approval before implementing; clarify ambiguous requirements first
+alwaysApply: true
+---
+
+# Approval before implementation
+
+Do **not** edit files, run destructive commands, or ship features until the user explicitly approves the approach.
+
+## Required workflow
+
+1. **Understand** — Read relevant code and any design references the user provides.
+2. **Clarify** — If scope, UX, architecture, or acceptance criteria are unclear, ask questions **before** planning or coding. Label questions **Q1**, **Q2**, **Q3**, etc. so the user can answer with matching keys.
+3. **Propose** — Share a short plan: what will change, which files, and any trade-offs. For larger work, use a concise plan (bullets or checklist), not a surprise diff.
+4. **Wait** — Proceed only after explicit approval (e.g. “go ahead”, “implement it”, “approved”, “yes”).
+5. **Implement** — Keep changes scoped to what was approved.
+
+## When to ask questions
+
+Ask when any of these are unknown or ambiguous:
+
+- Feature scope (what is in / out of v1)
+- UI/UX (layout, copy, navigation) especially when a Figma or mock exists
+- Data model (local vs API, fields, persistence)
+- Breaking changes or migrations
+- Multiple valid implementations with different trade-offs
+
+Do **not** block on trivial details you can infer from existing project patterns.
+
+## Exceptions (still prefer a one-line heads-up)
+
+- User message is clearly “fix this bug now” on a specific file/error they pasted
+- User says “just do it” / “implement” after you already presented a plan in the same thread
+- Tiny follow-ups clearly in scope of an **already approved** task (e.g. “make the toast 1s longer” after shopping list was approved)
+
+## After implementation
+
+Summarize what changed and where. Do not start unrelated refactors unless approved.

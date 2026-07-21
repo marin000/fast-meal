@@ -6,6 +6,7 @@ import {
 	OPENAI_FETCH_TIMEOUT_MS,
 	PROMPT_VERSION,
 } from "@/app/constants/openAI";
+import type { RecipeImagePayload } from "@/app/interface";
 import { deviceService } from "@/app/service/device";
 import { generateRecipeService } from "@/app/service/generate-recipe-service";
 import {
@@ -23,6 +24,28 @@ import { ERROR_LOG_MESSAGES, ERROR_MESSAGES } from "@/constants/messages";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
+const buildOpenAiInput = (
+	prompt: string,
+	image: RecipeImagePayload | undefined,
+) => {
+	if (!image) {
+		return prompt;
+	}
+
+	return [
+		{
+			role: "user",
+			content: [
+				{ type: "input_text", text: prompt },
+				{
+					type: "input_image",
+					image_url: `data:${image.mimeType};base64,${image.base64}`,
+				},
+			],
+		},
+	];
+};
+
 export async function POST(req: Request) {
 	const body = await req.json();
 	const parsedBody = parseRequestBody(body);
@@ -34,8 +57,16 @@ export async function POST(req: Request) {
 		);
 	}
 
-	const { deviceId, ingredients, preferences, units, language, retryAttempt } =
-		parsedBody;
+	const {
+		deviceId,
+		ingredients,
+		preferences,
+		units,
+		language,
+		retryAttempt,
+		image,
+	} = parsedBody;
+	const hasImage = Boolean(image);
 	const recipeCountMode = getRecipeCountMode(retryAttempt ?? 1);
 
 	await connectMongo();
@@ -59,44 +90,47 @@ export async function POST(req: Request) {
 		language,
 		recipeCountMode,
 	});
-	const cachedRecipes = await cache.get(cacheKey);
 
-	if (cachedRecipes) {
-		const consumed = await deviceService.tryConsumeGeneration(deviceId);
-		if (!consumed) {
-			return Response.json(
-				{
-					error: ERROR_MESSAGES.DAILY_LIMIT_REACHED,
-					code: "DAILY_LIMIT",
-				},
-				{ status: 429 },
-			);
-		}
-		return Response.json({ recipes: cachedRecipes, cacheKey });
-	}
+	if (!hasImage) {
+		const cachedRecipes = await cache.get(cacheKey);
 
-	if (process.env.MONGODB_URI) {
-		try {
-			const persistedRecipes = await getPersistedRecipesByCacheKey(cacheKey);
-			if (persistedRecipes && persistedRecipes.length > 0) {
-				await cache.set(cacheKey, persistedRecipes, {
-					ttl: CACHE_TTL_SECONDS,
-					tags: ["recipes", `prompt:${PROMPT_VERSION}`],
-				});
-				const consumed = await deviceService.tryConsumeGeneration(deviceId);
-				if (!consumed) {
-					return Response.json(
-						{
-							error: ERROR_MESSAGES.DAILY_LIMIT_REACHED,
-							code: "DAILY_LIMIT",
-						},
-						{ status: 429 },
-					);
-				}
-				return Response.json({ recipes: persistedRecipes, cacheKey });
+		if (cachedRecipes) {
+			const consumed = await deviceService.tryConsumeGeneration(deviceId);
+			if (!consumed) {
+				return Response.json(
+					{
+						error: ERROR_MESSAGES.DAILY_LIMIT_REACHED,
+						code: "DAILY_LIMIT",
+					},
+					{ status: 429 },
+				);
 			}
-		} catch {
-			console.error(ERROR_LOG_MESSAGES.GENERATE_RECIPE_PERSISTED_GET_FAILED);
+			return Response.json({ recipes: cachedRecipes, cacheKey });
+		}
+
+		if (process.env.MONGODB_URI) {
+			try {
+				const persistedRecipes = await getPersistedRecipesByCacheKey(cacheKey);
+				if (persistedRecipes && persistedRecipes.length > 0) {
+					await cache.set(cacheKey, persistedRecipes, {
+						ttl: CACHE_TTL_SECONDS,
+						tags: ["recipes", `prompt:${PROMPT_VERSION}`],
+					});
+					const consumed = await deviceService.tryConsumeGeneration(deviceId);
+					if (!consumed) {
+						return Response.json(
+							{
+								error: ERROR_MESSAGES.DAILY_LIMIT_REACHED,
+								code: "DAILY_LIMIT",
+							},
+							{ status: 429 },
+						);
+					}
+					return Response.json({ recipes: persistedRecipes, cacheKey });
+				}
+			} catch {
+				console.error(ERROR_LOG_MESSAGES.GENERATE_RECIPE_PERSISTED_GET_FAILED);
+			}
 		}
 	}
 
@@ -106,6 +140,7 @@ export async function POST(req: Request) {
 		units,
 		language,
 		recipeCountMode,
+		hasImage,
 	});
 
 	let response: Response;
@@ -118,7 +153,7 @@ export async function POST(req: Request) {
 			},
 			body: JSON.stringify({
 				model: MODEL,
-				input: prompt,
+				input: buildOpenAiInput(prompt, image),
 			}),
 			signal: AbortSignal.timeout(OPENAI_FETCH_TIMEOUT_MS),
 		});
@@ -145,8 +180,17 @@ export async function POST(req: Request) {
 	const data = await response.json();
 
 	try {
-		const { recipes } =
+		const { recipes, declined, message } =
 			generateRecipeService.extractRecipesFromOpenAiResponse(data);
+
+		if (declined) {
+			return Response.json({
+				recipes: [],
+				declined: true,
+				...(typeof message === "string" ? { message } : {}),
+			});
+		}
+
 		if (recipes.length > 0) {
 			const consumed = await deviceService.tryConsumeGeneration(deviceId);
 			if (!consumed) {
@@ -159,18 +203,25 @@ export async function POST(req: Request) {
 				);
 			}
 		}
-		await cache.set(cacheKey, recipes, {
-			ttl: CACHE_TTL_SECONDS,
-			tags: ["recipes", `prompt:${PROMPT_VERSION}`],
-		});
-		if (process.env.MONGODB_URI && recipes.length > 0) {
-			try {
-				await upsertRecipeCacheEntry(cacheKey, recipes);
-			} catch {
-				console.error(ERROR_LOG_MESSAGES.GENERATE_RECIPE_CACHE_UPSERT_FAILED);
+
+		if (!hasImage) {
+			await cache.set(cacheKey, recipes, {
+				ttl: CACHE_TTL_SECONDS,
+				tags: ["recipes", `prompt:${PROMPT_VERSION}`],
+			});
+			if (process.env.MONGODB_URI && recipes.length > 0) {
+				try {
+					await upsertRecipeCacheEntry(cacheKey, recipes);
+				} catch {
+					console.error(ERROR_LOG_MESSAGES.GENERATE_RECIPE_CACHE_UPSERT_FAILED);
+				}
 			}
 		}
-		return Response.json({ recipes, cacheKey });
+
+		return Response.json({
+			recipes,
+			...(hasImage ? {} : { cacheKey }),
+		});
 	} catch (error) {
 		const message =
 			error instanceof Error

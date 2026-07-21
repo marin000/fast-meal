@@ -15,12 +15,14 @@ interface AppTextInputProps extends TextInputProps {
 	label: string;
 	labelRight?: ReactNode;
 	placeholder: string;
+	footer?: ReactNode;
 }
 
 export const AppTextInput = ({
 	label,
 	labelRight,
 	placeholder,
+	footer,
 	style,
 	...props
 }: AppTextInputProps) => {
@@ -34,23 +36,31 @@ export const AppTextInput = ({
 				</Pressable>
 				{labelRight}
 			</View>
-			<TextInput
-				multiline
-				numberOfLines={4}
-				placeholder={placeholder}
-				placeholderTextColor={theme.inputPlaceholder}
+			<View
 				style={[
-					styles.input,
+					styles.inputCard,
 					{
 						backgroundColor: theme.inputBg,
 						borderColor: theme.inputBorder,
-						color: theme.text,
 					},
-					style,
 				]}
-				textAlignVertical="top"
-				{...props}
-			/>
+			>
+				<TextInput
+					multiline
+					numberOfLines={4}
+					placeholder={placeholder}
+					placeholderTextColor={theme.inputPlaceholder}
+					style={[
+						styles.input,
+						footer ? styles.inputWithFooter : null,
+						{ color: theme.text },
+						style,
+					]}
+					textAlignVertical="top"
+					{...props}
+				/>
+				{footer ? <View style={styles.footer}>{footer}</View> : null}
+			</View>
 		</View>
 	);
 };
@@ -72,12 +82,23 @@ const styles = StyleSheet.create({
 		fontSize: 13,
 		fontWeight: "700",
 	},
-	input: {
+	inputCard: {
 		borderRadius: 16,
 		borderWidth: 1,
+		overflow: "hidden",
+	},
+	input: {
 		fontSize: 16,
 		minHeight: 120,
 		paddingHorizontal: 16,
 		paddingVertical: 14,
+	},
+	inputWithFooter: {
+		minHeight: 100,
+		paddingBottom: 8,
+	},
+	footer: {
+		paddingBottom: 12,
+		paddingHorizontal: 12,
 	},
 });

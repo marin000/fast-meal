@@ -9,8 +9,26 @@
 		"subtitle": "Upiši sastojke i generiraj ideje za recepte.",
 		"ingredientsLabel": "Sastojci",
 		"ingredientsPlaceholder": "Imam jaja, sir, kruh...",
+		"ingredientsPlaceholderWithPhoto": "Opcionalno: imam još …",
 		"quickFiltersLabel": "Brzi filteri",
 		"cta": "Pronađi recepte",
+		"image": {
+			"add": "Dodaj fotografiju hladnjaka",
+			"addTitle": "Dodaj fotografiju hladnjaka",
+			"camera": "Kamera",
+			"gallery": "Galerija",
+			"cancel": "Odustani",
+			"photoAdded": "Fotografija dodana",
+			"replace": "Zamijeni",
+			"remove": "Ukloni fotografiju",
+			"closePreview": "Zatvori pregled",
+			"errors": {
+				"unsupportedType": "Koristi JPG, PNG ili WEBP sliku.",
+				"tooLarge": "Slika je prevelika (max 10 MB).",
+				"processingFailed": "Nismo uspjeli obraditi sliku. Pokušaj s drugom fotografijom.",
+				"permissionDenied": "Dopusti pristup kameri ili fotografijama za dodavanje slike hladnjaka."
+			}
+		},
 		"filters": {
 			"quick": "15 min",
 			"highProtein": "Visok protein",

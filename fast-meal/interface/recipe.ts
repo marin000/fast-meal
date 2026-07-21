@@ -3,6 +3,13 @@ import type { AppLanguage } from "@/constants/settings";
 
 export type DisplayUnits = "metric" | "imperial";
 
+export type RecipeImageMimeType = "image/jpeg" | "image/png" | "image/webp";
+
+export interface RecipeImagePayload {
+	base64: string;
+	mimeType: RecipeImageMimeType;
+}
+
 export interface GenerateRecipeInput {
 	deviceId: string;
 	ingredientsInput: string;
@@ -10,6 +17,7 @@ export interface GenerateRecipeInput {
 	units: DisplayUnits;
 	language: AppLanguage;
 	retryAttempt?: number;
+	image?: RecipeImagePayload;
 }
 
 export interface GenerateRecipeRequestBody {
@@ -19,6 +27,7 @@ export interface GenerateRecipeRequestBody {
 	units: DisplayUnits;
 	language: AppLanguage;
 	retryAttempt?: number;
+	image?: RecipeImagePayload;
 }
 
 export interface RecipeIngredient {

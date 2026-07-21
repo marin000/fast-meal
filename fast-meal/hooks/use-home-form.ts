@@ -6,6 +6,7 @@ import { type QuickFilterOption, quickFilterOptions } from "@/constants/home";
 import {
 	useFeedbackMessage,
 	useGenerationQuota,
+	useHomeIngredientImage,
 	useHomeIngredients,
 	usePreferences,
 } from "@/context";
@@ -16,8 +17,11 @@ export const useHomeForm = () => {
 	const { showMessage } = useFeedbackMessage();
 	const { remainingGenerations } = useGenerationQuota();
 	const { lockedQuickFilters, units } = usePreferences();
-	const { ingredients: ingredientsInputValue, setIngredients: setIngredientsInputValue } =
-		useHomeIngredients();
+	const {
+		ingredients: ingredientsInputValue,
+		setIngredients: setIngredientsInputValue,
+	} = useHomeIngredients();
+	const { image } = useHomeIngredientImage();
 	const [selectedFilters, setSelectedFilters] = useState<QuickFilterOption[]>(
 		[],
 	);
@@ -33,8 +37,8 @@ export const useHomeForm = () => {
 	};
 
 	const canSubmit = useMemo(
-		() => ingredientsInputValue.trim().length > 0,
-		[ingredientsInputValue],
+		() => ingredientsInputValue.trim().length > 0 || image !== null,
+		[image, ingredientsInputValue],
 	);
 	const selectedFiltersWithLocks = useMemo(
 		() =>
@@ -56,6 +60,7 @@ export const useHomeForm = () => {
 				ingredients: ingredientsInputValue.trim(),
 				preferences: selectedFiltersWithLocks.join(","),
 				units,
+				hasImage: image ? "1" : "0",
 			},
 		});
 	};

@@ -2,14 +2,19 @@
 	"expo": {
 		"name": "FastMeal",
 		"slug": "fast-meal",
-		"version": "1.0.3",
+		"version": "1.1.0",
 		"orientation": "portrait",
 		"icon": "./assets/images/icon.png",
 		"scheme": "fastmeal",
 		"userInterfaceStyle": "automatic",
 		"newArchEnabled": true,
 		"ios": {
-			"supportsTablet": true
+			"supportsTablet": true,
+			"buildNumber": "5",
+			"infoPlist": {
+				"NSCameraUsageDescription": "FastMeal uses the camera so you can photograph ingredients or your fridge.",
+				"NSPhotoLibraryUsageDescription": "FastMeal accesses your photos so you can upload a picture of ingredients or your fridge."
+			}
 		},
 		"android": {
 			"adaptiveIcon": {
@@ -20,7 +25,8 @@
 			},
 			"edgeToEdgeEnabled": true,
 			"predictiveBackGestureEnabled": false,
-			"package": "com.marin1997.fastmeal"
+			"package": "com.marin1997.fastmeal",
+			"versionCode": 5
 		},
 		"web": {
 			"output": "static",
@@ -57,6 +63,13 @@
 				{
 					"enforceContrast": false,
 					"hidden": true
+				}
+			],
+			[
+				"expo-image-picker",
+				{
+					"photosPermission": "FastMeal accesses your photos so you can upload a picture of ingredients or your fridge.",
+					"cameraPermission": "FastMeal uses the camera so you can photograph ingredients or your fridge."
 				}
 			]
 		],
