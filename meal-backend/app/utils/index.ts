@@ -1,4 +1,5 @@
 export * from "./build-meal-prompt";
+export * from "./capture-api-error";
 export * from "./fridge-product";
 export * from "./helper";
 export * from "./normalize-recipe";

@@ -45,6 +45,7 @@ This Privacy Policy describes how we collect, use, store, and share information 
 - **Device identifier:** A random ID generated on your device and stored locally. It is sent to our servers to associate your saved data and usage limits with your installation. It is **not** your hardware ID, advertising ID, or any identifier tied to your real-world identity.
 - **Usage data:** We track how many recipe generations you use per day, linked to your device identifier, to enforce fair-use limits on the free plan.
 - **Technical data:** When you use our API, our hosting provider may process standard request metadata (such as IP address, request timestamps, and error logs) for security, reliability, and operation of the Services. We do not use this information to identify you personally.
+- **Crash and diagnostic data:** We use **Sentry** (an error-monitoring provider) to collect crash reports and limited diagnostic metadata from the App and our API (for example: app version, device/OS type, error stack traces, and non-content feature events such as “recipe generated”). We do **not** send ingredient lists, fridge photos, or recipe prompt text to Sentry.
 
 ### 4.3 Information stored only on your device
 
@@ -80,6 +81,7 @@ We use the information described above to:
 - Remember your language and unit preferences
 - Schedule local expiration reminders on your device
 - Operate, maintain, secure, and improve the Services
+- Diagnose crashes and reliability issues via our error-monitoring provider
 - Cache recipe results (for text-based requests) to reduce duplicate AI requests and improve performance
 
 Photos you submit for recipe generation are used only to identify ingredients and generate recipes. We do **not** use them for advertising, facial recognition, or marketing profiling.
@@ -96,7 +98,7 @@ If you are located in the European Economic Area (EEA) or the United Kingdom, we
 |--------|-------------|
 | Providing the App and core Services | Performance of a contract / steps taken at your request before entering a contract |
 | AI recipe generation (text and optional photos) | Performance of a contract |
-| Usage limits, caching, and security | Legitimate interests (operating and protecting the Services) |
+| Usage limits, caching, security, and crash diagnostics | Legitimate interests (operating and protecting the Services) |
 | Local expiration notifications | Your consent (device notification permission) |
 | Camera and photo library access | Your consent (device permission); photos are processed when you choose to submit them for recipe generation |
 
@@ -113,6 +115,7 @@ We share data only as necessary to operate the App:
 | **OpenAI** | AI-powered recipe generation | Ingredient lists, optional ingredient/fridge photos you submit, dietary preferences, language, and measurement units |
 | **MongoDB** (database provider) | Persistent storage | Device identifier, fridge products, saved recipes, shopping list items, usage counts, and cached recipe data (text-based recipe cache; we do not persist submitted photos as a photo library) |
 | **Vercel** | API hosting, caching, and infrastructure | Request data processed when you use the App (including image data in transit when you submit a photo for generation) |
+| **Sentry** | Crash reporting and reliability monitoring | Error diagnostics (stack traces, app/API version, device/OS metadata) and limited non-content product events; not ingredient lists, photos, or prompts |
 
 These providers process data on our behalf and only for the purposes described in this policy. We do **not** sell, rent, or trade your personal information.
 
@@ -121,6 +124,7 @@ Third-party privacy policies:
 - OpenAI: [https://openai.com/policies/privacy-policy](https://openai.com/policies/privacy-policy)
 - Vercel: [https://vercel.com/legal/privacy-policy](https://vercel.com/legal/privacy-policy)
 - MongoDB: [https://www.mongodb.com/legal/privacy/privacy-policy](https://www.mongodb.com/legal/privacy/privacy-policy)
+- Sentry: [https://sentry.io/privacy/](https://sentry.io/privacy/)
 
 ---
 

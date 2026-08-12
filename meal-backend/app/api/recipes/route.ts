@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import type { Recipe, SavedRecipeListItem } from "@/app/interface";
 import { deviceService } from "@/app/service/device";
 import { connectMongo } from "@/app/service/mongodb";
-import { normalizeRecipe, parseSaveRecipeBody } from "@/app/utils";
+import { captureApiError, normalizeRecipe, parseSaveRecipeBody } from "@/app/utils";
 import {
 	ERROR_LOG_MESSAGES,
 	ERROR_MESSAGES,
@@ -40,11 +40,6 @@ export async function POST(req: Request): Promise<Response> {
 	const normalizedRecipe = normalizeRecipe(recipe);
 
 	await deviceService.ensureDeviceRecord(deviceId);
-	console.log("[api/recipes] saveRecipe", {
-		deviceId,
-		cacheKey,
-		title: normalizedRecipe.title,
-	});
 
 	try {
 		const created = await SavedRecipe.create({
@@ -65,6 +60,7 @@ export async function POST(req: Request): Promise<Response> {
 		);
 	} catch (error) {
 		console.error(ERROR_LOG_MESSAGES.RECIPES_CREATE_FAILED, error);
+		captureApiError(error, { feature: "recipes_create" });
 		return Response.json(
 			{ error: ERROR_MESSAGES.RECIPE_SAVE_FAILED },
 			{ status: 500 },

@@ -3,7 +3,11 @@ import type { FridgeProductListItem } from "@/app/interface";
 import { deviceService } from "@/app/service/device";
 import { householdService } from "@/app/service/household";
 import { connectMongo } from "@/app/service/mongodb";
-import { parseFridgeProductBody, toFridgeProductListItem } from "@/app/utils";
+import {
+	captureApiError,
+	parseFridgeProductBody,
+	toFridgeProductListItem,
+} from "@/app/utils";
 import {
 	ERROR_LOG_MESSAGES,
 	ERROR_MESSAGES,
@@ -42,7 +46,6 @@ export async function POST(req: Request): Promise<Response> {
 
 	await deviceService.ensureDeviceRecord(deviceId);
 	const householdId = await householdService.resolveHouseholdId(deviceId);
-	console.log("[api/fridge-products] create", { deviceId, householdId, name });
 
 	try {
 		const created = await FridgeProduct.create({
@@ -58,6 +61,7 @@ export async function POST(req: Request): Promise<Response> {
 		return Response.json(toFridgeProductListItem(created), { status: 201 });
 	} catch (error) {
 		console.error(ERROR_LOG_MESSAGES.FRIDGE_PRODUCTS_CREATE_FAILED, error);
+		captureApiError(error, { feature: "fridge_products_create" });
 		return Response.json(
 			{ error: ERROR_MESSAGES.FRIDGE_PRODUCT_SAVE_FAILED },
 			{ status: 500 },

@@ -16,6 +16,8 @@ import {
 import { connectMongo } from "@/app/service/mongodb";
 import {
 	buildMealGenerationPrompt,
+	captureApiError,
+	captureApiMessage,
 	getRecipeCountMode,
 	parseRequestBody,
 } from "@/app/utils";
@@ -128,8 +130,12 @@ export async function POST(req: Request) {
 					}
 					return Response.json({ recipes: persistedRecipes, cacheKey });
 				}
-			} catch {
+			} catch (error) {
 				console.error(ERROR_LOG_MESSAGES.GENERATE_RECIPE_PERSISTED_GET_FAILED);
+				captureApiError(error, {
+					feature: "generate_recipe",
+					step: "persisted_get",
+				});
 			}
 		}
 	}
@@ -167,10 +173,16 @@ export async function POST(req: Request) {
 				{ status: 504 },
 			);
 		}
+		captureApiError(error, { feature: "generate_recipe", step: "openai_fetch" });
 		throw error;
 	}
 
 	if (!response.ok) {
+		captureApiMessage(ERROR_MESSAGES.FAILED_TO_PARSE_MODEL_OUTPUT, {
+			feature: "generate_recipe",
+			step: "openai_http",
+			status: response.status,
+		});
 		return Response.json(
 			{ error: ERROR_MESSAGES.FAILED_TO_PARSE_MODEL_OUTPUT },
 			{ status: 502 },
@@ -212,8 +224,12 @@ export async function POST(req: Request) {
 			if (process.env.MONGODB_URI && recipes.length > 0) {
 				try {
 					await upsertRecipeCacheEntry(cacheKey, recipes);
-				} catch {
+				} catch (error) {
 					console.error(ERROR_LOG_MESSAGES.GENERATE_RECIPE_CACHE_UPSERT_FAILED);
+					captureApiError(error, {
+						feature: "generate_recipe",
+						step: "cache_upsert",
+					});
 				}
 			}
 		}
@@ -223,6 +239,10 @@ export async function POST(req: Request) {
 			...(hasImage ? {} : { cacheKey }),
 		});
 	} catch (error) {
+		captureApiError(error, {
+			feature: "generate_recipe",
+			step: "parse_output",
+		});
 		const message =
 			error instanceof Error
 				? error.message
