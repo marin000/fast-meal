@@ -1,6 +1,5 @@
 import type { ErrorEvent } from "@sentry/nextjs";
 import * as Sentry from "@sentry/nextjs";
-import { config } from "@/app/config/config";
 
 const scrubEvent = (event: ErrorEvent): ErrorEvent | null => {
 	if (event.request) {
@@ -15,8 +14,8 @@ const scrubEvent = (event: ErrorEvent): ErrorEvent | null => {
 };
 
 Sentry.init({
-	dsn: config.sentryDsn,
-	enabled: Boolean(config.sentryDsn),
+	dsn: process.env.SENTRY_DSN,
+	enabled: Boolean(process.env.SENTRY_DSN),
 	sendDefaultPii: false,
 	tracesSampleRate: process.env.NODE_ENV === "development" ? 0 : 0.1,
 	environment: process.env.NODE_ENV ?? "production",

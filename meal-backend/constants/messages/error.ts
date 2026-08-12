@@ -43,9 +43,6 @@ export const ERROR_MESSAGES = {
 	MISSING_OPENAI_API_BASE_URL:
 		"Missing required environment variable: OPENAI_API_BASE_URL",
 	MISSING_MONGODB_URI: "Missing required environment variable: MONGODB_URI",
-	MISSING_SENTRY_DSN: "Missing required environment variable: SENTRY_DSN",
-	MISSING_SENTRY_AUTH_TOKEN:
-		"Missing required environment variable: SENTRY_AUTH_TOKEN",
 } as const;
 
 export const ERROR_LOG_MESSAGES = {
