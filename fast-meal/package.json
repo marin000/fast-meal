@@ -13,7 +13,8 @@
     "lint": "biome check .",
     "format": "biome format .",
     "format-fix": "biome check --write ./src",
-    "generate-icons": "node scripts/generate-app-icons.mjs"
+    "generate-icons": "node scripts/generate-app-icons.mjs",
+    "bump": "node scripts/bump-version.mjs"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
