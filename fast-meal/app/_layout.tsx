@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@react-navigation/native";
 import { type Href, Stack, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
 import "react-native-reanimated";
 import { StyleSheet, View } from "react-native";
 import {
@@ -29,9 +30,25 @@ import {
 	HouseholdProvider,
 	PreferencesProvider,
 	ShoppingListProvider,
+	useDeviceId,
 	usePreferences,
 } from "@/context";
 import { useAndroidSystemBars } from "@/hooks/use-android-system-bars";
+import { initSentry, Sentry, setSentryDeviceId } from "@/utils/sentry";
+
+initSentry();
+
+const SentryDeviceContext = () => {
+	const { deviceId } = useDeviceId();
+
+	useEffect(() => {
+		if (deviceId) {
+			setSentryDeviceId(deviceId);
+		}
+	}, [deviceId]);
+
+	return null;
+};
 
 const RootLayoutContent = () => {
 	const { darkMode } = usePreferences();
@@ -124,6 +141,7 @@ const RootLayout = () => {
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<PreferencesProvider>
 				<DeviceIdProvider>
+					<SentryDeviceContext />
 					<HouseholdProvider>
 						<GenerationQuotaProvider>
 							<FridgeProductsProvider>
@@ -145,7 +163,7 @@ const RootLayout = () => {
 	);
 };
 
-export default RootLayout;
+export default Sentry.wrap(RootLayout);
 
 const styles = StyleSheet.create({
 	container: {

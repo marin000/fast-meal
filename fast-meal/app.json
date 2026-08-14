@@ -71,6 +71,15 @@
 					"photosPermission": "FastMeal accesses your photos so you can upload a picture of ingredients or your fridge.",
 					"cameraPermission": "FastMeal uses the camera so you can photograph ingredients or your fridge."
 				}
+			],
+			[
+				"@sentry/react-native/expo",
+				{
+					"url": "https://sentry.io/",
+					"note": "Use SENTRY_AUTH_TOKEN env to authenticate with Sentry.",
+					"organization": "fast-meal",
+					"project": "fast-meal"
+				}
 			]
 		],
 		"experiments": {

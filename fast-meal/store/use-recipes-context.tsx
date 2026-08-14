@@ -16,6 +16,11 @@ import {
 import { useFeedbackMessage } from "@/context/feedback-message-context";
 import type { Recipe } from "@/interface";
 import type { SavedRecipeListItem } from "@/interface/recipe";
+import {
+	ANALYTICS_EVENTS,
+	captureAppException,
+	trackProductEvent,
+} from "@/utils/sentry";
 
 const matchSavedListItemId = (
 	recipe: Recipe,
@@ -113,9 +118,10 @@ export const RecipesProvider = ({
 					next[index] = id;
 					return next;
 				});
+				trackProductEvent(ANALYTICS_EVENTS.recipeSaved);
 				showMessage(t("saved.toast.saved"), "success");
 			} catch (error) {
-				console.error("[saveRecipeAtIndex]", error);
+				captureAppException(error, { feature: "recipe_save" });
 				showMessage(t("saved.toast.saveFailed"), "error");
 			} finally {
 				setBusyIndex(null);

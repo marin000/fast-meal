@@ -14,6 +14,11 @@ import {
 } from "@/context";
 import type { Recipe, RecipeImagePayload } from "@/interface";
 import { coerceParam } from "@/utils/helper";
+import {
+	ANALYTICS_EVENTS,
+	captureAppException,
+	trackProductEvent,
+} from "@/utils/sentry";
 
 interface RecipesParams {
 	ingredients?: string | string[];
@@ -59,6 +64,7 @@ export const useRecipes = () => {
 		const fetchRecipes = async () => {
 			setIsLoading(true);
 			setFetchError(null);
+			const startedAt = Date.now();
 
 			try {
 				const ingredientsInput = coerceParam(params.ingredients);
@@ -77,11 +83,17 @@ export const useRecipes = () => {
 								mimeType: currentImage.mimeType,
 							}
 						: undefined;
+				const hadImage = Boolean(imagePayload);
 
 				if (hasImageParam && !imagePayload && !ingredientsInput.trim()) {
 					showAlert(t("errors.generic"));
 					return;
 				}
+
+				trackProductEvent(ANALYTICS_EVENTS.recipeGenerateRequested, {
+					hadImage,
+					retryAttempt: attempt + 1,
+				});
 
 				const response = await generateRecipe({
 					deviceId,
@@ -95,6 +107,11 @@ export const useRecipes = () => {
 
 				if (response.declined) {
 					clearImage();
+					trackProductEvent(ANALYTICS_EVENTS.recipeGenerateError, {
+						hadImage,
+						errorCode: "declined",
+						durationMs: Date.now() - startedAt,
+					});
 					showAlert(
 						typeof response.message === "string" && response.message.trim()
 							? response.message.trim()
@@ -104,11 +121,21 @@ export const useRecipes = () => {
 				}
 
 				if (!response.recipes || response.recipes.length === 0) {
+					trackProductEvent(ANALYTICS_EVENTS.recipeGenerateError, {
+						hadImage,
+						errorCode: "no_recipes",
+						durationMs: Date.now() - startedAt,
+					});
 					showAlert(t("errors.noRecipes"));
 					return;
 				}
 
 				clearImage();
+				trackProductEvent(ANALYTICS_EVENTS.recipeGenerateSuccess, {
+					hadImage,
+					durationMs: Date.now() - startedAt,
+					recipeCount: response.recipes.length,
+				});
 				setRecipes(response.recipes);
 				setCacheKey(
 					typeof response.cacheKey === "string" ? response.cacheKey : null,
@@ -116,6 +143,10 @@ export const useRecipes = () => {
 				await refreshQuota();
 			} catch (error) {
 				if (error instanceof DailyLimitError) {
+					trackProductEvent(ANALYTICS_EVENTS.recipeGenerateError, {
+						errorCode: "daily_limit",
+						durationMs: Date.now() - startedAt,
+					});
 					showMessage(t("errors.dailyLimit"), "info");
 					await refreshQuota();
 					goBack();
@@ -123,10 +154,22 @@ export const useRecipes = () => {
 				}
 
 				if (error instanceof GenerationTimeoutError) {
+					trackProductEvent(ANALYTICS_EVENTS.recipeGenerateError, {
+						errorCode: "timeout",
+						durationMs: Date.now() - startedAt,
+					});
 					setFetchError("timeout");
 					return;
 				}
 
+				captureAppException(error, {
+					feature: "recipe_generate",
+					durationMs: Date.now() - startedAt,
+				});
+				trackProductEvent(ANALYTICS_EVENTS.recipeGenerateError, {
+					errorCode: "generic",
+					durationMs: Date.now() - startedAt,
+				});
 				setFetchError("generic");
 			} finally {
 				setIsLoading(false);

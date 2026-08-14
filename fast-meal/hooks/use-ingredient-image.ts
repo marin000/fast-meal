@@ -6,6 +6,11 @@ import { Alert } from "react-native";
 import type { IngredientImageErrorCode } from "@/constants/ingredient-image";
 import { useHomeIngredientImage } from "@/context/home-ingredient-image-context";
 import { processIngredientImageAsset } from "@/utils/process-ingredient-image";
+import {
+	ANALYTICS_EVENTS,
+	captureAppException,
+	trackProductEvent,
+} from "@/utils/sentry";
 
 const errorMessageKey = (code: IngredientImageErrorCode): string => {
 	switch (code) {
@@ -33,11 +38,21 @@ export const useIngredientImage = () => {
 			try {
 				const result = await processIngredientImageAsset(asset);
 				if (!result.ok) {
+					trackProductEvent(ANALYTICS_EVENTS.fridgeImageAttached, {
+						ok: false,
+						errorCode: result.error,
+					});
 					const message = t(errorMessageKey(result.error));
 					setImageError(message);
 					return;
 				}
 				setImage(result.payload);
+				trackProductEvent(ANALYTICS_EVENTS.fridgeImageAttached, {
+					ok: true,
+				});
+			} catch (error) {
+				captureAppException(error, { feature: "fridge_image" });
+				setImageError(t(errorMessageKey("processingFailed")));
 			} finally {
 				setIsProcessing(false);
 			}

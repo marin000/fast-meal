@@ -8,6 +8,11 @@ import {
 	useHousehold,
 	useShoppingList,
 } from "@/context";
+import {
+	ANALYTICS_EVENTS,
+	captureAppException,
+	trackProductEvent,
+} from "@/utils/sentry";
 
 export const useFamilySharing = () => {
 	const { t } = useTranslation();
@@ -50,8 +55,10 @@ export const useFamilySharing = () => {
 			await joinHousehold(code);
 			setJoinCode("");
 			await reloadSharedData();
+			trackProductEvent(ANALYTICS_EVENTS.householdJoined);
 			showMessage(t("settings.family.joinSuccess"), "success");
-		} catch {
+		} catch (error) {
+			captureAppException(error, { feature: "household_join" });
 			showMessage(t("settings.family.joinFailed"), "error");
 		} finally {
 			setIsJoining(false);
