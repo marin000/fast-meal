@@ -14,6 +14,8 @@ export const AddShoppingItemInput = ({ onAdd }: AddShoppingItemInputProps) => {
 	const theme = useAppAppearance();
 	const [value, setValue] = useState("");
 
+	const canAdd = value.trim().length > 0;
+
 	const handleAdd = () => {
 		const trimmed = value.trim();
 		if (!trimmed) return;
@@ -41,8 +43,16 @@ export const AddShoppingItemInput = ({ onAdd }: AddShoppingItemInputProps) => {
 			/>
 			<Pressable
 				accessibilityRole="button"
+				accessibilityState={{ disabled: !canAdd }}
+				disabled={!canAdd}
 				onPress={handleAdd}
-				style={[styles.addButton, { backgroundColor: theme.primary }]}
+				style={[
+					styles.addButton,
+					{
+						backgroundColor: theme.primary,
+						opacity: canAdd ? 1 : 0.4,
+					},
+				]}
 			>
 				<Ionicons name="add" size={24} color="#ffffff" />
 			</Pressable>
