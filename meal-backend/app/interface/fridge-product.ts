@@ -18,6 +18,7 @@ export interface CreateFridgeProductRequestBody {
 	unit?: FridgeProductUnit;
 	expirationDate?: string;
 	purchasedAt?: string;
+	barcode?: string;
 }
 
 export interface FridgeProductListItem {
@@ -28,6 +29,7 @@ export interface FridgeProductListItem {
 	unit?: FridgeProductUnit;
 	expirationDate?: string;
 	purchasedAt?: string;
+	barcode?: string;
 	createdAt: string;
 	updatedAt: string;
 }
@@ -41,6 +43,7 @@ export type FridgeProductDoc = {
 	unit?: string;
 	expirationDate?: Date;
 	purchasedAt?: Date;
+	barcode?: string;
 	createdAt: Date;
 	updatedAt: Date;
 };

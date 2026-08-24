@@ -11,6 +11,7 @@ export interface ParsedFridgeProductBody {
 	unit?: FridgeProductUnit;
 	expirationDate?: Date;
 	purchasedAt?: Date;
+	barcode?: string;
 }
 
 const isFridgeProductUnit = (value: string): value is FridgeProductUnit =>
@@ -62,8 +63,15 @@ export const parseFridgeProductBody = (
 ): ParsedFridgeProductBody | null => {
 	if (typeof body !== "object" || body === null) return null;
 
-	const { deviceId, name, quantity, unit, expirationDate, purchasedAt } =
-		body as Partial<CreateFridgeProductRequestBody>;
+	const {
+		deviceId,
+		name,
+		quantity,
+		unit,
+		expirationDate,
+		purchasedAt,
+		barcode,
+	} = body as Partial<CreateFridgeProductRequestBody>;
 
 	if (typeof deviceId !== "string" || deviceId.trim().length === 0) return null;
 	if (typeof name !== "string" || name.trim().length === 0) return null;
@@ -84,6 +92,12 @@ export const parseFridgeProductBody = (
 	const parsedPurchasedAt = parseOptionalIsoDate(purchasedAt);
 	if (!parsedPurchasedAt.ok) return null;
 
+	let parsedBarcode: string | undefined;
+	if (barcode !== undefined && barcode !== null) {
+		if (typeof barcode !== "string" || barcode.trim().length === 0) return null;
+		parsedBarcode = barcode.trim();
+	}
+
 	return {
 		deviceId: deviceId.trim(),
 		name: name.trim(),
@@ -91,5 +105,6 @@ export const parseFridgeProductBody = (
 		unit: parsedUnit.unit,
 		expirationDate: parsedExpirationDate.date,
 		purchasedAt: parsedPurchasedAt.date,
+		barcode: parsedBarcode,
 	};
 };

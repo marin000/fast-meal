@@ -9,6 +9,7 @@ const fridgeProductSchema = new Schema(
 		unit: { type: String, trim: true },
 		expirationDate: { type: Date },
 		purchasedAt: { type: Date },
+		barcode: { type: String, trim: true, index: true },
 	},
 	{ timestamps: true, collection: "fridge_products" },
 );

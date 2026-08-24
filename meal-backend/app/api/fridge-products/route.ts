@@ -41,7 +41,7 @@ export async function POST(req: Request): Promise<Response> {
 		);
 	}
 
-	const { deviceId, name, quantity, unit, expirationDate, purchasedAt } =
+	const { deviceId, name, quantity, unit, expirationDate, purchasedAt, barcode } =
 		parsed;
 
 	await deviceService.ensureDeviceRecord(deviceId);
@@ -56,6 +56,7 @@ export async function POST(req: Request): Promise<Response> {
 			unit,
 			expirationDate,
 			purchasedAt,
+			barcode,
 		});
 
 		return Response.json(toFridgeProductListItem(created), { status: 201 });

@@ -15,6 +15,7 @@ export const toFridgeProductListItem = (
 	purchasedAt: doc.purchasedAt
 		? convertToIsoString(doc.purchasedAt)
 		: undefined,
+	barcode: doc.barcode,
 	createdAt: convertToIsoString(doc.createdAt),
 	updatedAt: convertToIsoString(doc.updatedAt),
 });
