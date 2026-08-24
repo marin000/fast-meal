@@ -1,3 +1,4 @@
+export * from "./barcode-product";
 export * from "./device";
 export * from "./fridge-product";
 export * from "./household";

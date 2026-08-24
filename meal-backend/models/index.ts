@@ -1,6 +1,7 @@
-export { Device } from "./device";
-export { FridgeProduct } from "./fridge-product";
-export { Household } from "./household";
-export { RecipeCache } from "./recipe-cache";
-export { SavedRecipe } from "./saved-recipe";
-export { ShoppingListItem } from "./shopping-list-item";
+export * from "./barcode-product";
+export * from "./device";
+export * from "./fridge-product";
+export * from "./household";
+export * from "./recipe-cache";
+export * from "./saved-recipe";
+export * from "./shopping-list-item";

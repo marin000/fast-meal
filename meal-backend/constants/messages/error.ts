@@ -10,9 +10,13 @@ export const ERROR_MESSAGES = {
 		"Invalid request body. Expected { deviceId: string }",
 	DEVICE_NOT_CREATED: "Device was not created",
 	FRIDGE_PRODUCT_INVALID_REQUEST_BODY:
-		"Invalid request body. Expected { deviceId: string, name: string, quantity?: number, unit?: string, expirationDate?: string, purchasedAt?: string }",
+		"Invalid request body. Expected { deviceId: string, name: string, quantity?: number, unit?: string, expirationDate?: string, purchasedAt?: string, barcode?: string }",
 	FRIDGE_PRODUCT_SAVE_FAILED: "Could not save fridge product (database error)",
 	FRIDGE_PRODUCT_NOT_FOUND: "Fridge product not found",
+	MISSING_BARCODE_CODE_QUERY: "Missing required query parameter: code",
+	BARCODE_PRODUCT_INVALID_REQUEST_BODY:
+		"Invalid request body. Expected { deviceId: string, code: string, names?: object, ... }",
+	BARCODE_PRODUCT_SAVE_FAILED: "Could not save barcode product (database error)",
 	HOUSEHOLD_NOT_FOUND: "Household not found",
 	INVALID_INVITE_CODE: "Invalid invite code",
 	LEAVE_CURRENT_FAMILY_FIRST:
@@ -48,6 +52,8 @@ export const ERROR_MESSAGES = {
 export const ERROR_LOG_MESSAGES = {
 	FRIDGE_PRODUCTS_CREATE_FAILED:
 		"[api/fridge-products] FridgeProduct.create failed",
+	BARCODE_PRODUCTS_UPSERT_FAILED:
+		"[api/barcode-products] BarcodeProduct upsert failed",
 	RECIPES_CREATE_FAILED: "[api/recipes] SavedRecipe.create failed",
 	GENERATE_RECIPE_PERSISTED_GET_FAILED:
 		"Failed to get persisted recipes from MongoDB",
