@@ -149,6 +149,10 @@
 		"emptySubtitle": "Add products you have at home",
 		"useFromFridge": "Use from Fridge",
 		"useForRecipes": "Use for recipes",
+		"scanBill": {
+			"label": "Scan bill",
+			"comingSoon": "Coming soon"
+		},
 		"picker": {
 			"title": "Add from Fridge",
 			"description": "Select which products to add as ingredients",
@@ -166,6 +170,57 @@
 			"deleted": "Product removed",
 			"addFailed": "Could not add product",
 			"deleteFailed": "Could not remove product"
+		},
+		"scan": {
+			"cta": "Scan",
+			"scanProduct": "Scan product",
+			"holdCta": "Hold to scan",
+			"title": "Scan products",
+			"permissionTitle": "Camera access needed",
+			"permissionBody": "Allow camera access to scan product barcodes into your fridge.",
+			"permissionCta": "Allow camera",
+			"emptyTitle": "No products scanned yet",
+			"reviewTitle": "Scanned ({{count}})",
+			"lookingUp": "Looking up product…",
+			"notFound": "Product not found — enter a name",
+			"namePlaceholder": "Product name",
+			"addAll": "Add all ({{count}})",
+			"addAll_one": "Add 1 product",
+			"addAll_other": "Add all ({{count}})",
+			"toast": {
+				"added": "{{count}} products added",
+				"added_one": "1 product added",
+				"addFailed": "Could not add scanned products"
+			}
+		},
+		"details": {
+			"loadFailed": "Could not load product details",
+			"notFound": "No details found for this product",
+			"scores": {
+				"nutriscore": "Nutri-Score {{grade}}",
+				"ecoscore": "Eco-Score {{grade}}",
+				"nova": "NOVA {{group}}",
+				"unknown": "Unknown"
+			},
+			"nutrition": "Nutrition",
+			"per100g": "Per 100g",
+			"perServing": "Per serving",
+			"perServingWithSize": "Per serving ({{size}})",
+			"nutrientDetails": "Details",
+			"servingSize": "Serving: {{size}}",
+			"ingredients": "Ingredients",
+			"allergens": "Allergens",
+			"viewOnOff": "View on Open Food Facts",
+			"nutrients": {
+				"energy": "Energy",
+				"protein": "Protein",
+				"carbs": "Carbohydrates",
+				"sugars": "Sugars",
+				"fat": "Fat",
+				"saturatedFat": "Saturated fat",
+				"fiber": "Fiber",
+				"salt": "Salt"
+			}
 		}
 	},
 	"shopping": {

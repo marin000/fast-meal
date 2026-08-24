@@ -32,6 +32,7 @@ export const createFridgeProduct = async (params: {
 	unit?: FridgeProductUnit;
 	expirationDate?: string;
 	purchasedAt?: string;
+	barcode?: string;
 }): Promise<FridgeProductListItem> => {
 	const response = await fetch(apiEndpoint, {
 		method: "POST",
@@ -46,6 +47,7 @@ export const createFridgeProduct = async (params: {
 				? { expirationDate: params.expirationDate }
 				: {}),
 			...(params.purchasedAt ? { purchasedAt: params.purchasedAt } : {}),
+			...(params.barcode ? { barcode: params.barcode } : {}),
 		}),
 	});
 

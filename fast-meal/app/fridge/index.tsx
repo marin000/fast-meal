@@ -1,9 +1,16 @@
-import { useFocusEffect, useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { type Href, useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import {
+	ActivityIndicator,
+	Pressable,
+	StyleSheet,
+	Text,
+	View,
+} from "react-native";
 
-import { PrimaryButton, ScreenScrollView } from "@/components";
+import { ScreenScrollView } from "@/components";
 import type { FridgeProductUnit } from "@/constants/fridge";
 import {
 	useFeedbackMessage,
@@ -80,20 +87,37 @@ const FridgeScreen = () => {
 		>
 			<FridgeScreenHeader
 				onAddProduct={() => setAddModalVisible(true)}
+				onScanProducts={() => router.push("/fridge/scan" as Href)}
 				recipesAction={
 					items.length > 0 ? (
-						<PrimaryButton
-							label={t("fridge.useForRecipes")}
+						<Pressable
+							accessibilityRole="button"
 							onPress={() => setPickerVisible(true)}
-							compact
-							leftIconName="sparkles"
-						/>
+							style={[
+								styles.recipesButton,
+								{
+									backgroundColor: theme.substitutionBoxBg,
+									borderColor: theme.primary,
+								},
+							]}
+						>
+							<Ionicons name="sparkles" size={12} color={theme.primary} />
+							<Text style={[styles.recipesLabel, { color: theme.primary }]}>
+								{t("fridge.useForRecipes")}
+							</Text>
+						</Pressable>
 					) : null
 				}
 			/>
 			<FridgeProductList
 				items={items}
 				onRemove={(id) => void handleRemove(id)}
+				onPressProduct={(item) => {
+					if (!item.barcode) return;
+					router.push(
+						`/fridge/product/${encodeURIComponent(item.barcode)}` as Href,
+					);
+				}}
 			/>
 
 			<AddFridgeProductModal
@@ -124,5 +148,19 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		flex: 1,
 		justifyContent: "center",
+	},
+	recipesButton: {
+		alignItems: "center",
+		borderRadius: 12,
+		borderWidth: 2,
+		flexDirection: "row",
+		gap: 6,
+		opacity: 0.95,
+		paddingHorizontal: 12,
+		paddingVertical: 8,
+	},
+	recipesLabel: {
+		fontSize: 12,
+		fontWeight: "900",
 	},
 });

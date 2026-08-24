@@ -17,9 +17,14 @@ import {
 interface FridgeProductRowProps {
 	item: FridgeProductListItem;
 	onRemove: () => void;
+	onPress?: () => void;
 }
 
-export const FridgeProductRow = ({ item, onRemove }: FridgeProductRowProps) => {
+export const FridgeProductRow = ({
+	item,
+	onRemove,
+	onPress,
+}: FridgeProductRowProps) => {
 	const { t, i18n } = useTranslation();
 	const theme = useAppAppearance();
 	const expirationStatus = item.expirationDate
@@ -35,6 +40,7 @@ export const FridgeProductRow = ({ item, onRemove }: FridgeProductRowProps) => {
 		item.unit,
 		(unitKey) => translateMeasurementUnit(t, unitKey),
 	);
+	const isScanned = Boolean(item.barcode);
 
 	return (
 		<View
@@ -46,41 +52,60 @@ export const FridgeProductRow = ({ item, onRemove }: FridgeProductRowProps) => {
 				},
 			]}
 		>
-			<View style={styles.content}>
-				<Text style={[styles.name, { color: theme.text }]} numberOfLines={2}>
-					{item.name}
-				</Text>
-				{quantityLabel ? (
-					<Text style={[styles.meta, { color: theme.textMuted }]}>
-						{quantityLabel}
+			<Pressable
+				style={styles.contentPressable}
+				onPress={onPress}
+				disabled={!onPress}
+			>
+				<View style={styles.content}>
+					<Text style={[styles.name, { color: theme.text }]} numberOfLines={2}>
+						{item.name}
 					</Text>
-				) : null}
-				{item.expirationDate && daysUntilExpiration !== null ? (
-					<Text style={[styles.meta, { color: rowAppearance.accentColor }]}>
-						{t(
-							daysUntilExpiration < 0
-								? "fridge.expiredOn"
-								: "fridge.expiresOn",
-							{
+					{quantityLabel ? (
+						<Text style={[styles.meta, { color: theme.textMuted }]}>
+							{quantityLabel}
+						</Text>
+					) : null}
+					{item.expirationDate && daysUntilExpiration !== null ? (
+						<Text style={[styles.meta, { color: rowAppearance.accentColor }]}>
+							{t(
+								daysUntilExpiration < 0
+									? "fridge.expiredOn"
+									: "fridge.expiresOn",
+								{
+									date: formatDisplayDate(
+										new Date(item.expirationDate),
+										i18n.language,
+									),
+								},
+							)}
+						</Text>
+					) : null}
+					{item.purchasedAt ? (
+						<Text style={[styles.meta, { color: theme.textMuted }]}>
+							{t("fridge.boughtOn", {
 								date: formatDisplayDate(
-									new Date(item.expirationDate),
+									new Date(item.purchasedAt),
 									i18n.language,
 								),
-							},
-						)}
-					</Text>
-				) : null}
-				{item.purchasedAt ? (
-					<Text style={[styles.meta, { color: theme.textMuted }]}>
-						{t("fridge.boughtOn", {
-							date: formatDisplayDate(
-								new Date(item.purchasedAt),
-								i18n.language,
-							),
-						})}
-					</Text>
-				) : null}
-			</View>
+							})}
+						</Text>
+					) : null}
+				</View>
+			</Pressable>
+
+			{isScanned && onPress ? (
+				<Pressable
+					accessibilityRole="button"
+					onPress={onPress}
+					style={[
+						styles.arrowButton,
+						{ backgroundColor: theme.substitutionBoxBg },
+					]}
+				>
+					<Ionicons name="arrow-forward" size={14} color={theme.primary} />
+				</Pressable>
+			) : null}
 
 			<Pressable
 				accessibilityRole="button"
@@ -99,9 +124,12 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		borderWidth: 2,
 		flexDirection: "row",
-		gap: 12,
+		gap: 10,
 		paddingHorizontal: 16,
 		paddingVertical: 12,
+	},
+	contentPressable: {
+		flex: 1,
 	},
 	content: {
 		flex: 1,
@@ -114,6 +142,13 @@ const styles = StyleSheet.create({
 	meta: {
 		fontSize: 12,
 		fontWeight: "500",
+	},
+	arrowButton: {
+		alignItems: "center",
+		borderRadius: 16,
+		height: 32,
+		justifyContent: "center",
+		width: 32,
 	},
 	deleteButton: {
 		alignItems: "center",

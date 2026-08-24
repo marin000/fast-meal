@@ -149,6 +149,10 @@
 		"emptySubtitle": "Dodaj proizvode koje imaš kod kuće",
 		"useFromFridge": "Koristi iz hladnjaka",
 		"useForRecipes": "Koristi za recepte",
+		"scanBill": {
+			"label": "Skeniraj račun",
+			"comingSoon": "Uskoro"
+		},
 		"picker": {
 			"title": "Dodaj iz hladnjaka",
 			"description": "Odaberi proizvode koje želiš dodati kao sastojke",
@@ -166,6 +170,57 @@
 			"deleted": "Proizvod je uklonjen",
 			"addFailed": "Nismo uspjeli dodati proizvod",
 			"deleteFailed": "Nismo uspjeli ukloniti proizvod"
+		},
+		"scan": {
+			"cta": "Skeniraj",
+			"scanProduct": "Skeniraj proizvod",
+			"holdCta": "Drži za sken",
+			"title": "Skeniraj proizvode",
+			"permissionTitle": "Potreban je pristup kameri",
+			"permissionBody": "Dopusti pristup kameri kako bi skenirao barkodove proizvoda u hladnjaku.",
+			"permissionCta": "Dopusti kameru",
+			"emptyTitle": "Još nema skeniranih proizvoda",
+			"reviewTitle": "Skenirano ({{count}})",
+			"lookingUp": "Tražim proizvod…",
+			"notFound": "Proizvod nije pronađen — unesi naziv",
+			"namePlaceholder": "Naziv proizvoda",
+			"addAll": "Dodaj sve ({{count}})",
+			"addAll_one": "Dodaj 1 proizvod",
+			"addAll_other": "Dodaj sve ({{count}})",
+			"toast": {
+				"added": "{{count}} proizvoda dodano",
+				"added_one": "1 proizvod dodan",
+				"addFailed": "Nismo uspjeli dodati skenirane proizvode"
+			}
+		},
+		"details": {
+			"loadFailed": "Nismo uspjeli učitati detalje proizvoda",
+			"notFound": "Nema detalja za ovaj proizvod",
+			"scores": {
+				"nutriscore": "Nutri-Score {{grade}}",
+				"ecoscore": "Eco-Score {{grade}}",
+				"nova": "NOVA {{group}}",
+				"unknown": "Nema podataka"
+			},
+			"nutrition": "Nutritivne vrijednosti",
+			"per100g": "Na 100 g",
+			"perServing": "Po porciji",
+			"perServingWithSize": "Po porciji - {{size}}",
+			"nutrientDetails": "Detalji",
+			"servingSize": "Porcija: {{size}}",
+			"ingredients": "Sastojci",
+			"allergens": "Alergeni",
+			"viewOnOff": "Pogledaj na Open Food Facts",
+			"nutrients": {
+				"energy": "Energija",
+				"protein": "Proteini",
+				"carbs": "Ugljikohidrati",
+				"sugars": "Šećeri",
+				"fat": "Masti",
+				"saturatedFat": "Zasićene masti",
+				"fiber": "Vlakna",
+				"salt": "Sol"
+			}
 		}
 	},
 	"shopping": {

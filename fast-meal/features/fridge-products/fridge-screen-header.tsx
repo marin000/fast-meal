@@ -2,16 +2,19 @@ import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 
-import { PrimaryButton } from "@/components";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
+
+import { FridgeActionGrid } from "./fridge-action-grid";
 
 interface FridgeScreenHeaderProps {
 	onAddProduct: () => void;
+	onScanProducts: () => void;
 	recipesAction?: ReactNode;
 }
 
 export const FridgeScreenHeader = ({
 	onAddProduct,
+	onScanProducts,
 	recipesAction,
 }: FridgeScreenHeaderProps) => {
 	const { t } = useTranslation();
@@ -29,24 +32,22 @@ export const FridgeScreenHeader = ({
 					</Text>
 				</View>
 
-				<PrimaryButton
-					label={t("fridge.addProduct")}
-					onPress={onAddProduct}
-					compact
-					leftIconName="add"
-				/>
+				{recipesAction ? (
+					<View style={styles.recipesAction}>{recipesAction}</View>
+				) : null}
 			</View>
 
-			{recipesAction ? (
-				<View style={styles.recipesAction}>{recipesAction}</View>
-			) : null}
+			<FridgeActionGrid
+				onAddProduct={onAddProduct}
+				onScanProducts={onScanProducts}
+			/>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
 	header: {
-		gap: 12,
+		gap: 20,
 	},
 	topRow: {
 		alignItems: "flex-end",
@@ -58,6 +59,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		gap: 6,
 	},
+	recipesAction: {
+		marginBottom: 2,
+	},
 	kicker: {
 		fontSize: 10,
 		fontWeight: "900",
@@ -67,8 +71,5 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 24,
 		fontWeight: "900",
-	},
-	recipesAction: {
-		alignSelf: "flex-start",
 	},
 });

@@ -9,14 +9,21 @@ import { FridgeProductRow } from "./fridge-product-row";
 interface FridgeProductListProps {
 	items: FridgeProductListItem[];
 	onRemove: (id: string) => void;
+	onPressProduct?: (item: FridgeProductListItem) => void;
 }
 
 export const FridgeProductList = ({
 	items,
 	onRemove,
+	onPressProduct,
 }: FridgeProductListProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
+
+	const handlePressProduct = (item: FridgeProductListItem) => {
+		if (!item.barcode) return;
+		onPressProduct?.(item);
+	};
 
 	if (items.length === 0) {
 		return (
@@ -41,6 +48,7 @@ export const FridgeProductList = ({
 					key={item.id}
 					item={item}
 					onRemove={() => onRemove(item.id)}
+					onPress={() => handlePressProduct(item)}
 				/>
 			))}
 		</View>

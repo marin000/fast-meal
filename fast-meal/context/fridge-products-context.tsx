@@ -6,7 +6,6 @@ import {
 	useEffect,
 	useState,
 } from "react";
-
 import {
 	createFridgeProduct,
 	deleteFridgeProduct,
@@ -24,6 +23,7 @@ interface AddFridgeProductInput {
 	unit?: FridgeProductUnit;
 	expirationDate?: string;
 	purchasedAt?: string;
+	barcode?: string;
 }
 
 interface FridgeProductsContextValue {
@@ -31,6 +31,7 @@ interface FridgeProductsContextValue {
 	isLoading: boolean;
 	reload: () => Promise<void>;
 	addProduct: (input: AddFridgeProductInput) => Promise<void>;
+	addProducts: (inputs: AddFridgeProductInput[]) => Promise<void>;
 	removeById: (id: string) => Promise<void>;
 }
 
@@ -83,9 +84,37 @@ export const FridgeProductsProvider = ({
 				unit: input.unit,
 				expirationDate: input.expirationDate,
 				purchasedAt: input.purchasedAt,
+				barcode: input.barcode,
 			});
 			setItems((prev) => {
 				const next = [created, ...prev];
+				void syncExpirationNotifications(next);
+				return next;
+			});
+		},
+		[deviceId],
+	);
+
+	const addProducts = useCallback(
+		async (inputs: AddFridgeProductInput[]) => {
+			if (!deviceId || inputs.length === 0) return;
+
+			const created: FridgeProductListItem[] = [];
+			for (const input of inputs) {
+				const item = await createFridgeProduct({
+					deviceId,
+					name: input.name,
+					quantity: input.quantity,
+					unit: input.unit,
+					expirationDate: input.expirationDate,
+					purchasedAt: input.purchasedAt,
+					barcode: input.barcode,
+				});
+				created.push(item);
+			}
+
+			setItems((prev) => {
+				const next = [...created, ...prev];
 				void syncExpirationNotifications(next);
 				return next;
 			});
@@ -113,6 +142,7 @@ export const FridgeProductsProvider = ({
 				isLoading,
 				reload,
 				addProduct,
+				addProducts,
 				removeById,
 			}}
 		>
