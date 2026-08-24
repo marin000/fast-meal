@@ -1,7 +1,7 @@
 {
 	"name": "fastmeal",
 	"main": "expo-router/entry",
-	"version": "1.2.1",
+	"version": "1.3.0",
 	"engines": {
 		"node": ">=24.0.0"
 	},
@@ -25,6 +25,7 @@
 		"@react-navigation/native": "^7.1.8",
 		"@sentry/react-native": "^8.22.0",
 		"expo": "~54.0.33",
+		"expo-camera": "~17.0.10",
 		"expo-constants": "~18.0.13",
 		"expo-dev-client": "~6.0.21",
 		"expo-font": "~14.0.11",

@@ -1,5 +1,5 @@
-import Constants from "expo-constants";
 import * as Sentry from "@sentry/react-native";
+import Constants from "expo-constants";
 
 export const ANALYTICS_EVENTS = {
 	recipeGenerateRequested: "recipe_generate_requested",
@@ -8,6 +8,10 @@ export const ANALYTICS_EVENTS = {
 	fridgeImageAttached: "fridge_image_attached",
 	recipeSaved: "recipe_saved",
 	householdJoined: "household_joined",
+	barcodeScanned: "barcode_scanned",
+	barcodeLookupMiss: "barcode_lookup_miss",
+	fridgeProductsBatchAdded: "fridge_products_batch_added",
+	barcodeDetailsOpened: "barcode_details_opened",
 } as const;
 
 export type AnalyticsEventName =

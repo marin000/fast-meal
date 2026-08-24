@@ -8,6 +8,7 @@ export interface FridgeProductListItem {
 	unit?: FridgeProductUnit;
 	expirationDate?: string;
 	purchasedAt?: string;
+	barcode?: string;
 	createdAt: string;
 	updatedAt: string;
 }
