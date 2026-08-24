@@ -1,79 +1,82 @@
-import type { AppAppearance } from "@/constants/app-appearance";
-import { EXPIRATION_STATUS } from "@/constants/fridge";
+import type { AppAppearance } from '@/constants/app-appearance';
+import { EXPIRATION_STATUS } from '@/constants/fridge';
+import type { FooterTab } from '@/constants/nav';
 
 export interface ExpirationRowAppearance {
-	borderColor: string;
-	backgroundColor: string;
-	accentColor: string;
+  borderColor: string;
+  backgroundColor: string;
+  accentColor: string;
 }
 
-export const parseIngredientsInput = (input: string): string[] => {
-	return input
-		.split(",")
-		.map((item) => item.trim().toLowerCase())
-		.filter((item) => item.length > 0);
+export const getActiveTab = (pathname: string): FooterTab | null => {
+  if (pathname.startsWith('/saved')) return 'saved';
+  if (pathname.startsWith('/fridge')) return 'fridge';
+  if (pathname.startsWith('/shopping-list')) return 'shoppingList';
+  if (pathname.startsWith('/settings')) return 'settings';
+  if (pathname === '/' || pathname === '/index' || pathname === '') {
+    return 'home';
+  }
+  return null;
 };
 
-export const mergeIngredientNames = (
-	existing: string,
-	names: string[],
-): string => {
-	if (names.length === 0) return existing;
+export const parseIngredientsInput = (input: string): string[] => {
+  return input
+    .split(',')
+    .map((item) => item.trim().toLowerCase())
+    .filter((item) => item.length > 0);
+};
 
-	const joined = names.join(", ");
-	const trimmed = existing.trim();
-	return trimmed ? `${trimmed}, ${joined}` : joined;
+export const mergeIngredientNames = (existing: string, names: string[]): string => {
+  if (names.length === 0) return existing;
+
+  const joined = names.join(', ');
+  const trimmed = existing.trim();
+  return trimmed ? `${trimmed}, ${joined}` : joined;
 };
 
 export const coerceParam = (value: string | string[] | undefined): string => {
-	if (Array.isArray(value)) return value[0] ?? "";
-	return value ?? "";
+  if (Array.isArray(value)) return value[0] ?? '';
+  return value ?? '';
 };
 
 export const getExpirationStatus = (
-	iso: string,
+  iso: string,
 ): (typeof EXPIRATION_STATUS)[keyof typeof EXPIRATION_STATUS] | undefined => {
-	const { OK, SOON, EXPIRED } = EXPIRATION_STATUS;
-	const expiration = new Date(iso);
-	if (Number.isNaN(expiration.getTime())) return undefined;
+  const { OK, SOON, EXPIRED } = EXPIRATION_STATUS;
+  const expiration = new Date(iso);
+  if (Number.isNaN(expiration.getTime())) return undefined;
 
-	const today = new Date();
-	today.setHours(0, 0, 0, 0);
-	const expDay = new Date(expiration);
-	expDay.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const expDay = new Date(expiration);
+  expDay.setHours(0, 0, 0, 0);
 
-	const diffDays = Math.ceil(
-		(expDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
-	);
+  const diffDays = Math.ceil((expDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
-	if (diffDays <= 0) return EXPIRED;
-	if (diffDays <= 3) return SOON;
-	return OK;
+  if (diffDays <= 0) return EXPIRED;
+  if (diffDays <= 3) return SOON;
+  return OK;
 };
 
 export const getExpirationRowAppearance = (
-	theme: AppAppearance,
-	status?: (typeof EXPIRATION_STATUS)[keyof typeof EXPIRATION_STATUS],
+  theme: AppAppearance,
+  status?: (typeof EXPIRATION_STATUS)[keyof typeof EXPIRATION_STATUS],
 ): ExpirationRowAppearance => {
-	if (!status) {
-		return {
-			borderColor: theme.cardBorder,
-			backgroundColor: theme.card,
-			accentColor: theme.textMuted,
-		};
-	}
+  if (!status) {
+    return {
+      borderColor: theme.cardBorder,
+      backgroundColor: theme.card,
+      accentColor: theme.textMuted,
+    };
+  }
 
-	const { SOON, EXPIRED } = EXPIRATION_STATUS;
-	const palette =
-		status === EXPIRED
-			? theme.expiration.expired
-			: status === SOON
-				? theme.expiration.soon
-				: theme.expiration.ok;
+  const { SOON, EXPIRED } = EXPIRATION_STATUS;
+  const palette =
+    status === EXPIRED ? theme.expiration.expired : status === SOON ? theme.expiration.soon : theme.expiration.ok;
 
-	return {
-		borderColor: palette.solid,
-		backgroundColor: palette.soft,
-		accentColor: palette.solid,
-	};
+  return {
+    borderColor: palette.solid,
+    backgroundColor: palette.soft,
+    accentColor: palette.solid,
+  };
 };

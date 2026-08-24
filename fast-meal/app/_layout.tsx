@@ -1,18 +1,14 @@
 import { ThemeProvider } from "@react-navigation/native";
 import { type Href, Stack, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 import "react-native-reanimated";
 import { StyleSheet, View } from "react-native";
-import {
-	initialWindowMetrics,
-	SafeAreaProvider,
-	useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import "../  i18n";
 
 import { Footer, Header } from "@/components";
 import { ExpirationNotificationSetup } from "@/components/expiration-notification-setup";
+import { RootProviders } from "@/components/root-providers";
 import type { FooterTab } from "@/constants/nav";
 import {
 	appDarkBackgroundColor,
@@ -20,35 +16,12 @@ import {
 	navigationDarkTheme,
 	navigationLightTheme,
 } from "@/constants/navigation-theme";
-import {
-	DeviceIdProvider,
-	FeedbackMessageProvider,
-	FridgeProductsProvider,
-	GenerationQuotaProvider,
-	HomeIngredientImageProvider,
-	HomeIngredientsProvider,
-	HouseholdProvider,
-	PreferencesProvider,
-	ShoppingListProvider,
-	useDeviceId,
-	usePreferences,
-} from "@/context";
+import { usePreferences } from "@/context";
 import { useAndroidSystemBars } from "@/hooks/use-android-system-bars";
-import { initSentry, Sentry, setSentryDeviceId } from "@/utils/sentry";
+import { getActiveTab } from "@/utils/helper";
+import { initSentry, Sentry } from "@/utils/sentry";
 
 initSentry();
-
-const SentryDeviceContext = () => {
-	const { deviceId } = useDeviceId();
-
-	useEffect(() => {
-		if (deviceId) {
-			setSentryDeviceId(deviceId);
-		}
-	}, [deviceId]);
-
-	return null;
-};
 
 const RootLayoutContent = () => {
 	const { darkMode } = usePreferences();
@@ -61,46 +34,40 @@ const RootLayoutContent = () => {
 		? appDarkBackgroundColor
 		: appLightBackgroundColor;
 
-	const getActiveTab = (): FooterTab | null => {
-		if (pathname.startsWith("/saved")) return "saved";
-		if (pathname.startsWith("/fridge")) return "fridge";
-		if (pathname.startsWith("/shopping-list")) return "shoppingList";
-		if (pathname.startsWith("/settings")) return "settings";
-		if (pathname === "/" || pathname === "/index" || pathname === "") {
-			return "home";
-		}
-		return null;
-	};
-
 	const isRecipeDetail =
 		pathname.startsWith("/recipes/") && pathname !== "/recipes";
 	const isSavedRecipeDetail = /^\/saved\/.+/.test(pathname);
+	const isFridgeScan = pathname === "/fridge/scan";
+	const isFridgeProductDetail = pathname.startsWith("/fridge/product/");
+	const hideChrome =
+		isRecipeDetail ||
+		isSavedRecipeDetail ||
+		isFridgeScan ||
+		isFridgeProductDetail;
+	// Camera scan is edge-to-edge; other chrome-hidden screens still need top inset
+	// so back/save controls stay below the status bar / notch.
+	const needsTopSafeArea = hideChrome && !isFridgeScan;
+
 	const handleTabPress = (tab: FooterTab) => {
-		const active = getActiveTab();
+		const active = getActiveTab(pathname);
 		if (tab === active) return;
-		if (tab === "home") {
-			router.navigate("/");
-			return;
-		}
 
-		if (tab === "settings") {
-			router.navigate("/settings");
-			return;
-		}
-
-		if (tab === "saved") {
-			router.navigate("/saved");
-			return;
-		}
-
-		if (tab === "fridge") {
-			router.navigate("/fridge" as Href);
-			return;
-		}
-
-		if (tab === "shoppingList") {
-			router.navigate("/shopping-list");
-			return;
+		switch (tab) {
+			case "home":
+				router.navigate("/");
+				break;
+			case "settings":
+				router.navigate("/settings");
+				break;
+			case "saved":
+				router.navigate("/saved");
+				break;
+			case "fridge":
+				router.navigate("/fridge" as Href);
+				break;
+			case "shoppingList":
+				router.navigate("/shopping-list");
+				break;
 		}
 	};
 
@@ -110,10 +77,18 @@ const RootLayoutContent = () => {
 		>
 			<View style={[styles.container, { backgroundColor: appBackgroundColor }]}>
 				<ExpirationNotificationSetup />
-				<View style={[styles.headerContainer, { paddingTop: top + 10 }]}>
-					<Header />
-				</View>
-				<View style={styles.stackContainer}>
+				{!hideChrome ? (
+					<View style={[styles.headerContainer, { paddingTop: top + 10 }]}>
+						<Header />
+					</View>
+				) : null}
+				<View
+					style={[
+						styles.stackContainer,
+						isFridgeScan && styles.stackContainerFullscreen,
+						needsTopSafeArea && { paddingTop: top },
+					]}
+				>
 					<Stack
 						screenOptions={{
 							headerShown: false,
@@ -123,12 +98,17 @@ const RootLayoutContent = () => {
 						<Stack.Screen name="index" />
 						<Stack.Screen name="settings" />
 						<Stack.Screen name="fridge/index" />
+						<Stack.Screen name="fridge/scan" />
+						<Stack.Screen name="fridge/product/[code]" />
 						<Stack.Screen name="saved" />
 						<Stack.Screen name="shopping-list/index" />
 					</Stack>
 				</View>
-				{!isRecipeDetail && !isSavedRecipeDetail && (
-					<Footer activeTab={getActiveTab()} onTabPress={handleTabPress} />
+				{!hideChrome && (
+					<Footer
+						activeTab={getActiveTab(pathname)}
+						onTabPress={handleTabPress}
+					/>
 				)}
 			</View>
 			<StatusBar style={isDarkMode ? "light" : "dark"} />
@@ -138,28 +118,9 @@ const RootLayoutContent = () => {
 
 const RootLayout = () => {
 	return (
-		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
-			<PreferencesProvider>
-				<DeviceIdProvider>
-					<SentryDeviceContext />
-					<HouseholdProvider>
-						<GenerationQuotaProvider>
-							<FridgeProductsProvider>
-								<HomeIngredientsProvider>
-									<HomeIngredientImageProvider>
-										<ShoppingListProvider>
-											<FeedbackMessageProvider>
-												<RootLayoutContent />
-											</FeedbackMessageProvider>
-										</ShoppingListProvider>
-									</HomeIngredientImageProvider>
-								</HomeIngredientsProvider>
-							</FridgeProductsProvider>
-						</GenerationQuotaProvider>
-					</HouseholdProvider>
-				</DeviceIdProvider>
-			</PreferencesProvider>
-		</SafeAreaProvider>
+		<RootProviders>
+			<RootLayoutContent />
+		</RootProviders>
 	);
 };
 
@@ -175,5 +136,8 @@ const styles = StyleSheet.create({
 	stackContainer: {
 		flex: 1,
 		paddingTop: 8,
+	},
+	stackContainerFullscreen: {
+		paddingTop: 0,
 	},
 });
