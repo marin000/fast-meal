@@ -24,6 +24,7 @@ This Privacy Policy describes how we collect, use, store, and share information 
 - We assign your device a **random identifier** so we can sync saved recipes and fridge items and enforce daily recipe generation limits.
 - When you generate recipes, we send your **ingredient list and preferences**, and — if you choose — an optional **photo of ingredients or your fridge**, to our servers and to **OpenAI** to produce AI-generated recipe suggestions.
 - If you use **barcode scanning**, the App uses the camera on your device to read product barcodes. We send the **decoded barcode** (not camera frames or scan photos) to look up product information, including via **Open Food Facts**, and you can add matching products to your fridge.
+- If you use **receipt scanning**, you can photograph a grocery receipt (or choose a photo from your library). We send that **receipt photo** to our servers and to **OpenAI** to identify food products and quantities so you can review and add them to your fridge. Receipt photos are used only for that processing and are **not** retained on our servers after the request completes.
 - Your **shopping list** is synced to our servers so it can be shared when you join a **family household** with an invite code. Solo users have a private household with only their device.
 - We do **not** show advertisements in the App and do **not** sell your personal data.
 
@@ -35,6 +36,7 @@ This Privacy Policy describes how we collect, use, store, and share information 
 
 - **Ingredients** you enter for recipe generation
 - **Optional ingredient / fridge photos** you choose to capture with the camera or select from your photo library for recipe generation
+- **Optional grocery receipt photos** you choose to capture or select for receipt scanning (used to identify food products; not stored after processing)
 - **Diet and lifestyle preferences** (for example: vegetarian, vegan, gluten-free, high protein)
 - **Display preferences** such as language and measurement units (metric or imperial)
 - **Fridge inventory** (product names, quantities, units, purchase dates, expiration dates, and — when added via barcode scan — optional product barcodes)
@@ -45,9 +47,9 @@ This Privacy Policy describes how we collect, use, store, and share information 
 ### 4.2 Information collected automatically
 
 - **Device identifier:** A random ID generated on your device and stored locally. It is sent to our servers to associate your saved data and usage limits with your installation. It is **not** your hardware ID, advertising ID, or any identifier tied to your real-world identity.
-- **Usage data:** We track how many recipe generations you use per day, linked to your device identifier, to enforce fair-use limits on the free plan.
+- **Usage data:** We track how many recipe generations and receipt scans you use per day, linked to your device identifier, to enforce fair-use limits on the free plan.
 - **Technical data:** When you use our API, our hosting provider may process standard request metadata (such as IP address, request timestamps, and error logs) for security, reliability, and operation of the Services. We do not use this information to identify you personally.
-- **Crash and diagnostic data:** We use **Sentry** (an error-monitoring provider) to collect crash reports and limited diagnostic metadata from the App and our API (for example: app version, device/OS type, error stack traces, and non-content feature events such as “recipe generated” or “barcode scanned”). We do **not** send ingredient lists, fridge photos, recipe prompt text, or camera frames to Sentry.
+- **Crash and diagnostic data:** We use **Sentry** (an error-monitoring provider) to collect crash reports and limited diagnostic metadata from the App and our API (for example: app version, device/OS type, error stack traces, and non-content feature events such as “recipe generated” or “barcode scanned”). We do **not** send ingredient lists, fridge photos, receipt photos, recipe prompt text, or camera frames to Sentry.
 
 ### 4.3 Information stored only on your device
 
@@ -56,8 +58,8 @@ The following data stays on your device and is not transmitted to our servers:
 - App language preference
 - Whether you have already been prompted for notification permission
 - A local copy of your device identifier
-- Temporary copies of photos you select or capture before you submit a recipe request (cleared after successful generation or when you remove the photo)
-- Live camera preview used for barcode scanning (processed on your device to decode barcodes; camera frames from scanning are **not** uploaded)
+- Temporary copies of photos you select or capture before you submit a recipe request or receipt scan (cleared after successful processing or when you leave the flow)
+- Live camera preview used for barcode scanning and receipt capture (barcode frames are processed on your device to decode barcodes and are **not** uploaded; receipt photos are uploaded only when you choose to capture/select and submit them for product extraction)
 
 Shopping list items are stored on our servers (keyed to your household). For solo users, the household contains only your device. If you join a family household with an invite code, shopping list items are shared with other devices in that household. No names, email addresses, or phone numbers are required for family sharing.
 
@@ -66,8 +68,8 @@ Other display settings (such as dietary style, dark mode, and units) are kept in
 ### 4.4 Device permissions
 
 - **Notifications (optional):** If you grant permission, the App schedules **local** reminders when fridge products are nearing their expiration date. Notifications are scheduled on your device; we do not use a remote push notification service for this feature.
-- **Camera (optional):** If you grant permission, you can (1) take a photo of ingredients or your fridge to help generate recipes, and/or (2) scan product barcodes to look up products and add them to your fridge. The App only accesses the camera when you choose these features. For barcode scanning, the camera is used to decode barcodes on your device; we do **not** upload camera frames or scan photos—only the decoded barcode and resulting product data are sent as needed for lookup and fridge sync.
-- **Photo library (optional):** If you grant permission, you can select an existing photo of ingredients or your fridge. The App only accesses photos you explicitly choose.
+- **Camera (optional):** If you grant permission, you can (1) take a photo of ingredients or your fridge to help generate recipes, (2) scan product barcodes to look up products and add them to your fridge, and/or (3) photograph a grocery receipt to extract food products for your fridge. The App only accesses the camera when you choose these features. For barcode scanning, the camera is used to decode barcodes on your device; we do **not** upload camera frames or scan photos—only the decoded barcode and resulting product data are sent as needed for lookup and fridge sync. For receipt scanning, the photo you capture is sent to our servers for AI product identification and is not retained after processing.
+- **Photo library (optional):** If you grant permission, you can select an existing photo of ingredients, your fridge, or a grocery receipt. The App only accesses photos you explicitly choose.
 
 We do **not** access your location, microphone, contacts, SMS, or call logs.
 
@@ -80,16 +82,17 @@ We use the information described above to:
 - Generate and display recipe suggestions (including from text ingredients and optional photos you provide)
 - Save and sync recipes and fridge products associated with your device
 - Look up scanned barcodes against product databases (including Open Food Facts), show product details, and let you add products to your fridge
+- Extract food products and quantities from grocery receipt photos you submit, so you can review and add them to your fridge
 - Cache barcode product information on our servers so repeated scans of the same code are faster and more reliable
 - Sync shopping list items within your household (shared with family members when you join a household via invite code)
-- Enforce daily recipe generation limits
+- Enforce daily recipe generation and receipt scan limits
 - Remember your language and unit preferences
 - Schedule local expiration reminders on your device
 - Operate, maintain, secure, and improve the Services
 - Diagnose crashes and reliability issues via our error-monitoring provider
 - Cache recipe results (for text-based requests) to reduce duplicate AI requests and improve performance
 
-Photos you submit for recipe generation are used only to identify ingredients and generate recipes. We do **not** use them for advertising, facial recognition, or marketing profiling.
+Photos you submit for recipe generation are used only to identify ingredients and generate recipes. Receipt photos you submit for receipt scanning are used only to identify food products and quantities. We do **not** use these photos for advertising, facial recognition, or marketing profiling. We do **not** retain receipt images on our servers after processing.
 
 We do **not** use your data for advertising, marketing profiling, or selling to data brokers.
 
@@ -106,7 +109,7 @@ If you are located in the European Economic Area (EEA) or the United Kingdom, we
 | Barcode product lookup and fridge enrichment | Performance of a contract |
 | Usage limits, caching (including barcode product cache), security, and crash diagnostics | Legitimate interests (operating and protecting the Services) |
 | Local expiration notifications | Your consent (device notification permission) |
-| Camera and photo library access | Your consent (device permission); photos are processed when you choose to submit them for recipe generation; barcode scanning uses the camera on-device to decode codes you choose to scan |
+| Camera and photo library access | Your consent (device permission); photos are processed when you choose to submit them for recipe generation or receipt scanning; barcode scanning uses the camera on-device to decode codes you choose to scan |
 
 You may withdraw consent for notifications, camera, or photo library access at any time through your device settings. Withdrawing consent does not affect the lawfulness of processing based on consent before its withdrawal.
 
@@ -118,10 +121,10 @@ We share data only as necessary to operate the App:
 
 | Recipient | Purpose | Data shared |
 |-----------|---------|-------------|
-| **OpenAI** | AI-powered recipe generation | Ingredient lists, optional ingredient/fridge photos you submit, dietary preferences, language, and measurement units |
+| **OpenAI** | AI-powered recipe generation and receipt product extraction | Ingredient lists, optional ingredient/fridge photos, optional grocery receipt photos you submit, dietary preferences, language, and measurement units |
 | **Open Food Facts** | Public product database lookup for barcode scanning | Decoded product barcodes (and related API request metadata processed by Open Food Facts). Camera frames and scan photos are **not** shared |
 | **MongoDB** (database provider) | Persistent storage | Device identifier, fridge products (including optional barcodes), cached barcode product data, saved recipes, shopping list items, usage counts, and cached recipe data (text-based recipe cache; we do not persist submitted photos as a photo library) |
-| **Vercel** | API hosting, caching, and infrastructure | Request data processed when you use the App (including image data in transit when you submit a photo for generation, and barcode lookup requests) |
+| **Vercel** | API hosting, caching, and infrastructure | Request data processed when you use the App (including image data in transit when you submit a photo for generation or receipt scanning, and barcode lookup requests) |
 | **Sentry** | Crash reporting and reliability monitoring | Error diagnostics (stack traces, app/API version, device/OS metadata) and limited non-content product events; not ingredient lists, photos, prompts, or camera frames |
 
 These providers process data on our behalf (or, for Open Food Facts, as an independent public database operator) and only for the purposes described in this policy. We do **not** sell, rent, or trade your personal information.
@@ -147,7 +150,7 @@ Our service providers may process data in countries outside your country of resi
 - **Server data** (device identifier, fridge items including optional barcodes, saved recipes, shopping list items, and usage counts): retained for as long as you use the App and until we delete it. You may request deletion by contacting us at [infinityfunstudios@gmail.com](mailto:infinityfunstudios@gmail.com). We may need your device identifier to locate and delete server-side data associated with your installation.
 - **Barcode product cache:** Product information retrieved for scanned barcodes (for example names, brands, and related public product metadata) may be cached on our servers to speed up future lookups of the same barcode. This cache is keyed by barcode, not by your identity. You may request deletion of related data by contacting us.
 - **Recipe cache:** Hashed or normalized **text** recipe inputs and generated results may be cached on our servers for up to **7 days** to improve performance and reduce duplicate AI requests. Recipe requests that include a photo are **not** stored in this recipe cache.
-- **Submitted photos:** Transmitted to our servers and to OpenAI only to fulfill the recipe request. We do not keep a persistent gallery of your photos on our servers. Photos may exist briefly in memory or logs as needed to process the request, then are discarded according to normal infrastructure retention for transient request data.
+- **Submitted photos:** Transmitted to our servers and to OpenAI only to fulfill the recipe request or receipt scan. We do not keep a persistent gallery of your photos on our servers. Photos may exist briefly in memory or logs as needed to process the request, then are discarded according to normal infrastructure retention for transient request data.
 - **Barcode scanning camera frames:** Processed on your device only; they are **not** uploaded or retained on our servers.
 - **On-device data:** Remains on your device until you uninstall the App or clear the App’s storage through your device settings. Selected photos are cleared from App memory after successful generation or when you remove them.
 
