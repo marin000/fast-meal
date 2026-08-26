@@ -1,7 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import * as WebBrowser from "expo-web-browser";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -18,7 +17,6 @@ import {
 } from "@/api/barcode-products";
 import { fetchOffDetails } from "@/api/open-food-facts";
 import { PrimaryButton, ScreenScrollView } from "@/components";
-import { OPEN_FOOD_FACTS_PRODUCT_PAGE_BASE } from "@/constants/open-food-facts";
 import { useDeviceId, usePreferences } from "@/context";
 import {
 	ProductIngredientsSection,
@@ -121,13 +119,6 @@ const FridgeProductDetailsScreen = () => {
 		void load();
 	}, [load]);
 
-	const openOffPage = async () => {
-		if (!code) return;
-		await WebBrowser.openBrowserAsync(
-			`${OPEN_FOOD_FACTS_PRODUCT_PAGE_BASE}/${encodeURIComponent(code)}`,
-		);
-	};
-
 	if (isLoading) {
 		return (
 			<View style={[styles.centered, { backgroundColor: theme.background }]}>
@@ -216,14 +207,6 @@ const FridgeProductDetailsScreen = () => {
 				<ProductIngredientsSection
 					ingredients={ingredients || undefined}
 					allergensTags={product.allergensTags}
-				/>
-
-				<PrimaryButton
-					label={t("fridge.details.viewOnOff")}
-					onPress={() => {
-						void openOffPage();
-					}}
-					leftIconName="open-outline"
 				/>
 			</View>
 		</ScreenScrollView>
