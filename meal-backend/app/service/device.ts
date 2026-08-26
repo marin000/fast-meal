@@ -1,6 +1,8 @@
 import {
 	DAILY_FREE_GENERATION_ALLOWANCE,
+	DAILY_FREE_RECEIPT_SCAN_ALLOWANCE,
 	isDailyGenerationLimitDisabled,
+	isDailyReceiptScanLimitDisabled,
 } from "@/app/constants/device";
 import type { DeviceResponse } from "@/app/interface";
 import { householdService } from "@/app/service/household";
@@ -17,6 +19,8 @@ export async function ensureDeviceRecord(deviceId: string): Promise<void> {
 				plan: "free",
 				dailyUsageCount: DAILY_FREE_GENERATION_ALLOWANCE,
 				dailyUsageDate: "",
+				receiptScanUsageCount: DAILY_FREE_RECEIPT_SCAN_ALLOWANCE,
+				receiptScanUsageDate: "",
 			},
 		},
 		{ upsert: true },
@@ -35,6 +39,19 @@ const remainingFromDoc = (doc: {
 	return doc.dailyUsageCount;
 };
 
+const remainingReceiptScansFromDoc = (doc: {
+	receiptScanUsageCount?: number;
+	receiptScanUsageDate?: string;
+}): number => {
+	const today = getTodayUtcYmd();
+	if (doc.receiptScanUsageDate !== today) {
+		return DAILY_FREE_RECEIPT_SCAN_ALLOWANCE;
+	}
+	return typeof doc.receiptScanUsageCount === "number"
+		? doc.receiptScanUsageCount
+		: DAILY_FREE_RECEIPT_SCAN_ALLOWANCE;
+};
+
 export async function getRemainingGenerationsToday(
 	deviceId: string,
 ): Promise<number> {
@@ -44,6 +61,19 @@ export async function getRemainingGenerationsToday(
 	const doc = await Device.findOne({ deviceId }).lean();
 	if (!doc) return 0;
 	return remainingFromDoc(doc);
+}
+
+export async function getRemainingReceiptScansToday(
+	deviceId: string,
+): Promise<number> {
+	if (isDailyReceiptScanLimitDisabled()) {
+		return DAILY_FREE_RECEIPT_SCAN_ALLOWANCE;
+	}
+
+	await ensureDeviceRecord(deviceId);
+	const doc = await Device.findOne({ deviceId }).lean();
+	if (!doc) return 0;
+	return remainingReceiptScansFromDoc(doc);
 }
 
 /**
@@ -94,6 +124,61 @@ export async function tryConsumeGeneration(deviceId: string): Promise<boolean> {
 	return updated !== null;
 }
 
+/**
+ * Decrements remaining receipt scans for today by one. Returns false if none left.
+ */
+export async function tryConsumeReceiptScan(
+	deviceId: string,
+): Promise<boolean> {
+	if (isDailyReceiptScanLimitDisabled()) return true;
+
+	await ensureDeviceRecord(deviceId);
+	const today = getTodayUtcYmd();
+
+	const updated = await Device.findOneAndUpdate(
+		{
+			deviceId,
+			$or: [
+				{ receiptScanUsageDate: { $ne: today } },
+				{ receiptScanUsageCount: { $gt: 0 } },
+				{ receiptScanUsageCount: { $exists: false } },
+			],
+		},
+		[
+			{
+				$set: {
+					receiptScanUsageDate: today,
+					receiptScanUsageCount: {
+						$max: [
+							0,
+							{
+								$subtract: [
+									{
+										$cond: [
+											{ $eq: ["$receiptScanUsageDate", today] },
+											{
+												$ifNull: [
+													"$receiptScanUsageCount",
+													DAILY_FREE_RECEIPT_SCAN_ALLOWANCE,
+												],
+											},
+											DAILY_FREE_RECEIPT_SCAN_ALLOWANCE,
+										],
+									},
+									1,
+								],
+							},
+						],
+					},
+				},
+			},
+		],
+		{ new: true, updatePipeline: true },
+	).lean();
+
+	return updated !== null;
+}
+
 const toDeviceResponse = (doc: {
 	deviceId: string;
 	plan?: string;
@@ -118,8 +203,11 @@ const toDeviceResponse = (doc: {
 
 export const deviceService = {
 	DAILY_FREE_GENERATION_ALLOWANCE,
+	DAILY_FREE_RECEIPT_SCAN_ALLOWANCE,
 	ensureDeviceRecord,
 	getRemainingGenerationsToday,
+	getRemainingReceiptScansToday,
 	tryConsumeGeneration,
+	tryConsumeReceiptScan,
 	toDeviceResponse,
 };

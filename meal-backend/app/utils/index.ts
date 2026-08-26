@@ -1,4 +1,5 @@
 export * from "./build-meal-prompt";
+export * from "./build-receipt-parse-prompt";
 export * from "./capture-api-error";
 export * from "./fetch-off-essentials";
 export * from "./fridge-product";
@@ -7,6 +8,8 @@ export * from "./normalize-recipe";
 export * from "./parse-barcode-product-body";
 export * from "./parse-fridge-product-body";
 export * from "./parse-household-body";
+export * from "./parse-receipt-request-body";
+export * from "./parse-receipt-response";
 export * from "./parse-request-body";
 export * from "./parse-save-recipe-body";
 export * from "./parse-shopping-list-body";

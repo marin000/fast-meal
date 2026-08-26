@@ -1,10 +1,11 @@
 import { MAX_IMAGE_BASE64_LENGTH } from "@/app/constants/device";
 import type {
-	GenerateRecipeRequestBody,
+	ParseReceiptRequestBody,
 	RecipeImageMimeType,
 	RecipeImagePayload,
 } from "@/app/interface";
-import { isAppLanguage, isStringArray, isUnitsValue } from "./helper";
+import { isAppLanguage } from "@/app/utils/helper";
+import { ERROR_MESSAGES } from "@/constants/messages";
 
 const ALLOWED_IMAGE_MIME_TYPES: RecipeImageMimeType[] = [
 	"image/jpeg",
@@ -31,47 +32,47 @@ const parseImagePayload = (value: unknown): RecipeImagePayload | null => {
 	};
 };
 
-export const parseRequestBody = (
+export const hasReceiptImageField = (body: unknown): boolean =>
+	typeof body === "object" &&
+	body !== null &&
+	"image" in body &&
+	(body as { image?: unknown }).image !== undefined;
+
+export const buildParseReceiptInvalidBodyResponse = (
 	body: unknown,
-): GenerateRecipeRequestBody | null => {
+): Response => {
+	const hasImage = hasReceiptImageField(body);
+
+	return Response.json(
+		{
+			error: hasImage
+				? ERROR_MESSAGES.PARSE_RECEIPT_INVALID_IMAGE
+				: ERROR_MESSAGES.PARSE_RECEIPT_INVALID_REQUEST_BODY,
+			code: "INVALID_IMAGE",
+		},
+		{ status: 400 },
+	);
+};
+
+export const parseReceiptRequestBody = (
+	body: unknown,
+): ParseReceiptRequestBody | null => {
 	if (typeof body !== "object" || body === null) return null;
 
-	const {
-		deviceId,
-		ingredients,
-		preferences,
-		units,
-		language,
-		retryAttempt,
-		image,
-	} = body as Partial<GenerateRecipeRequestBody> & { image?: unknown };
+	const { deviceId, language, image } =
+		body as Partial<ParseReceiptRequestBody> & {
+			image?: unknown;
+		};
 
 	if (typeof deviceId !== "string" || deviceId.trim().length === 0) return null;
 	if (deviceId.trim().length > 200) return null;
 
-	if (!isStringArray(ingredients)) return null;
-
-	const parsedImage =
-		image === undefined ? undefined : parseImagePayload(image);
-	if (image !== undefined && !parsedImage) return null;
-
-	if (ingredients.length === 0 && !parsedImage) return null;
-
-	const parsedRetryAttempt =
-		typeof retryAttempt === "number" &&
-		Number.isInteger(retryAttempt) &&
-		retryAttempt >= 1 &&
-		retryAttempt <= 10
-			? retryAttempt
-			: 1;
+	const parsedImage = parseImagePayload(image);
+	if (!parsedImage) return null;
 
 	return {
 		deviceId: deviceId.trim(),
-		ingredients,
-		preferences: isStringArray(preferences) ? preferences : [],
-		units: isUnitsValue(units) ? units : "metric",
 		language: isAppLanguage(language) ? language : "en",
-		retryAttempt: parsedRetryAttempt,
-		...(parsedImage ? { image: parsedImage } : {}),
+		image: parsedImage,
 	};
 };
