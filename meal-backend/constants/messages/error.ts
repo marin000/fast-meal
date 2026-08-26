@@ -11,12 +11,15 @@ export const ERROR_MESSAGES = {
 	DEVICE_NOT_CREATED: "Device was not created",
 	FRIDGE_PRODUCT_INVALID_REQUEST_BODY:
 		"Invalid request body. Expected { deviceId: string, name: string, quantity?: number, unit?: string, expirationDate?: string, purchasedAt?: string, barcode?: string }",
+	FRIDGE_PRODUCT_BATCH_INVALID_REQUEST_BODY:
+		"Invalid request body. Expected { deviceId: string, products: Array<{ name: string, quantity?: number, unit?: string, expirationDate?: string, purchasedAt?: string, barcode?: string }> } (max 50 items)",
 	FRIDGE_PRODUCT_SAVE_FAILED: "Could not save fridge product (database error)",
 	FRIDGE_PRODUCT_NOT_FOUND: "Fridge product not found",
 	MISSING_BARCODE_CODE_QUERY: "Missing required query parameter: code",
 	BARCODE_PRODUCT_INVALID_REQUEST_BODY:
 		"Invalid request body. Expected { deviceId: string, code: string, names?: object, ... }",
-	BARCODE_PRODUCT_SAVE_FAILED: "Could not save barcode product (database error)",
+	BARCODE_PRODUCT_SAVE_FAILED:
+		"Could not save barcode product (database error)",
 	HOUSEHOLD_NOT_FOUND: "Household not found",
 	INVALID_INVITE_CODE: "Invalid invite code",
 	LEAVE_CURRENT_FAMILY_FIRST:
@@ -39,6 +42,17 @@ export const ERROR_MESSAGES = {
 	DAILY_LIMIT_REACHED: "Daily recipe generation limit reached.",
 	DAILY_LIMIT_REACHED_TOMORROW:
 		"Daily recipe generation limit reached. Try again tomorrow.",
+	DAILY_RECEIPT_SCAN_LIMIT:
+		"Daily receipt scan limit reached. Try again tomorrow.",
+	PARSE_RECEIPT_INVALID_REQUEST_BODY:
+		"Invalid request body. Expected { deviceId: string, language?: 'en' | 'hr', image: { base64: string, mimeType: string } }",
+	PARSE_RECEIPT_INVALID_IMAGE: "Invalid or unsupported receipt image.",
+	PARSE_RECEIPT_UNREADABLE: "Could not read the receipt. Try a clearer photo.",
+	PARSE_RECEIPT_NO_PRODUCTS:
+		"No products could be identified from this receipt.",
+	PARSE_RECEIPT_INVALID_AI_RESPONSE:
+		"Failed to parse receipt products from model output",
+	PARSE_RECEIPT_TIMEOUT: "Reading the receipt took too long. Please try again.",
 	FAILED_TO_PARSE_MODEL_OUTPUT: "Failed to parse model output",
 	OPENAI_MISSING_OUTPUT_TEXT: "Invalid OpenAI response: missing output text",
 	OPENAI_MISSING_RECIPES_ARRAY: "Invalid recipe JSON: missing recipes array",
@@ -52,6 +66,8 @@ export const ERROR_MESSAGES = {
 export const ERROR_LOG_MESSAGES = {
 	FRIDGE_PRODUCTS_CREATE_FAILED:
 		"[api/fridge-products] FridgeProduct.create failed",
+	FRIDGE_PRODUCTS_BATCH_CREATE_FAILED:
+		"[api/fridge-products/batch] FridgeProduct.insertMany failed",
 	BARCODE_PRODUCTS_UPSERT_FAILED:
 		"[api/barcode-products] BarcodeProduct upsert failed",
 	RECIPES_CREATE_FAILED: "[api/recipes] SavedRecipe.create failed",

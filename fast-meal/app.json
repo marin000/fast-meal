@@ -12,8 +12,8 @@
 			"supportsTablet": true,
 			"buildNumber": "8",
 			"infoPlist": {
-				"NSCameraUsageDescription": "FastMeal uses the camera so you can photograph ingredients, scan product barcodes, or photograph your fridge.",
-				"NSPhotoLibraryUsageDescription": "FastMeal accesses your photos so you can upload a picture of ingredients or your fridge."
+				"NSCameraUsageDescription": "FastMeal uses the camera so you can photograph ingredients, scan product barcodes, photograph grocery receipts, or photograph your fridge.",
+				"NSPhotoLibraryUsageDescription": "FastMeal accesses your photos so you can upload a picture of ingredients, your fridge, or a grocery receipt."
 			}
 		},
 		"android": {
@@ -68,14 +68,14 @@
 			[
 				"expo-image-picker",
 				{
-					"photosPermission": "FastMeal accesses your photos so you can upload a picture of ingredients or your fridge.",
-					"cameraPermission": "FastMeal uses the camera so you can photograph ingredients or your fridge."
+					"photosPermission": "FastMeal accesses your photos so you can upload a picture of ingredients, your fridge, or a grocery receipt.",
+					"cameraPermission": "FastMeal uses the camera so you can photograph ingredients, your fridge, or a grocery receipt."
 				}
 			],
 			[
 				"expo-camera",
 				{
-					"cameraPermission": "FastMeal uses the camera so you can photograph ingredients, scan product barcodes, or photograph your fridge.",
+					"cameraPermission": "FastMeal uses the camera so you can photograph ingredients, scan product barcodes, photograph grocery receipts, or photograph your fridge.",
 					"microphonePermission": false,
 					"recordAudioAndroid": false
 				}

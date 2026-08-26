@@ -88,6 +88,7 @@ const FridgeScreen = () => {
 			<FridgeScreenHeader
 				onAddProduct={() => setAddModalVisible(true)}
 				onScanProducts={() => router.push("/fridge/scan" as Href)}
+				onScanReceipt={() => router.push("/fridge/scan-receipt" as Href)}
 				recipesAction={
 					items.length > 0 ? (
 						<Pressable

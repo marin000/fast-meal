@@ -2,6 +2,7 @@ export * from "./app-modal";
 export * from "./chip-selector";
 export * from "./date-field";
 export * from "./difficulty-badge";
+export * from "./fridge-ai-loading";
 export * from "./fridge-ai-logo";
 export * from "./fridge-icon";
 export * from "./primary-button";

@@ -37,15 +37,14 @@ const RootLayoutContent = () => {
 	const isRecipeDetail =
 		pathname.startsWith("/recipes/") && pathname !== "/recipes";
 	const isSavedRecipeDetail = /^\/saved\/.+/.test(pathname);
-	const isFridgeScan = pathname === "/fridge/scan";
+	const isFridgeScan =
+		pathname === "/fridge/scan" || pathname === "/fridge/scan-receipt";
 	const isFridgeProductDetail = pathname.startsWith("/fridge/product/");
 	const hideChrome =
 		isRecipeDetail ||
 		isSavedRecipeDetail ||
 		isFridgeScan ||
 		isFridgeProductDetail;
-	// Camera scan is edge-to-edge; other chrome-hidden screens still need top inset
-	// so back/save controls stay below the status bar / notch.
 	const needsTopSafeArea = hideChrome && !isFridgeScan;
 
 	const handleTabPress = (tab: FooterTab) => {
@@ -99,6 +98,7 @@ const RootLayoutContent = () => {
 						<Stack.Screen name="settings" />
 						<Stack.Screen name="fridge/index" />
 						<Stack.Screen name="fridge/scan" />
+						<Stack.Screen name="fridge/scan-receipt" />
 						<Stack.Screen name="fridge/product/[code]" />
 						<Stack.Screen name="saved" />
 						<Stack.Screen name="shopping-list/index" />

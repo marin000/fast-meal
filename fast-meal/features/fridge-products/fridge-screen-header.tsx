@@ -9,12 +9,14 @@ import { FridgeActionGrid } from "./fridge-action-grid";
 interface FridgeScreenHeaderProps {
 	onAddProduct: () => void;
 	onScanProducts: () => void;
+	onScanReceipt: () => void;
 	recipesAction?: ReactNode;
 }
 
 export const FridgeScreenHeader = ({
 	onAddProduct,
 	onScanProducts,
+	onScanReceipt,
 	recipesAction,
 }: FridgeScreenHeaderProps) => {
 	const { t } = useTranslation();
@@ -40,6 +42,7 @@ export const FridgeScreenHeader = ({
 			<FridgeActionGrid
 				onAddProduct={onAddProduct}
 				onScanProducts={onScanProducts}
+				onScanReceipt={onScanReceipt}
 			/>
 		</View>
 	);

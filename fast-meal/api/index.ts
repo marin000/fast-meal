@@ -4,5 +4,6 @@ export * from "./fridge-products";
 export * from "./generate-recipe";
 export * from "./households";
 export * from "./open-food-facts";
+export * from "./parse-receipt";
 export * from "./saved-recipes";
 export * from "./shopping-list";

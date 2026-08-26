@@ -8,11 +8,13 @@ import { useAppAppearance } from "@/hooks/use-app-appearance";
 interface FridgeActionGridProps {
 	onAddProduct: () => void;
 	onScanProducts: () => void;
+	onScanReceipt: () => void;
 }
 
 export const FridgeActionGrid = ({
 	onAddProduct,
 	onScanProducts,
+	onScanReceipt,
 }: FridgeActionGridProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
@@ -50,31 +52,23 @@ export const FridgeActionGrid = ({
 				</Text>
 			</Pressable>
 
-			<View
+			<Pressable
+				accessibilityRole="button"
+				onPress={onScanReceipt}
 				style={[
 					styles.tile,
-					styles.disabledTile,
+					styles.outlinedTile,
 					{
-						backgroundColor: theme.chipBg,
+						backgroundColor: theme.card,
 						borderColor: theme.cardBorder,
 					},
 				]}
 			>
-				<View
-					style={[
-						styles.comingSoonBadge,
-						{ backgroundColor: theme.cardBorder },
-					]}
-				>
-					<Text style={[styles.comingSoonText, { color: theme.textMuted }]}>
-						{t("fridge.scanBill.comingSoon")}
-					</Text>
-				</View>
-				<ReceiptIcon size={20} color={theme.textMuted} />
-				<Text style={[styles.outlinedLabel, { color: theme.textMuted }]}>
-					{t("fridge.scanBill.label")}
+				<ReceiptIcon size={20} color={theme.text} />
+				<Text style={[styles.outlinedLabel, { color: theme.text }]}>
+					{t("fridge.scanReceipt.label")}
 				</Text>
-			</View>
+			</Pressable>
 		</View>
 	);
 };
@@ -102,13 +96,6 @@ const styles = StyleSheet.create({
 	outlinedTile: {
 		borderWidth: 2,
 	},
-	disabledTile: {
-		borderStyle: "dashed",
-		borderWidth: 2,
-		opacity: 0.9,
-		overflow: "visible",
-		position: "relative",
-	},
 	primaryLabel: {
 		color: "#FFFFFF",
 		fontSize: 11,
@@ -119,20 +106,5 @@ const styles = StyleSheet.create({
 		fontSize: 11,
 		fontWeight: "900",
 		textAlign: "center",
-	},
-	comingSoonBadge: {
-		alignSelf: "center",
-		borderRadius: 999,
-		paddingHorizontal: 8,
-		paddingVertical: 2,
-		position: "absolute",
-		top: -8,
-		zIndex: 1,
-	},
-	comingSoonText: {
-		fontSize: 9,
-		fontWeight: "900",
-		letterSpacing: 0.4,
-		textTransform: "uppercase",
 	},
 });

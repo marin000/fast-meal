@@ -12,6 +12,10 @@ export const ANALYTICS_EVENTS = {
 	barcodeLookupMiss: "barcode_lookup_miss",
 	fridgeProductsBatchAdded: "fridge_products_batch_added",
 	barcodeDetailsOpened: "barcode_details_opened",
+	receiptScanStarted: "receipt_scan_started",
+	receiptScanSucceeded: "receipt_scan_succeeded",
+	receiptScanFailed: "receipt_scan_failed",
+	receiptProductsAdded: "receipt_products_added",
 } as const;
 
 export type AnalyticsEventName =
