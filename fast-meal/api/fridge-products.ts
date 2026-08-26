@@ -39,15 +39,7 @@ export const createFridgeProduct = async (params: {
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
 			deviceId: params.deviceId,
-			name: params.name,
-			...(params.quantity !== undefined && params.unit
-				? { quantity: params.quantity, unit: params.unit }
-				: {}),
-			...(params.expirationDate
-				? { expirationDate: params.expirationDate }
-				: {}),
-			...(params.purchasedAt ? { purchasedAt: params.purchasedAt } : {}),
-			...(params.barcode ? { barcode: params.barcode } : {}),
+			...toCreatePayload(params),
 		}),
 	});
 
@@ -59,6 +51,58 @@ export const createFridgeProduct = async (params: {
 	}
 
 	return (await response.json()) as FridgeProductListItem;
+};
+
+const toCreatePayload = (params: {
+	name: string;
+	quantity?: number;
+	unit?: FridgeProductUnit;
+	expirationDate?: string;
+	purchasedAt?: string;
+	barcode?: string;
+}) => ({
+	name: params.name,
+	...(params.quantity !== undefined && params.unit
+		? { quantity: params.quantity, unit: params.unit }
+		: {}),
+	...(params.expirationDate ? { expirationDate: params.expirationDate } : {}),
+	...(params.purchasedAt ? { purchasedAt: params.purchasedAt } : {}),
+	...(params.barcode ? { barcode: params.barcode } : {}),
+});
+
+export const createFridgeProductsBatch = async (params: {
+	deviceId: string;
+	products: Array<{
+		name: string;
+		quantity?: number;
+		unit?: FridgeProductUnit;
+		expirationDate?: string;
+		purchasedAt?: string;
+		barcode?: string;
+	}>;
+}): Promise<FridgeProductListItem[]> => {
+	if (params.products.length === 0) return [];
+
+	const response = await fetch(`${apiEndpoint}/batch`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			deviceId: params.deviceId,
+			products: params.products.map(toCreatePayload),
+		}),
+	});
+
+	if (!response.ok) {
+		const text = await response.text();
+		throw new Error(
+			`Create fridge products batch failed (${response.status}): ${formatApiErrorBody(response.status, text)}`,
+		);
+	}
+
+	const data = (await response.json()) as {
+		fridgeProducts?: FridgeProductListItem[];
+	};
+	return Array.isArray(data.fridgeProducts) ? data.fridgeProducts : [];
 };
 
 export const deleteFridgeProduct = async (

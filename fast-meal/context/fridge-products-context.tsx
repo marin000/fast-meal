@@ -8,6 +8,7 @@ import {
 } from "react";
 import {
 	createFridgeProduct,
+	createFridgeProductsBatch,
 	deleteFridgeProduct,
 	fetchFridgeProducts,
 } from "@/api/fridge-products";
@@ -87,7 +88,8 @@ export const FridgeProductsProvider = ({
 				barcode: input.barcode,
 			});
 			setItems((prev) => {
-				const next = [created, ...prev];
+				const withoutCreated = prev.filter((item) => item.id !== created.id);
+				const next = [created, ...withoutCreated];
 				void syncExpirationNotifications(next);
 				return next;
 			});
@@ -99,22 +101,22 @@ export const FridgeProductsProvider = ({
 		async (inputs: AddFridgeProductInput[]) => {
 			if (!deviceId || inputs.length === 0) return;
 
-			const created: FridgeProductListItem[] = [];
-			for (const input of inputs) {
-				const item = await createFridgeProduct({
-					deviceId,
+			const created = await createFridgeProductsBatch({
+				deviceId,
+				products: inputs.map((input) => ({
 					name: input.name,
 					quantity: input.quantity,
 					unit: input.unit,
 					expirationDate: input.expirationDate,
 					purchasedAt: input.purchasedAt,
 					barcode: input.barcode,
-				});
-				created.push(item);
-			}
+				})),
+			});
 
 			setItems((prev) => {
-				const next = [...created, ...prev];
+				const createdIds = new Set(created.map((item) => item.id));
+				const withoutCreated = prev.filter((item) => !createdIds.has(item.id));
+				const next = [...created, ...withoutCreated];
 				void syncExpirationNotifications(next);
 				return next;
 			});

@@ -108,3 +108,79 @@ export const parseFridgeProductBody = (
 		barcode: parsedBarcode,
 	};
 };
+
+export type ParsedFridgeProductItemBody = Omit<
+	ParsedFridgeProductBody,
+	"deviceId"
+>;
+
+const MAX_FRIDGE_PRODUCT_BATCH_SIZE = 50;
+
+export const parseFridgeProductItemBody = (
+	body: unknown,
+): ParsedFridgeProductItemBody | null => {
+	if (typeof body !== "object" || body === null) return null;
+
+	const { name, quantity, unit, expirationDate, purchasedAt, barcode } =
+		body as Partial<CreateFridgeProductRequestBody>;
+
+	if (typeof name !== "string" || name.trim().length === 0) return null;
+
+	const parsedQuantity = parseOptionalQuantity(quantity);
+	if (!parsedQuantity.ok) return null;
+
+	const parsedUnit = parseOptionalUnit(unit);
+	if (!parsedUnit.ok) return null;
+
+	const hasQuantity = parsedQuantity.quantity !== undefined;
+	const hasUnit = parsedUnit.unit !== undefined;
+	if (hasQuantity !== hasUnit) return null;
+
+	const parsedExpirationDate = parseOptionalIsoDate(expirationDate);
+	if (!parsedExpirationDate.ok) return null;
+
+	const parsedPurchasedAt = parseOptionalIsoDate(purchasedAt);
+	if (!parsedPurchasedAt.ok) return null;
+
+	let parsedBarcode: string | undefined;
+	if (barcode !== undefined && barcode !== null) {
+		if (typeof barcode !== "string" || barcode.trim().length === 0) return null;
+		parsedBarcode = barcode.trim();
+	}
+
+	return {
+		name: name.trim(),
+		quantity: parsedQuantity.quantity,
+		unit: parsedUnit.unit,
+		expirationDate: parsedExpirationDate.date,
+		purchasedAt: parsedPurchasedAt.date,
+		barcode: parsedBarcode,
+	};
+};
+
+export const parseFridgeProductBatchBody = (
+	body: unknown,
+): { deviceId: string; products: ParsedFridgeProductItemBody[] } | null => {
+	if (typeof body !== "object" || body === null) return null;
+
+	const { deviceId, products } = body as {
+		deviceId?: unknown;
+		products?: unknown;
+	};
+
+	if (typeof deviceId !== "string" || deviceId.trim().length === 0) return null;
+	if (!Array.isArray(products) || products.length === 0) return null;
+	if (products.length > MAX_FRIDGE_PRODUCT_BATCH_SIZE) return null;
+
+	const parsedProducts: ParsedFridgeProductItemBody[] = [];
+	for (const product of products) {
+		const parsed = parseFridgeProductItemBody(product);
+		if (!parsed) return null;
+		parsedProducts.push(parsed);
+	}
+
+	return {
+		deviceId: deviceId.trim(),
+		products: parsedProducts,
+	};
+};

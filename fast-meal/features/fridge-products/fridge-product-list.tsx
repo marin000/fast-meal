@@ -25,7 +25,12 @@ export const FridgeProductList = ({
 		onPressProduct?.(item);
 	};
 
-	if (items.length === 0) {
+	const uniqueItems = items.filter(
+		(item, index, list) =>
+			list.findIndex((candidate) => candidate.id === item.id) === index,
+	);
+
+	if (uniqueItems.length === 0) {
 		return (
 			<View style={styles.empty}>
 				<View style={[styles.emptyIcon, { backgroundColor: theme.chipBg }]}>
@@ -43,7 +48,7 @@ export const FridgeProductList = ({
 
 	return (
 		<View style={styles.section}>
-			{items.map((item) => (
+			{uniqueItems.map((item) => (
 				<FridgeProductRow
 					key={item.id}
 					item={item}
