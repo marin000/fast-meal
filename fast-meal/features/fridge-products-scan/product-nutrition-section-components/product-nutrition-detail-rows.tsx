@@ -2,10 +2,7 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useAppAppearance } from "@/hooks/use-app-appearance";
-import type {
-	BarcodeNutrimentValues,
-	NutritionDetailRow,
-} from "@/interface/barcode-product";
+import type { BarcodeNutrimentValues, NutritionDetailRow } from "@/interface/barcode-product";
 import { formatNutrient, hasNutritionValue } from "@/utils/food-facts-helper";
 
 interface ProductNutritionDetailRowsProps {
@@ -54,9 +51,7 @@ const buildDetailRows = (
 	},
 ];
 
-export const hasVisibleDetailRows = (
-	nutriments: BarcodeNutrimentValues,
-): boolean =>
+export const hasVisibleDetailRows = (nutriments: BarcodeNutrimentValues): boolean =>
 	[
 		nutriments.sugars100g,
 		nutriments.sugarsServing,
@@ -93,15 +88,8 @@ export const ProductNutritionDetailRows = ({
 	}
 
 	return (
-		<View
-			style={[
-				bordered && styles.detailsBlock,
-				bordered && { borderTopColor: theme.rowDivider },
-			]}
-		>
-			<Text style={[styles.detailsTitle, { color: theme.textMuted }]}>
-				{t("fridge.details.nutrientDetails")}
-			</Text>
+		<View style={[bordered && styles.detailsBlock, bordered && { borderTopColor: theme.rowDivider }]}>
+			<Text style={[styles.detailsTitle, { color: theme.textMuted }]}>{t("fridge.details.nutrientDetails")}</Text>
 
 			{visibleDetailRows.map((row, index) => (
 				<View
@@ -114,9 +102,7 @@ export const ProductNutritionDetailRows = ({
 						},
 					]}
 				>
-					<Text style={[styles.detailLabel, { color: theme.text }]}>
-						{row.label}
-					</Text>
+					<Text style={[styles.detailLabel, { color: theme.text }]}>{row.label}</Text>
 					{showServingValues ? (
 						<View style={styles.detailValues}>
 							<Text style={[styles.detailPer100, { color: theme.textMuted }]}>

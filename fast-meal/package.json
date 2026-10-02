@@ -1,7 +1,7 @@
 {
 	"name": "fastmeal",
 	"main": "expo-router/entry",
-	"version": "1.5.0",
+	"version": "1.5.1",
 	"engines": {
 		"node": ">=24.0.0"
 	},
@@ -11,8 +11,9 @@
 		"ios": "expo run:ios",
 		"web": "expo start --web",
 		"lint": "biome check .",
+		"typecheck": "tsc --noEmit",
 		"format": "biome format .",
-		"format-fix": "biome check --write ./src",
+		"format-fix": "biome check --write .",
 		"generate-icons": "node scripts/generate-app-icons.mjs",
 		"bump": "node scripts/bump-version.mjs"
 	},

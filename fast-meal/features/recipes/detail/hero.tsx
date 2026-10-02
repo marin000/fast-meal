@@ -13,11 +13,7 @@ interface RecipeHeroProps {
 	rightActions?: ReactNode;
 }
 
-export const RecipeHero = ({
-	recipe,
-	onBack,
-	rightActions,
-}: RecipeHeroProps) => {
+export const RecipeHero = ({ recipe, onBack, rightActions }: RecipeHeroProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 
@@ -42,16 +38,9 @@ export const RecipeHero = ({
 				<View style={[styles.accent, { backgroundColor: theme.primary }]} />
 
 				<View style={styles.titleContent}>
-					<Text style={[styles.title, { color: theme.text }]}>
-						{recipe.title}
-					</Text>
+					<Text style={[styles.title, { color: theme.text }]}>{recipe.title}</Text>
 					<View style={styles.badgesRow}>
-						<View
-							style={[
-								styles.timeBadge,
-								{ backgroundColor: theme.surfaceOverlay },
-							]}
-						>
+						<View style={[styles.timeBadge, { backgroundColor: theme.surfaceOverlay }]}>
 							<Ionicons name="time-outline" size={12} color={theme.iconMuted} />
 							<Text style={[styles.timeBadgeText, { color: theme.iconMuted }]}>
 								{t("recipe.prepTime", { minutes: recipe.prepTimeMinutes })}

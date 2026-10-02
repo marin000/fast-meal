@@ -8,12 +8,7 @@ export const Header = () => {
 
 	return (
 		<View style={styles.brandRow}>
-			<View
-				style={[
-					styles.logoContainer,
-					{ backgroundColor: theme.logoContainerBg },
-				]}
-			>
+			<View style={[styles.logoContainer, { backgroundColor: theme.logoContainerBg }]}>
 				<FridgeAiLogo size={24} />
 			</View>
 			<Text style={styles.brandText}>

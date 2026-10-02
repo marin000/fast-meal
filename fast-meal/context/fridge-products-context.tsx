@@ -1,11 +1,4 @@
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import {
 	createFridgeProduct,
 	createFridgeProductsBatch,
@@ -36,15 +29,9 @@ interface FridgeProductsContextValue {
 	removeById: (id: string) => Promise<void>;
 }
 
-const FridgeProductsContext = createContext<
-	FridgeProductsContextValue | undefined
->(undefined);
+const FridgeProductsContext = createContext<FridgeProductsContextValue | undefined>(undefined);
 
-export const FridgeProductsProvider = ({
-	children,
-}: {
-	children: ReactNode;
-}) => {
+export const FridgeProductsProvider = ({ children }: { children: ReactNode }) => {
 	const { deviceId } = useDeviceId();
 	const [items, setItems] = useState<FridgeProductListItem[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -156,9 +143,7 @@ export const FridgeProductsProvider = ({
 export const useFridgeProducts = (): FridgeProductsContextValue => {
 	const ctx = useContext(FridgeProductsContext);
 	if (ctx === undefined) {
-		throw new Error(
-			"useFridgeProducts must be used within FridgeProductsProvider",
-		);
+		throw new Error("useFridgeProducts must be used within FridgeProductsProvider");
 	}
 	return ctx;
 };

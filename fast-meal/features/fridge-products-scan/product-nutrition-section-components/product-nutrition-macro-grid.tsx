@@ -2,11 +2,7 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useAppAppearance } from "@/hooks/use-app-appearance";
-import type {
-	BarcodeNutrimentValues,
-	NutritionMacroScope,
-	NutritionMacroStat,
-} from "@/interface/barcode-product";
+import type { BarcodeNutrimentValues, NutritionMacroScope, NutritionMacroStat } from "@/interface/barcode-product";
 import { formatNutrient, hasNutritionValue } from "@/utils/food-facts-helper";
 
 interface ProductNutritionMacroGridProps {
@@ -31,9 +27,7 @@ const buildMacros = (
 		{
 			key: "calories",
 			label: labels.calories,
-			value: isPer100
-				? nutriments.energyKcal100g
-				: nutriments.energyKcalServing,
+			value: isPer100 ? nutriments.energyKcal100g : nutriments.energyKcalServing,
 			unit: units.kcal,
 		},
 		{
@@ -45,9 +39,7 @@ const buildMacros = (
 		{
 			key: "carbs",
 			label: labels.carbs,
-			value: isPer100
-				? nutriments.carbohydrates100g
-				: nutriments.carbohydratesServing,
+			value: isPer100 ? nutriments.carbohydrates100g : nutriments.carbohydratesServing,
 			unit: units.mass,
 		},
 		{
@@ -67,10 +59,7 @@ export const hasServingMacros = (nutriments: BarcodeNutrimentValues): boolean =>
 		nutriments.fatServing,
 	].some(hasNutritionValue);
 
-export const ProductNutritionMacroGrid = ({
-	nutriments,
-	scope,
-}: ProductNutritionMacroGridProps) => {
+export const ProductNutritionMacroGrid = ({ nutriments, scope }: ProductNutritionMacroGridProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 	const macros = buildMacros(
@@ -94,13 +83,9 @@ export const ProductNutritionMacroGrid = ({
 				<View key={macro.key} style={styles.gridItem}>
 					<Text style={[styles.gridValue, { color: theme.text }]}>
 						{formatNutrient(macro.value)}
-						<Text style={[styles.gridUnit, { color: theme.textMuted }]}>
-							{macro.unit}
-						</Text>
+						<Text style={[styles.gridUnit, { color: theme.textMuted }]}>{macro.unit}</Text>
 					</Text>
-					<Text style={[styles.gridLabel, { color: theme.textMuted }]}>
-						{macro.label}
-					</Text>
+					<Text style={[styles.gridLabel, { color: theme.textMuted }]}>{macro.label}</Text>
 				</View>
 			))}
 		</View>

@@ -1,11 +1,4 @@
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 import {
 	fetchHouseholdInfo,
@@ -27,9 +20,7 @@ interface HouseholdContextValue {
 	leaveHousehold: () => Promise<HouseholdInfo>;
 }
 
-const HouseholdContext = createContext<HouseholdContextValue | undefined>(
-	undefined,
-);
+const HouseholdContext = createContext<HouseholdContextValue | undefined>(undefined);
 
 export const HouseholdProvider = ({ children }: { children: ReactNode }) => {
 	const { deviceId } = useDeviceId();

@@ -10,11 +10,7 @@ interface ProductScoreBadgesProps {
 	ecoscoreGrade?: string;
 }
 
-export const ProductScoreBadges = ({
-	nutriscoreGrade,
-	novaGroup,
-	ecoscoreGrade,
-}: ProductScoreBadgesProps) => {
+export const ProductScoreBadges = ({ nutriscoreGrade, novaGroup, ecoscoreGrade }: ProductScoreBadgesProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 	const unknownLabel = t("fridge.details.scores.unknown");
@@ -26,9 +22,7 @@ export const ProductScoreBadges = ({
 	return (
 		<View style={styles.badges}>
 			{nutriscoreGrade ? (
-				<View
-					style={[styles.badge, { backgroundColor: theme.surfaceOverlay }]}
-				>
+				<View style={[styles.badge, { backgroundColor: theme.surfaceOverlay }]}>
 					<Text style={[styles.badgeText, { color: theme.text }]}>
 						{t("fridge.details.scores.nutriscore", {
 							grade: formatScoreGrade(nutriscoreGrade, unknownLabel),
@@ -37,18 +31,14 @@ export const ProductScoreBadges = ({
 				</View>
 			) : null}
 			{novaGroup !== undefined ? (
-				<View
-					style={[styles.badge, { backgroundColor: theme.surfaceOverlay }]}
-				>
+				<View style={[styles.badge, { backgroundColor: theme.surfaceOverlay }]}>
 					<Text style={[styles.badgeText, { color: theme.text }]}>
 						{t("fridge.details.scores.nova", { group: novaGroup })}
 					</Text>
 				</View>
 			) : null}
 			{ecoscoreGrade ? (
-				<View
-					style={[styles.badge, { backgroundColor: theme.surfaceOverlay }]}
-				>
+				<View style={[styles.badge, { backgroundColor: theme.surfaceOverlay }]}>
 					<Text style={[styles.badgeText, { color: theme.text }]}>
 						{t("fridge.details.scores.ecoscore", {
 							grade: formatScoreGrade(ecoscoreGrade, unknownLabel),

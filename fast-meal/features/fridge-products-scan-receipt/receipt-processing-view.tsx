@@ -9,10 +9,7 @@ interface ReceiptProcessingViewProps {
 	onRetry: () => void;
 }
 
-export const ReceiptProcessingView = ({
-	errorMessage,
-	onRetry,
-}: ReceiptProcessingViewProps) => {
+export const ReceiptProcessingView = ({ errorMessage, onRetry }: ReceiptProcessingViewProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 
@@ -27,17 +24,9 @@ export const ReceiptProcessingView = ({
 
 	return (
 		<View style={[styles.container, { backgroundColor: theme.background }]}>
-			<Text style={[styles.title, { color: theme.text }]}>
-				{t("fridge.scanReceipt.errorTitle")}
-			</Text>
-			<Text style={[styles.subtitle, { color: theme.textMuted }]}>
-				{errorMessage}
-			</Text>
-			<PrimaryButton
-				label={t("fridge.scanReceipt.retry")}
-				onPress={onRetry}
-				leftIconName="refresh"
-			/>
+			<Text style={[styles.title, { color: theme.text }]}>{t("fridge.scanReceipt.errorTitle")}</Text>
+			<Text style={[styles.subtitle, { color: theme.textMuted }]}>{errorMessage}</Text>
+			<PrimaryButton label={t("fridge.scanReceipt.retry")} onPress={onRetry} leftIconName="refresh" />
 		</View>
 	);
 };

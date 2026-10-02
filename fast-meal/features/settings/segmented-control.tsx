@@ -20,9 +20,7 @@ export const SegmentedControl = <T extends string>({
 	const theme = useAppAppearance();
 
 	return (
-		<View
-			style={[styles.segmentedControl, { borderColor: theme.segmentBorder }]}
-		>
+		<View style={[styles.segmentedControl, { borderColor: theme.segmentBorder }]}>
 			{options.map((option) => {
 				const isSelected = option === selectedOption;
 
@@ -34,9 +32,7 @@ export const SegmentedControl = <T extends string>({
 							styles.segmentItem,
 							equalWidth && styles.segmentItemEqualWidth,
 							{
-								backgroundColor: isSelected
-									? theme.segmentActiveBg
-									: theme.segmentInactiveBg,
+								backgroundColor: isSelected ? theme.segmentActiveBg : theme.segmentInactiveBg,
 							},
 						]}
 					>
@@ -44,9 +40,7 @@ export const SegmentedControl = <T extends string>({
 							style={[
 								styles.segmentLabel,
 								{
-									color: isSelected
-										? theme.segmentActiveText
-										: theme.segmentInactiveText,
+									color: isSelected ? theme.segmentActiveText : theme.segmentInactiveText,
 								},
 							]}
 							numberOfLines={1}

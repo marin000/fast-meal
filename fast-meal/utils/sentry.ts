@@ -18,14 +18,11 @@ export const ANALYTICS_EVENTS = {
 	receiptProductsAdded: "receipt_products_added",
 } as const;
 
-export type AnalyticsEventName =
-	(typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];
+export type AnalyticsEventName = (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];
 
 type SafeEventProps = Record<string, string | number | boolean | undefined>;
 
-const toAttributes = (
-	props?: SafeEventProps,
-): Record<string, string | number | boolean> => {
+const toAttributes = (props?: SafeEventProps): Record<string, string | number | boolean> => {
 	if (!props) return {};
 	const attributes: Record<string, string | number | boolean> = {};
 	for (const [key, value] of Object.entries(props)) {
@@ -39,8 +36,7 @@ export const initSentry = (): void => {
 	const dsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
 	if (!dsn) return;
 
-	const appVersion =
-		Constants.expoConfig?.version ?? Constants.nativeAppVersion ?? "unknown";
+	const appVersion = Constants.expoConfig?.version ?? Constants.nativeAppVersion ?? "unknown";
 
 	Sentry.init({
 		dsn,
@@ -66,10 +62,7 @@ export const setSentryDeviceId = (deviceId: string): void => {
 	Sentry.setUser({ id: deviceId });
 };
 
-export const captureAppException = (
-	error: unknown,
-	context?: SafeEventProps,
-): void => {
+export const captureAppException = (error: unknown, context?: SafeEventProps): void => {
 	Sentry.withScope((scope) => {
 		for (const [key, value] of Object.entries(toAttributes(context))) {
 			scope.setTag(key, String(value));
@@ -78,10 +71,7 @@ export const captureAppException = (
 	});
 };
 
-export const trackProductEvent = (
-	name: AnalyticsEventName,
-	props?: SafeEventProps,
-): void => {
+export const trackProductEvent = (name: AnalyticsEventName, props?: SafeEventProps): void => {
 	const attributes = toAttributes(props);
 
 	Sentry.addBreadcrumb({

@@ -15,18 +15,13 @@ interface RecipeCardProps {
 	onPress: () => void;
 }
 
-export const RecipeCard = ({
-	recipe,
-	recipeIndex,
-	onPress,
-}: RecipeCardProps) => {
+export const RecipeCard = ({ recipe, recipeIndex, onPress }: RecipeCardProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 	const { units } = usePreferences();
 	const imperial = units === "imperial";
 	const massUnit = imperial ? t("recipe.units.oz") : t("recipe.units.g");
-	const { getSavedBackendIdForIndex, saveRecipeAtIndex, isBusyForIndex } =
-		useRecipesContext();
+	const { getSavedBackendIdForIndex, saveRecipeAtIndex, isBusyForIndex } = useRecipesContext();
 
 	const savedId = getSavedBackendIdForIndex(recipeIndex);
 	const isSaved = savedId !== null;
@@ -47,10 +42,7 @@ export const RecipeCard = ({
 			<View style={styles.body}>
 				<View style={styles.topRow}>
 					<View style={[styles.titleRow, styles.titleRowGrow]}>
-						<Text
-							style={[styles.title, { color: theme.text }]}
-							numberOfLines={2}
-						>
+						<Text style={[styles.title, { color: theme.text }]} numberOfLines={2}>
 							{recipe.title}
 						</Text>
 						<DifficultyBadge difficulty={recipe.difficulty} />
@@ -61,25 +53,15 @@ export const RecipeCard = ({
 								accessibilityRole="button"
 								disabled={isBusy}
 								onPress={() => saveRecipeAtIndex(recipeIndex)}
-								style={[
-									styles.iconButton,
-									{ backgroundColor: theme.substitutionBoxBg },
-								]}
+								style={[styles.iconButton, { backgroundColor: theme.substitutionBoxBg }]}
 							>
-								<Ionicons
-									name="bookmark-outline"
-									size={16}
-									color={theme.text}
-								/>
+								<Ionicons name="bookmark-outline" size={16} color={theme.text} />
 							</Pressable>
 						)}
 					</View>
 				</View>
 
-				<Text
-					style={[styles.description, { color: theme.textMuted }]}
-					numberOfLines={2}
-				>
+				<Text style={[styles.description, { color: theme.textMuted }]} numberOfLines={2}>
 					{recipe.description}
 				</Text>
 
@@ -97,11 +79,7 @@ export const RecipeCard = ({
 						</Text>
 					</View>
 					<View style={styles.statItem}>
-						<Ionicons
-							name="barbell-outline"
-							size={14}
-							color={theme.iconMuted}
-						/>
+						<Ionicons name="barbell-outline" size={14} color={theme.iconMuted} />
 						<Text style={[styles.statText, { color: theme.iconMuted }]}>
 							{t("recipe.proteinG", {
 								protein: macroMassFromGrams(recipe.macros.protein, imperial),

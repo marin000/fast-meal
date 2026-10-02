@@ -6,11 +6,7 @@ import { Alert } from "react-native";
 import type { IngredientImageErrorCode } from "@/constants/ingredient-image";
 import { useHomeIngredientImage } from "@/context/home-ingredient-image-context";
 import { processIngredientImageAsset } from "@/utils/process-ingredient-image";
-import {
-	ANALYTICS_EVENTS,
-	captureAppException,
-	trackProductEvent,
-} from "@/utils/sentry";
+import { ANALYTICS_EVENTS, captureAppException, trackProductEvent } from "@/utils/sentry";
 
 const errorMessageKey = (code: IngredientImageErrorCode): string => {
 	switch (code) {

@@ -47,9 +47,7 @@ export const SHELF_LIFE_BY_CATEGORY_TAG: Readonly<Record<string, number>> = {
 	"en:dairies": 7,
 };
 
-export const resolveShelfLifeDays = (
-	categoriesTags: readonly string[] | undefined,
-): number | undefined => {
+export const resolveShelfLifeDays = (categoriesTags: readonly string[] | undefined): number | undefined => {
 	if (!categoriesTags || categoriesTags.length === 0) return undefined;
 
 	for (let i = categoriesTags.length - 1; i >= 0; i -= 1) {

@@ -56,18 +56,12 @@ module.exports = function withAndroidNodeBinaryForGradle(config) {
 			return modConfig;
 		}
 
-		const projectRootLine =
-			"def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()";
+		const projectRootLine = "def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()";
 		if (!contents.includes(projectRootLine)) {
-			throw new Error(
-				"withAndroidNodeBinaryForGradle: expected projectRoot line in app/build.gradle",
-			);
+			throw new Error("withAndroidNodeBinaryForGradle: expected projectRoot line in app/build.gradle");
 		}
 
-		contents = contents.replace(
-			`${projectRootLine}\n`,
-			`${projectRootLine}\n${NODE_RESOLVER_AND_ENV_BLOCK}`,
-		);
+		contents = contents.replace(`${projectRootLine}\n`, `${projectRootLine}\n${NODE_RESOLVER_AND_ENV_BLOCK}`);
 
 		contents = contents.replaceAll('["node",', `[${MARKER},`);
 

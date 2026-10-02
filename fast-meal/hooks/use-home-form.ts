@@ -17,14 +17,9 @@ export const useHomeForm = () => {
 	const { showMessage } = useFeedbackMessage();
 	const { remainingGenerations } = useGenerationQuota();
 	const { lockedQuickFilters, units } = usePreferences();
-	const {
-		ingredients: ingredientsInputValue,
-		setIngredients: setIngredientsInputValue,
-	} = useHomeIngredients();
+	const { ingredients: ingredientsInputValue, setIngredients: setIngredientsInputValue } = useHomeIngredients();
 	const { image } = useHomeIngredientImage();
-	const [selectedFilters, setSelectedFilters] = useState<QuickFilterOption[]>(
-		[],
-	);
+	const [selectedFilters, setSelectedFilters] = useState<QuickFilterOption[]>([]);
 
 	const toggleFilterOption = (filter: QuickFilterOption) => {
 		if (lockedQuickFilters.includes(filter)) return;
@@ -41,10 +36,7 @@ export const useHomeForm = () => {
 		[image, ingredientsInputValue],
 	);
 	const selectedFiltersWithLocks = useMemo(
-		() =>
-			[
-				...new Set([...selectedFilters, ...lockedQuickFilters]),
-			] as QuickFilterOption[],
+		() => [...new Set([...selectedFilters, ...lockedQuickFilters])] as QuickFilterOption[],
 		[selectedFilters, lockedQuickFilters],
 	);
 

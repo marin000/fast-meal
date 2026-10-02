@@ -9,12 +9,8 @@ export const RecipesHeader = () => {
 
 	return (
 		<View style={styles.header}>
-			<Text style={[styles.title, { color: theme.text }]}>
-				{t("results.title")}
-			</Text>
-			<Text style={[styles.subtitle, { color: theme.textMuted }]}>
-				{t("results.subtitle")}
-			</Text>
+			<Text style={[styles.title, { color: theme.text }]}>{t("results.title")}</Text>
+			<Text style={[styles.subtitle, { color: theme.textMuted }]}>{t("results.subtitle")}</Text>
 		</View>
 	);
 };

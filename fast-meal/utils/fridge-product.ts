@@ -1,10 +1,6 @@
 import type { TFunction } from "i18next";
 
-import {
-	FRIDGE_PRODUCT_UNITS,
-	type FridgeProductUnit,
-	isFridgeProductUnit,
-} from "@/constants/fridge";
+import { FRIDGE_PRODUCT_UNITS, type FridgeProductUnit, isFridgeProductUnit } from "@/constants/fridge";
 
 export const formatFridgeProductQuantity = (
 	quantity: number | undefined,
@@ -18,10 +14,7 @@ export const formatFridgeProductQuantity = (
 	return `${quantity} ${unitLabel}`;
 };
 
-export const translateMeasurementUnit = (
-	t: TFunction,
-	unit: string,
-): string => {
+export const translateMeasurementUnit = (t: TFunction, unit: string): string => {
 	if (!isFridgeProductUnit(unit)) return unit;
 	return t(`fridge.units.${unit}`);
 };

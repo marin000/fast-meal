@@ -25,42 +25,24 @@ export const ScanReviewSheet = ({
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 
-	const readyCount = drafts.filter(
-		(draft) => !draft.isLoading && draft.name.trim().length > 0,
-	).length;
+	const readyCount = drafts.filter((draft) => !draft.isLoading && draft.name.trim().length > 0).length;
 	const canSubmit = readyCount > 0 && !isSubmitting;
 
 	if (drafts.length === 0) {
 		return (
-			<View
-				style={[
-					styles.emptySheet,
-					{ backgroundColor: theme.card, borderColor: theme.cardBorder },
-				]}
-			>
-				<Text style={[styles.emptyTitle, { color: theme.text }]}>
-					{t("fridge.scan.emptyTitle")}
-				</Text>
+			<View style={[styles.emptySheet, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
+				<Text style={[styles.emptyTitle, { color: theme.text }]}>{t("fridge.scan.emptyTitle")}</Text>
 			</View>
 		);
 	}
 
 	return (
-		<View
-			style={[
-				styles.sheet,
-				{ backgroundColor: theme.card, borderColor: theme.cardBorder },
-			]}
-		>
+		<View style={[styles.sheet, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
 			<Text style={[styles.title, { color: theme.text }]}>
 				{t("fridge.scan.reviewTitle", { count: drafts.length })}
 			</Text>
 
-			<ScrollView
-				style={styles.list}
-				contentContainerStyle={styles.listContent}
-				showsVerticalScrollIndicator={false}
-			>
+			<ScrollView style={styles.list} contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
 				{drafts.map((draft) => (
 					<ScannedProductCard
 						key={draft.localId}

@@ -1,11 +1,4 @@
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 import { fetchRemainingGenerations } from "@/api/device";
 import { useDeviceId } from "@/context/device-id-context";
@@ -16,19 +9,11 @@ interface GenerationQuotaContextValue {
 	refreshQuota: () => Promise<void>;
 }
 
-const GenerationQuotaContext = createContext<
-	GenerationQuotaContextValue | undefined
->(undefined);
+const GenerationQuotaContext = createContext<GenerationQuotaContextValue | undefined>(undefined);
 
-export const GenerationQuotaProvider = ({
-	children,
-}: {
-	children: ReactNode;
-}) => {
+export const GenerationQuotaProvider = ({ children }: { children: ReactNode }) => {
 	const { deviceId } = useDeviceId();
-	const [remainingGenerations, setRemainingGenerations] = useState<
-		number | null
-	>(null);
+	const [remainingGenerations, setRemainingGenerations] = useState<number | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const refreshQuota = useCallback(async () => {
@@ -53,9 +38,7 @@ export const GenerationQuotaProvider = ({
 	}, [refreshQuota]);
 
 	return (
-		<GenerationQuotaContext.Provider
-			value={{ remainingGenerations, isLoading, refreshQuota }}
-		>
+		<GenerationQuotaContext.Provider value={{ remainingGenerations, isLoading, refreshQuota }}>
 			{children}
 		</GenerationQuotaContext.Provider>
 	);
@@ -64,9 +47,7 @@ export const GenerationQuotaProvider = ({
 export const useGenerationQuota = (): GenerationQuotaContextValue => {
 	const ctx = useContext(GenerationQuotaContext);
 	if (ctx === undefined) {
-		throw new Error(
-			"useGenerationQuota must be used within GenerationQuotaProvider",
-		);
+		throw new Error("useGenerationQuota must be used within GenerationQuotaProvider");
 	}
 	return ctx;
 };

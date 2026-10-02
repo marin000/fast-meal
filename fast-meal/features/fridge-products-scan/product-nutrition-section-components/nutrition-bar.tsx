@@ -11,13 +11,7 @@ interface NutritionBarProps {
 	unit: string;
 }
 
-export const NutritionBar = ({
-	label,
-	value,
-	max,
-	color,
-	unit,
-}: NutritionBarProps) => {
+export const NutritionBar = ({ label, value, max, color, unit }: NutritionBarProps) => {
 	const theme = useAppAppearance();
 	const numericValue = value ?? 0;
 	const fillPercentage = Math.min(100, Math.round((numericValue / max) * 100));
@@ -25,23 +19,14 @@ export const NutritionBar = ({
 	return (
 		<View style={styles.barWrapper}>
 			<View style={styles.barHeader}>
-				<Text style={[styles.barLabel, { color: theme.textMuted }]}>
-					{label}
-				</Text>
+				<Text style={[styles.barLabel, { color: theme.textMuted }]}>{label}</Text>
 				<Text style={[styles.barValue, { color: theme.text }]}>
 					{formatNutrient(value)}
 					{unit}
 				</Text>
 			</View>
-			<View
-				style={[styles.barTrack, { backgroundColor: theme.nutritionBarTrack }]}
-			>
-				<View
-					style={[
-						styles.barFill,
-						{ width: `${fillPercentage}%`, backgroundColor: color },
-					]}
-				/>
+			<View style={[styles.barTrack, { backgroundColor: theme.nutritionBarTrack }]}>
+				<View style={[styles.barFill, { width: `${fillPercentage}%`, backgroundColor: color }]} />
 			</View>
 		</View>
 	);

@@ -4,8 +4,7 @@ import type { ShoppingListItem } from "@/interface/shopping-list";
 const normalizeName = (name: string): string => name.trim().toLowerCase();
 
 const createId = (): string =>
-	globalThis.crypto?.randomUUID?.() ??
-	`shop-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+	globalThis.crypto?.randomUUID?.() ?? `shop-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 
 export const mergeRecipeIngredientsIntoList = (
 	current: readonly ShoppingListItem[],

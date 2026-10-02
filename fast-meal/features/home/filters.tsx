@@ -12,12 +12,7 @@ interface HomeFiltersProps {
 	onToggleOption: (option: QuickFilterOption) => void;
 }
 
-export const HomeFilters = ({
-	options,
-	selectedOptions,
-	lockedOptions,
-	onToggleOption,
-}: HomeFiltersProps) => {
+export const HomeFilters = ({ options, selectedOptions, lockedOptions, onToggleOption }: HomeFiltersProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 
@@ -26,31 +21,20 @@ export const HomeFilters = ({
 		label: t(`home.filters.${option}`),
 	}));
 
-	const translatedSelectedOptions = selectedOptions.map((option) =>
-		t(`home.filters.${option}`),
-	);
+	const translatedSelectedOptions = selectedOptions.map((option) => t(`home.filters.${option}`));
 
 	return (
 		<View style={styles.filtersSection}>
-			<Text style={[styles.filtersLabel, { color: theme.textMuted }]}>
-				{t("home.quickFiltersLabel")}
-			</Text>
+			<Text style={[styles.filtersLabel, { color: theme.textMuted }]}>{t("home.quickFiltersLabel")}</Text>
 			<ChipSelector
 				options={translatedOptions.map((option) => option.label)}
 				selectedOptions={translatedSelectedOptions}
-				disabledOptions={lockedOptions.map((option) =>
-					t(`home.filters.${option}`),
-				)}
+				disabledOptions={lockedOptions.map((option) => t(`home.filters.${option}`))}
 				onDisabledOptionPress={() => {
-					Alert.alert(
-						t("home.lockedFilter.title"),
-						t("home.lockedFilter.message"),
-					);
+					Alert.alert(t("home.lockedFilter.title"), t("home.lockedFilter.message"));
 				}}
 				onToggleOption={(selectedLabel) => {
-					const selectedOption = translatedOptions.find(
-						(option) => option.label === selectedLabel,
-					);
+					const selectedOption = translatedOptions.find((option) => option.label === selectedLabel);
 
 					if (selectedOption) {
 						onToggleOption(selectedOption.key);

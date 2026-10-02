@@ -43,22 +43,11 @@ export const PrimaryButton = ({
 			]}
 		>
 			<View style={styles.content}>
-				{leftIcon ??
-					(leftIconName ? (
-						<Ionicons name={leftIconName} size={iconSize} color={iconColor} />
-					) : null)}
-				<Text
-					style={[
-						styles.label,
-						compact && styles.labelCompact,
-						compact && shrink && styles.labelCompactShrink,
-					]}
-				>
+				{leftIcon ?? (leftIconName ? <Ionicons name={leftIconName} size={iconSize} color={iconColor} /> : null)}
+				<Text style={[styles.label, compact && styles.labelCompact, compact && shrink && styles.labelCompactShrink]}>
 					{label}
 				</Text>
-				{rightIconName ? (
-					<Ionicons name={rightIconName} size={iconSize} color={iconColor} />
-				) : null}
+				{rightIconName ? <Ionicons name={rightIconName} size={iconSize} color={iconColor} /> : null}
 			</View>
 		</Pressable>
 	);

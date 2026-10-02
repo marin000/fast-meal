@@ -3,18 +3,9 @@ import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-	ActivityIndicator,
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-} from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 
-import {
-	fetchBarcodeProduct,
-	reportBarcodeProduct,
-} from "@/api/barcode-products";
+import { fetchBarcodeProduct, reportBarcodeProduct } from "@/api/barcode-products";
 import { fetchOffDetails } from "@/api/open-food-facts";
 import { PrimaryButton, ScreenScrollView } from "@/components";
 import { useDeviceId, usePreferences } from "@/context";
@@ -32,11 +23,7 @@ import {
 	resolveParamCode,
 	toBarcodeReportPayload,
 } from "@/utils/food-facts-helper";
-import {
-	ANALYTICS_EVENTS,
-	captureAppException,
-	trackProductEvent,
-} from "@/utils/sentry";
+import { ANALYTICS_EVENTS, captureAppException, trackProductEvent } from "@/utils/sentry";
 
 const FridgeProductDetailsScreen = () => {
 	const { t } = useTranslation();
@@ -71,8 +58,7 @@ const FridgeProductDetailsScreen = () => {
 			const cached = await fetchBarcodeProduct(deviceId, code, true);
 			let next: BarcodeProduct | null = cached.found ? cached.product : null;
 
-			const needsDetails =
-				!next || !hasDetailsTier(next) || isDetailsStale(next.detailsFetchedAt);
+			const needsDetails = !next || !hasDetailsTier(next) || isDetailsStale(next.detailsFetchedAt);
 
 			if (needsDetails) {
 				try {
@@ -130,14 +116,8 @@ const FridgeProductDetailsScreen = () => {
 	if (error || !product) {
 		return (
 			<View style={[styles.centered, { backgroundColor: theme.background }]}>
-				<Text style={[styles.errorText, { color: theme.text }]}>
-					{error ?? t("fridge.details.notFound")}
-				</Text>
-				<PrimaryButton
-					label={t("errors.goBack")}
-					onPress={() => router.back()}
-					compact
-				/>
+				<Text style={[styles.errorText, { color: theme.text }]}>{error ?? t("fridge.details.notFound")}</Text>
+				<PrimaryButton label={t("errors.goBack")} onPress={() => router.back()} compact />
 			</View>
 		);
 	}
@@ -147,10 +127,7 @@ const FridgeProductDetailsScreen = () => {
 	const imageUri = product.imageUrl ?? product.imageThumbUrl;
 
 	return (
-		<ScreenScrollView
-			backgroundColor={theme.background}
-			contentContainerStyle={styles.container}
-		>
+		<ScreenScrollView backgroundColor={theme.background} contentContainerStyle={styles.container}>
 			<View style={styles.hero}>
 				<Pressable
 					accessibilityRole="button"
@@ -161,17 +138,8 @@ const FridgeProductDetailsScreen = () => {
 				</Pressable>
 
 				{imageUri ? (
-					<View
-						style={[
-							styles.imageCard,
-							{ backgroundColor: theme.card, borderColor: theme.cardBorder },
-						]}
-					>
-						<Image
-							source={{ uri: imageUri }}
-							style={styles.heroImage}
-							contentFit="contain"
-						/>
+					<View style={[styles.imageCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
+						<Image source={{ uri: imageUri }} style={styles.heroImage} contentFit="contain" />
 					</View>
 				) : null}
 
@@ -180,13 +148,9 @@ const FridgeProductDetailsScreen = () => {
 					<View style={styles.titleContent}>
 						<Text style={[styles.title, { color: theme.text }]}>{name}</Text>
 						{product.brandLabel ? (
-							<Text style={[styles.subtitle, { color: theme.textMuted }]}>
-								{product.brandLabel}
-							</Text>
+							<Text style={[styles.subtitle, { color: theme.textMuted }]}>{product.brandLabel}</Text>
 						) : null}
-						<Text style={[styles.code, { color: theme.textMuted }]}>
-							{product.code}
-						</Text>
+						<Text style={[styles.code, { color: theme.textMuted }]}>{product.code}</Text>
 						<ProductScoreBadges
 							nutriscoreGrade={product.nutriscoreGrade}
 							novaGroup={product.novaGroup}
@@ -198,16 +162,10 @@ const FridgeProductDetailsScreen = () => {
 
 			<View style={styles.body}>
 				{product.nutriments ? (
-					<ProductNutritionSection
-						nutriments={product.nutriments}
-						servingSize={product.servingSize}
-					/>
+					<ProductNutritionSection nutriments={product.nutriments} servingSize={product.servingSize} />
 				) : null}
 
-				<ProductIngredientsSection
-					ingredients={ingredients || undefined}
-					allergensTags={product.allergensTags}
-				/>
+				<ProductIngredientsSection ingredients={ingredients || undefined} allergensTags={product.allergensTags} />
 			</View>
 		</ScreenScrollView>
 	);

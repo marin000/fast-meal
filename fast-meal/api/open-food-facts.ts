@@ -5,15 +5,8 @@ import {
 	OPEN_FOOD_FACTS_FETCH_TIMEOUT_MS,
 } from "@/constants/open-food-facts";
 import type { AppLanguage } from "@/constants/settings";
-import type {
-	BarcodeProduct,
-	BarcodeProductEssentials,
-} from "@/interface/barcode-product";
-import {
-	buildOffUserAgent,
-	mapDetails,
-	mapEssentials,
-} from "@/utils/food-facts-helper";
+import type { BarcodeProduct, BarcodeProductEssentials } from "@/interface/barcode-product";
+import { buildOffUserAgent, mapDetails, mapEssentials } from "@/utils/food-facts-helper";
 
 type OffProductPayload = {
 	status: number | string;
@@ -34,10 +27,7 @@ const barcodeLookupVariants = (code: string): string[] => {
 
 const fetchWithTimeout = async (url: string): Promise<Response> => {
 	const controller = new AbortController();
-	const timer = setTimeout(
-		() => controller.abort(),
-		OPEN_FOOD_FACTS_FETCH_TIMEOUT_MS,
-	);
+	const timer = setTimeout(() => controller.abort(), OPEN_FOOD_FACTS_FETCH_TIMEOUT_MS);
 	try {
 		return await fetch(url, {
 			method: "GET",
@@ -76,9 +66,7 @@ const fetchOffProductOnce = async (
 			if (response.status === 404) continue;
 
 			if (!response.ok) {
-				lastError = new Error(
-					`Open Food Facts request failed (${response.status})`,
-				);
+				lastError = new Error(`Open Food Facts request failed (${response.status})`);
 				continue;
 			}
 
@@ -118,24 +106,13 @@ export const fetchOffEssentials = async (
 	code: string,
 	language: AppLanguage,
 ): Promise<BarcodeProductEssentials | null> => {
-	const product = await fetchOffProduct(
-		code,
-		language,
-		OPEN_FOOD_FACTS_ESSENTIALS_FIELDS,
-	);
+	const product = await fetchOffProduct(code, language, OPEN_FOOD_FACTS_ESSENTIALS_FIELDS);
 	if (!product) return null;
 	return mapEssentials(code, product, language);
 };
 
-export const fetchOffDetails = async (
-	code: string,
-	language: AppLanguage,
-): Promise<BarcodeProduct | null> => {
-	const product = await fetchOffProduct(
-		code,
-		language,
-		OPEN_FOOD_FACTS_DETAILS_FIELDS,
-	);
+export const fetchOffDetails = async (code: string, language: AppLanguage): Promise<BarcodeProduct | null> => {
+	const product = await fetchOffProduct(code, language, OPEN_FOOD_FACTS_DETAILS_FIELDS);
 	if (!product) return null;
 	return {
 		...mapEssentials(code, product, language),

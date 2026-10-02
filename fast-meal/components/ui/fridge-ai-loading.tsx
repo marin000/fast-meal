@@ -51,21 +51,12 @@ export const FridgeAiLoading = ({ title, subtitle }: FridgeAiLoadingProps) => {
 						},
 					]}
 				/>
-				<View
-					style={[
-						styles.logoBackground,
-						{ backgroundColor: theme.logoContainerBg },
-					]}
-				>
+				<View style={[styles.logoBackground, { backgroundColor: theme.logoContainerBg }]}>
 					<FridgeAiLogo size={32} />
 				</View>
 			</View>
 			<Text style={[styles.title, { color: theme.text }]}>{title}</Text>
-			{subtitle ? (
-				<Text style={[styles.subtitle, { color: theme.textMuted }]}>
-					{subtitle}
-				</Text>
-			) : null}
+			{subtitle ? <Text style={[styles.subtitle, { color: theme.textMuted }]}>{subtitle}</Text> : null}
 		</View>
 	);
 };

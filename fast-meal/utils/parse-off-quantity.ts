@@ -43,8 +43,7 @@ const UNIT_ALIASES: Readonly<Record<string, FridgeProductUnit>> = {
 	kom: "pc",
 };
 
-const MULTIPLIER_PATTERN =
-	/^(\d+(?:[.,]\d+)?)\s*[x×]\s*(\d+(?:[.,]\d+)?)\s*([a-zA-Z]+)/i;
+const MULTIPLIER_PATTERN = /^(\d+(?:[.,]\d+)?)\s*[x×]\s*(\d+(?:[.,]\d+)?)\s*([a-zA-Z]+)/i;
 const SIMPLE_PATTERN = /^(\d+(?:[.,]\d+)?)\s*([a-zA-Z]+)/i;
 
 const parseNumber = (raw: string): number | undefined => {
@@ -54,10 +53,7 @@ const parseNumber = (raw: string): number | undefined => {
 	return value;
 };
 
-const resolveUnit = (
-	rawUnit: string,
-	quantity: number,
-): ParsedOffQuantity | undefined => {
+const resolveUnit = (rawUnit: string, quantity: number): ParsedOffQuantity | undefined => {
 	const key = rawUnit.trim().toLowerCase();
 	const unit = UNIT_ALIASES[key];
 	if (!unit || !isFridgeProductUnit(unit)) return undefined;
@@ -65,12 +61,7 @@ const resolveUnit = (
 	if (key === "kg") {
 		return { quantity: quantity * 1000, unit: "g" };
 	}
-	if (
-		key === "l" ||
-		key === "lt" ||
-		key.startsWith("liter") ||
-		key.startsWith("litre")
-	) {
+	if (key === "l" || key === "lt" || key.startsWith("liter") || key.startsWith("litre")) {
 		return { quantity: quantity * 1000, unit: "ml" };
 	}
 
@@ -80,9 +71,7 @@ const resolveUnit = (
 /**
  * Parses Open Food Facts quantity strings like "1 L", "500 g", "6 x 125 g".
  */
-export const parseOffQuantity = (
-	raw: string | undefined | null,
-): ParsedOffQuantity | undefined => {
+export const parseOffQuantity = (raw: string | undefined | null): ParsedOffQuantity | undefined => {
 	if (!raw || typeof raw !== "string") return undefined;
 	const trimmed = raw.trim();
 	if (!trimmed) return undefined;

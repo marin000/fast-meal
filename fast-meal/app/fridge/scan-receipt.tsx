@@ -7,11 +7,7 @@ import { FridgeAiLoading } from "@/components";
 import type { IngredientImagePayload } from "@/constants/ingredient-image";
 import { SCAN_RECEIPT_STEPS } from "@/constants/receipt-product";
 import { useFeedbackMessage, useFridgeProducts } from "@/context";
-import {
-	ReceiptCaptureView,
-	ReceiptProcessingView,
-	ReceiptResultsView,
-} from "@/features/fridge-products-scan-receipt";
+import { ReceiptCaptureView, ReceiptProcessingView, ReceiptResultsView } from "@/features/fridge-products-scan-receipt";
 import { useParseReceipt } from "@/hooks/use-parse-receipt";
 import { useReceiptScanSession } from "@/hooks/use-receipt-scan-session";
 import { ensureExpirationNotificationPermission } from "@/services/expiration-notifications";
@@ -24,16 +20,8 @@ const FridgeScanReceiptScreen = () => {
 	const router = useRouter();
 	const { addProducts } = useFridgeProducts();
 	const { showMessage } = useFeedbackMessage();
-	const {
-		drafts,
-		partial,
-		setFromProducts,
-		updateDraft,
-		removeDraft,
-		toggleSelected,
-		clearDrafts,
-		selectedDrafts,
-	} = useReceiptScanSession();
+	const { drafts, partial, setFromProducts, updateDraft, removeDraft, toggleSelected, clearDrafts, selectedDrafts } =
+		useReceiptScanSession();
 	const { step, errorMessage, runParse, resetParse } = useParseReceipt({
 		setFromProducts,
 	});
@@ -82,10 +70,7 @@ const FridgeScanReceiptScreen = () => {
 				count: addedCount,
 			});
 			clearDrafts();
-			showMessage(
-				t("fridge.scanReceipt.toast.added", { count: addedCount }),
-				"success",
-			);
+			showMessage(t("fridge.scanReceipt.toast.added", { count: addedCount }), "success");
 			router.replace("/fridge" as Href);
 		} catch {
 			showMessage(t("fridge.scanReceipt.toast.addFailed"), "error");
@@ -117,10 +102,7 @@ const FridgeScanReceiptScreen = () => {
 			) : null}
 
 			{step === SCAN_RECEIPT_STEPS.PROCESSING ? (
-				<ReceiptProcessingView
-					errorMessage={errorMessage}
-					onRetry={handleRetry}
-				/>
+				<ReceiptProcessingView errorMessage={errorMessage} onRetry={handleRetry} />
 			) : null}
 
 			{step === SCAN_RECEIPT_STEPS.RESULTS ? (

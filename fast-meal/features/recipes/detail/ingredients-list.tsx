@@ -32,12 +32,9 @@ export const RecipeIngredients = ({ items }: RecipeIngredientsProps) => {
 							]}
 						>
 							<Text style={[styles.amount, { color: theme.primary }]}>
-								{ingredient.quantity}{" "}
-								{translateMeasurementUnit(t, ingredient.unit)}
+								{ingredient.quantity} {translateMeasurementUnit(t, ingredient.unit)}
 							</Text>
-							<Text style={[styles.name, { color: theme.text }]}>
-								{ingredient.name}
-							</Text>
+							<Text style={[styles.name, { color: theme.text }]}>{ingredient.name}</Text>
 						</View>
 					);
 				})}

@@ -35,27 +35,18 @@ const isAllowedSourceUri = (uri: string): boolean => {
 	);
 };
 
-export const validateIngredientImageAsset = (
-	asset: ImagePickerAsset,
-): IngredientImageErrorCode | null => {
-	const hasAllowedType =
-		isAllowedSourceMime(asset.mimeType) || isAllowedSourceUri(asset.uri);
+export const validateIngredientImageAsset = (asset: ImagePickerAsset): IngredientImageErrorCode | null => {
+	const hasAllowedType = isAllowedSourceMime(asset.mimeType) || isAllowedSourceUri(asset.uri);
 	if (!hasAllowedType) return "unsupportedType";
 
-	if (
-		typeof asset.fileSize === "number" &&
-		asset.fileSize > INGREDIENT_IMAGE_MAX_RAW_BYTES
-	) {
+	if (typeof asset.fileSize === "number" && asset.fileSize > INGREDIENT_IMAGE_MAX_RAW_BYTES) {
 		return "tooLarge";
 	}
 
 	return null;
 };
 
-const resizeActions = (
-	width: number | undefined,
-	height: number | undefined,
-): ImageManipulator.Action[] => {
+const resizeActions = (width: number | undefined, height: number | undefined): ImageManipulator.Action[] => {
 	if (!width || !height) {
 		return [
 			{
@@ -80,25 +71,18 @@ const resizeActions = (
 
 export const processIngredientImageAsset = async (
 	asset: ImagePickerAsset,
-): Promise<
-	| { ok: true; payload: IngredientImagePayload }
-	| { ok: false; error: IngredientImageErrorCode }
-> => {
+): Promise<{ ok: true; payload: IngredientImagePayload } | { ok: false; error: IngredientImageErrorCode }> => {
 	const validationError = validateIngredientImageAsset(asset);
 	if (validationError) {
 		return { ok: false, error: validationError };
 	}
 
 	try {
-		const manipulated = await ImageManipulator.manipulateAsync(
-			asset.uri,
-			resizeActions(asset.width, asset.height),
-			{
-				compress: INGREDIENT_IMAGE_JPEG_QUALITY,
-				format: ImageManipulator.SaveFormat.JPEG,
-				base64: true,
-			},
-		);
+		const manipulated = await ImageManipulator.manipulateAsync(asset.uri, resizeActions(asset.width, asset.height), {
+			compress: INGREDIENT_IMAGE_JPEG_QUALITY,
+			format: ImageManipulator.SaveFormat.JPEG,
+			base64: true,
+		});
 
 		if (!manipulated.base64) {
 			return { ok: false, error: "processingFailed" };

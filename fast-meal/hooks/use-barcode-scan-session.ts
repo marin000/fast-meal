@@ -1,34 +1,22 @@
 import * as Haptics from "expo-haptics";
 import { useCallback, useRef, useState } from "react";
 
-import {
-	fetchBarcodeProduct,
-	reportBarcodeProduct,
-} from "@/api/barcode-products";
+import { fetchBarcodeProduct, reportBarcodeProduct } from "@/api/barcode-products";
 import { fetchOffEssentials } from "@/api/open-food-facts";
 import type { AppLanguage } from "@/constants/settings";
 import { expirationDateFromShelfLife } from "@/constants/shelf-life";
 import { useDeviceId } from "@/context/device-id-context";
-import type {
-	BarcodeProductEssentials,
-	ScannedDraft,
-} from "@/interface/barcode-product";
+import type { BarcodeProductEssentials, ScannedDraft } from "@/interface/barcode-product";
 import { toIsoDate } from "@/utils/date";
 import { pickLocalizedName } from "@/utils/food-facts-helper";
 import { isValidGtin, normalizeGtin } from "@/utils/gtin";
-import {
-	ANALYTICS_EVENTS,
-	captureAppException,
-	trackProductEvent,
-} from "@/utils/sentry";
+import { ANALYTICS_EVENTS, captureAppException, trackProductEvent } from "@/utils/sentry";
 
 const SCAN_COOLDOWN_MS = 1800;
 
-const createLocalId = (): string =>
-	`${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+const createLocalId = (): string => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
-const isAbandonedEmptyDraft = (draft: ScannedDraft): boolean =>
-	!draft.isLoading && draft.name.trim().length === 0;
+const isAbandonedEmptyDraft = (draft: ScannedDraft): boolean => !draft.isLoading && draft.name.trim().length === 0;
 
 const essentialsToDraft = (
 	essentials: BarcodeProductEssentials,
@@ -58,16 +46,9 @@ export const useBarcodeScanSession = (language: AppLanguage) => {
 	const cooldownRef = useRef<Map<string, number>>(new Map());
 	const inFlightRef = useRef<Set<string>>(new Set());
 
-	const updateDraft = useCallback(
-		(localId: string, patch: Partial<ScannedDraft>) => {
-			setDrafts((prev) =>
-				prev.map((draft) =>
-					draft.localId === localId ? { ...draft, ...patch } : draft,
-				),
-			);
-		},
-		[],
-	);
+	const updateDraft = useCallback((localId: string, patch: Partial<ScannedDraft>) => {
+		setDrafts((prev) => prev.map((draft) => (draft.localId === localId ? { ...draft, ...patch } : draft)));
+	}, []);
 
 	const removeDraft = useCallback((localId: string) => {
 		setDrafts((prev) => prev.filter((draft) => draft.localId !== localId));
@@ -88,13 +69,10 @@ export const useBarcodeScanSession = (language: AppLanguage) => {
 				void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 				setDrafts((prev) =>
 					prev
-						.filter(
-							(draft) => draft.code === code || !isAbandonedEmptyDraft(draft),
-						)
+						.filter((draft) => draft.code === code || !isAbandonedEmptyDraft(draft))
 						.map((draft) => {
 							if (draft.code !== code) return draft;
-							const nextQuantity =
-								draft.quantity !== undefined ? draft.quantity + 1 : 1;
+							const nextQuantity = draft.quantity !== undefined ? draft.quantity + 1 : 1;
 							return {
 								...draft,
 								quantity: nextQuantity,

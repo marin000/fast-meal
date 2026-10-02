@@ -1,26 +1,11 @@
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-	deleteSavedRecipeOnBackend,
-	fetchSavedRecipes,
-	saveRecipeToBackend,
-} from "@/api/saved-recipes";
+import { deleteSavedRecipeOnBackend, fetchSavedRecipes, saveRecipeToBackend } from "@/api/saved-recipes";
 import { useFeedbackMessage } from "@/context/feedback-message-context";
 import type { Recipe } from "@/interface";
 import type { SavedRecipeListItem } from "@/interface/recipe";
-import {
-	ANALYTICS_EVENTS,
-	captureAppException,
-	trackProductEvent,
-} from "@/utils/sentry";
+import { ANALYTICS_EVENTS, captureAppException, trackProductEvent } from "@/utils/sentry";
 
 const matchSavedListItemId = (
 	recipe: Recipe,
@@ -57,17 +42,10 @@ interface RecipesProviderProps {
 	children: ReactNode;
 }
 
-export const RecipesProvider = ({
-	recipes,
-	cacheKey,
-	deviceId,
-	children,
-}: RecipesProviderProps) => {
+export const RecipesProvider = ({ recipes, cacheKey, deviceId, children }: RecipesProviderProps) => {
 	const { t } = useTranslation();
 	const { showMessage } = useFeedbackMessage();
-	const [savedBackendIds, setSavedBackendIds] = useState<(string | null)[]>(
-		() => recipes.map(() => null),
-	);
+	const [savedBackendIds, setSavedBackendIds] = useState<(string | null)[]>(() => recipes.map(() => null));
 	const [busyIndex, setBusyIndex] = useState<number | null>(null);
 
 	useEffect(() => {
@@ -77,9 +55,7 @@ export const RecipesProvider = ({
 			try {
 				const list = await fetchSavedRecipes(deviceId);
 				if (cancelled) return;
-				setSavedBackendIds(
-					recipes.map((r) => matchSavedListItemId(r, cacheKey, list)),
-				);
+				setSavedBackendIds(recipes.map((r) => matchSavedListItemId(r, cacheKey, list)));
 			} catch {
 				if (!cancelled) {
 					setSavedBackendIds(recipes.map(() => null));
@@ -91,15 +67,9 @@ export const RecipesProvider = ({
 		};
 	}, [deviceId, recipes, cacheKey]);
 
-	const getSavedBackendIdForIndex = useCallback(
-		(index: number) => savedBackendIds[index] ?? null,
-		[savedBackendIds],
-	);
+	const getSavedBackendIdForIndex = useCallback((index: number) => savedBackendIds[index] ?? null, [savedBackendIds]);
 
-	const isBusyForIndex = useCallback(
-		(index: number) => busyIndex === index,
-		[busyIndex],
-	);
+	const isBusyForIndex = useCallback((index: number) => busyIndex === index, [busyIndex]);
 
 	const saveRecipeAtIndex = useCallback(
 		async (index: number) => {
@@ -162,9 +132,7 @@ export const RecipesProvider = ({
 		removeSavedRecipeAtIndex,
 	};
 
-	return (
-		<RecipesContext.Provider value={value}>{children}</RecipesContext.Provider>
-	);
+	return <RecipesContext.Provider value={value}>{children}</RecipesContext.Provider>;
 };
 
 export const useRecipesContext = () => {

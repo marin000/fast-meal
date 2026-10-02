@@ -1,10 +1,4 @@
-import {
-	createContext,
-	type ReactNode,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useContext, useEffect, useState } from "react";
 
 import { getOrCreateDeviceId } from "@/utils/device-id";
 
@@ -12,9 +6,7 @@ interface DeviceIdContextValue {
 	deviceId: string | null;
 }
 
-const DeviceIdContext = createContext<DeviceIdContextValue | undefined>(
-	undefined,
-);
+const DeviceIdContext = createContext<DeviceIdContextValue | undefined>(undefined);
 
 export const DeviceIdProvider = ({ children }: { children: ReactNode }) => {
 	const [deviceId, setDeviceId] = useState<string | null>(null);
@@ -23,11 +15,7 @@ export const DeviceIdProvider = ({ children }: { children: ReactNode }) => {
 		void getOrCreateDeviceId().then(setDeviceId);
 	}, []);
 
-	return (
-		<DeviceIdContext.Provider value={{ deviceId }}>
-			{children}
-		</DeviceIdContext.Provider>
-	);
+	return <DeviceIdContext.Provider value={{ deviceId }}>{children}</DeviceIdContext.Provider>;
 };
 
 export const useDeviceId = (): DeviceIdContextValue => {

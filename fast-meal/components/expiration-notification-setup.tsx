@@ -4,10 +4,7 @@ import { AppState, type AppStateStatus } from "react-native";
 
 import { useFridgeProducts } from "@/context/fridge-products-context";
 import { syncExpirationNotifications } from "@/services/expiration-notifications";
-import {
-	getNotificationsModule,
-	isNotificationsAvailable,
-} from "@/utils/notifications";
+import { getNotificationsModule, isNotificationsAvailable } from "@/utils/notifications";
 
 export const ExpirationNotificationSetup = () => {
 	const router = useRouter();
@@ -19,11 +16,9 @@ export const ExpirationNotificationSetup = () => {
 		const Notifications = getNotificationsModule();
 		if (!Notifications) return;
 
-		const subscription = Notifications.addNotificationResponseReceivedListener(
-			() => {
-				router.navigate("/fridge" as Href);
-			},
-		);
+		const subscription = Notifications.addNotificationResponseReceivedListener(() => {
+			router.navigate("/fridge" as Href);
+		});
 
 		return () => subscription.remove();
 	}, [router]);
@@ -42,10 +37,7 @@ export const ExpirationNotificationSetup = () => {
 			}
 		};
 
-		const subscription = AppState.addEventListener(
-			"change",
-			handleAppStateChange,
-		);
+		const subscription = AppState.addEventListener("change", handleAppStateChange);
 		return () => subscription.remove();
 	}, [items]);
 
