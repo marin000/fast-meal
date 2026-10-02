@@ -11,51 +11,25 @@ interface GenerationErrorScreenProps {
 	isRetrying?: boolean;
 }
 
-export const GenerationErrorScreen = ({
-	kind,
-	onRetry,
-	isRetrying = false,
-}: GenerationErrorScreenProps) => {
+export const GenerationErrorScreen = ({ kind, onRetry, isRetrying = false }: GenerationErrorScreenProps) => {
 	const { t } = useTranslation();
 	const router = useRouter();
 	const theme = useAppAppearance();
 
-	const titleKey =
-		kind === "timeout" ? "errors.generationTimeout" : "errors.generic";
-	const messageKey =
-		kind === "timeout"
-			? "errors.generationTimeoutMessage"
-			: "errors.generationFailedMessage";
+	const titleKey = kind === "timeout" ? "errors.generationTimeout" : "errors.generic";
+	const messageKey = kind === "timeout" ? "errors.generationTimeoutMessage" : "errors.generationFailedMessage";
 
 	return (
 		<View style={[styles.container, { backgroundColor: theme.background }]}>
-			<View
-				style={[
-					styles.logoBackground,
-					{ backgroundColor: theme.logoContainerBg },
-				]}
-			>
+			<View style={[styles.logoBackground, { backgroundColor: theme.logoContainerBg }]}>
 				<FridgeAiLogo size={32} />
 			</View>
 			<Text style={[styles.title, { color: theme.text }]}>{t(titleKey)}</Text>
-			<Text style={[styles.subtitle, { color: theme.textMuted }]}>
-				{t(messageKey)}
-			</Text>
+			<Text style={[styles.subtitle, { color: theme.textMuted }]}>{t(messageKey)}</Text>
 			<View style={styles.actions}>
-				<PrimaryButton
-					label={t("errors.retry")}
-					onPress={onRetry}
-					disabled={isRetrying}
-					leftIconName="refresh"
-				/>
-				<Pressable
-					disabled={isRetrying}
-					onPress={() => router.back()}
-					style={styles.backButton}
-				>
-					<Text style={[styles.backLabel, { color: theme.textMuted }]}>
-						{t("errors.goBack")}
-					</Text>
+				<PrimaryButton label={t("errors.retry")} onPress={onRetry} disabled={isRetrying} leftIconName="refresh" />
+				<Pressable disabled={isRetrying} onPress={() => router.back()} style={styles.backButton}>
+					<Text style={[styles.backLabel, { color: theme.textMuted }]}>{t("errors.goBack")}</Text>
 				</Pressable>
 			</View>
 		</View>

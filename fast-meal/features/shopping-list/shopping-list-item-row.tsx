@@ -10,11 +10,7 @@ interface ShoppingListItemRowProps {
 	onRemove: () => void;
 }
 
-export const ShoppingListItemRow = ({
-	item,
-	onToggle,
-	onRemove,
-}: ShoppingListItemRowProps) => {
+export const ShoppingListItemRow = ({ item, onToggle, onRemove }: ShoppingListItemRowProps) => {
 	const theme = useAppAppearance();
 
 	return (
@@ -42,9 +38,7 @@ export const ShoppingListItemRow = ({
 						: { borderColor: theme.cardBorder },
 				]}
 			>
-				{item.checked ? (
-					<Ionicons name="checkmark" size={14} color="#ffffff" />
-				) : null}
+				{item.checked ? <Ionicons name="checkmark" size={14} color="#ffffff" /> : null}
 			</Pressable>
 
 			<Text

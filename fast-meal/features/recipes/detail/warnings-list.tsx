@@ -19,15 +19,8 @@ export const RecipeWarnings = ({ items }: RecipeWarningsProps) => {
 			<View style={styles.list}>
 				{items.map((warning) => (
 					<View key={warning} style={styles.row}>
-						<Ionicons
-							name="warning-outline"
-							size={14}
-							color={theme.warning}
-							style={styles.icon}
-						/>
-						<Text style={[styles.text, { color: theme.warning }]}>
-							{warning}
-						</Text>
+						<Ionicons name="warning-outline" size={14} color={theme.warning} style={styles.icon} />
+						<Text style={[styles.text, { color: theme.warning }]}>{warning}</Text>
 					</View>
 				))}
 			</View>

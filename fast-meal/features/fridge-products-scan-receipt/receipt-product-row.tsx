@@ -2,10 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import {
-	RECEIPT_CONFIDENCE_REVIEW,
-	type ReceiptProductUnit,
-} from "@/constants/receipt-product";
+import { RECEIPT_CONFIDENCE_REVIEW, type ReceiptProductUnit } from "@/constants/receipt-product";
 import { usePreferences } from "@/context";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { ReceiptProductDraft } from "@/interface/receipt-product";
@@ -18,35 +15,20 @@ interface ReceiptProductRowProps {
 	onRemove: () => void;
 }
 
-const formatQuantityUnit = (
-	quantity: number | null,
-	unit: ReceiptProductUnit,
-	unknownLabel: string,
-): string => {
+const formatQuantityUnit = (quantity: number | null, unit: ReceiptProductUnit, unknownLabel: string): string => {
 	if (quantity === null && unit === "unknown") return unknownLabel;
 	if (quantity === null) return unit === "unknown" ? unknownLabel : unit;
 	if (unit === "unknown") return String(quantity);
 	return `${quantity} ${unit}`;
 };
 
-export const ReceiptProductRow = ({
-	draft,
-	onToggle,
-	onEdit,
-	onRemove,
-}: ReceiptProductRowProps) => {
+export const ReceiptProductRow = ({ draft, onToggle, onEdit, onRemove }: ReceiptProductRowProps) => {
 	const { t } = useTranslation();
 	const { language } = usePreferences();
 	const theme = useAppAppearance();
 	const needsReview = draft.confidence < RECEIPT_CONFIDENCE_REVIEW;
-	const displayName = needsReview
-		? t("fridge.scanReceipt.unknownProduct")
-		: draft.name;
-	const quantityLabel = formatQuantityUnit(
-		draft.quantity,
-		draft.unit,
-		t("fridge.scanReceipt.units.unknown"),
-	);
+	const displayName = needsReview ? t("fridge.scanReceipt.unknownProduct") : draft.name;
+	const quantityLabel = formatQuantityUnit(draft.quantity, draft.unit, t("fridge.scanReceipt.units.unknown"));
 	const expirationLabel = draft.expirationDate
 		? t("fridge.expiresOn", {
 				date: formatDisplayDate(new Date(draft.expirationDate), language),
@@ -59,9 +41,7 @@ export const ReceiptProductRow = ({
 				styles.row,
 				{
 					backgroundColor: theme.card,
-					borderColor: needsReview
-						? theme.expiration.soon.solid
-						: theme.cardBorder,
+					borderColor: needsReview ? theme.expiration.soon.solid : theme.cardBorder,
 				},
 			]}
 		>
@@ -80,23 +60,13 @@ export const ReceiptProductRow = ({
 
 			<View style={styles.content}>
 				{needsReview ? (
-					<Text
-						style={[styles.warning, { color: theme.expiration.soon.solid }]}
-					>
-						⚠ {displayName}
-					</Text>
+					<Text style={[styles.warning, { color: theme.expiration.soon.solid }]}>⚠ {displayName}</Text>
 				) : null}
 				<Text style={[styles.name, { color: theme.text }]} numberOfLines={2}>
 					{needsReview ? draft.name || displayName : draft.name}
 				</Text>
-				<Text style={[styles.meta, { color: theme.textMuted }]}>
-					{quantityLabel}
-				</Text>
-				{expirationLabel ? (
-					<Text style={[styles.meta, { color: theme.textMuted }]}>
-						{expirationLabel}
-					</Text>
-				) : null}
+				<Text style={[styles.meta, { color: theme.textMuted }]}>{quantityLabel}</Text>
+				{expirationLabel ? <Text style={[styles.meta, { color: theme.textMuted }]}>{expirationLabel}</Text> : null}
 			</View>
 
 			<Pressable

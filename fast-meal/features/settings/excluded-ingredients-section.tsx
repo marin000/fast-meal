@@ -11,11 +11,7 @@ import { useAppAppearance } from "@/hooks/use-app-appearance";
 export const ExcludedIngredientsSection = () => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
-	const {
-		excludedIngredients,
-		addExcludedIngredient,
-		removeExcludedIngredient,
-	} = usePreferences();
+	const { excludedIngredients, addExcludedIngredient, removeExcludedIngredient } = usePreferences();
 	const [draft, setDraft] = useState("");
 
 	const isAtLimit = excludedIngredients.length >= MAX_EXCLUDED_INGREDIENTS;
@@ -80,9 +76,7 @@ export const ExcludedIngredientsSection = () => {
 			) : null}
 
 			{excludedIngredients.length === 0 ? (
-				<Text style={[styles.hint, { color: theme.textMuted }]}>
-					{t("settings.excludedIngredients.empty")}
-				</Text>
+				<Text style={[styles.hint, { color: theme.textMuted }]}>{t("settings.excludedIngredients.empty")}</Text>
 			) : (
 				<View style={styles.chips}>
 					{excludedIngredients.map((item) => (
@@ -101,11 +95,7 @@ export const ExcludedIngredientsSection = () => {
 								},
 							]}
 						>
-							<Text
-								style={[styles.chipText, { color: theme.chipSelectedText }]}
-							>
-								{item}
-							</Text>
+							<Text style={[styles.chipText, { color: theme.chipSelectedText }]}>{item}</Text>
 							<Ionicons name="close" size={14} color={theme.chipSelectedText} />
 						</Pressable>
 					))}

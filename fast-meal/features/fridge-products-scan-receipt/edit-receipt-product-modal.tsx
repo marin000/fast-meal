@@ -3,10 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { AppModal, DateField, PrimaryButton } from "@/components";
-import {
-	RECEIPT_PRODUCT_UNITS,
-	type ReceiptProductUnit,
-} from "@/constants/receipt-product";
+import { RECEIPT_PRODUCT_UNITS, type ReceiptProductUnit } from "@/constants/receipt-product";
 import { usePreferences } from "@/context";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { ReceiptProductDraft } from "@/interface/receipt-product";
@@ -17,20 +14,10 @@ interface EditReceiptProductModalProps {
 	visible: boolean;
 	draft: ReceiptProductDraft | null;
 	onClose: () => void;
-	onSave: (patch: {
-		name: string;
-		quantity: number | null;
-		unit: ReceiptProductUnit;
-		expirationDate?: string;
-	}) => void;
+	onSave: (patch: { name: string; quantity: number | null; unit: ReceiptProductUnit; expirationDate?: string }) => void;
 }
 
-export const EditReceiptProductModal = ({
-	visible,
-	draft,
-	onClose,
-	onSave,
-}: EditReceiptProductModalProps) => {
+export const EditReceiptProductModal = ({ visible, draft, onClose, onSave }: EditReceiptProductModalProps) => {
 	const { t } = useTranslation();
 	const { language } = usePreferences();
 	const theme = useAppAppearance();
@@ -42,15 +29,9 @@ export const EditReceiptProductModal = ({
 	useEffect(() => {
 		if (!visible || !draft) return;
 		setName(draft.name);
-		setQuantityInput(
-			draft.quantity !== null && draft.quantity !== undefined
-				? String(draft.quantity)
-				: "",
-		);
+		setQuantityInput(draft.quantity !== null && draft.quantity !== undefined ? String(draft.quantity) : "");
 		setUnit(draft.unit);
-		setExpirationDate(
-			draft.expirationDate ? new Date(draft.expirationDate) : undefined,
-		);
+		setExpirationDate(draft.expirationDate ? new Date(draft.expirationDate) : undefined);
 	}, [visible, draft]);
 
 	const parsedQuantity = parseQuantityInput(quantityInput);
@@ -91,9 +72,7 @@ export const EditReceiptProductModal = ({
 		>
 			<View style={styles.fields}>
 				<View style={styles.field}>
-					<Text style={[styles.label, { color: theme.text }]}>
-						{t("fridge.scanReceipt.nameLabel")}
-					</Text>
+					<Text style={[styles.label, { color: theme.text }]}>{t("fridge.scanReceipt.nameLabel")}</Text>
 					<TextInput
 						value={name}
 						onChangeText={setName}
@@ -111,9 +90,7 @@ export const EditReceiptProductModal = ({
 				</View>
 
 				<View style={styles.field}>
-					<Text style={[styles.label, { color: theme.text }]}>
-						{t("fridge.scanReceipt.quantityLabel")}
-					</Text>
+					<Text style={[styles.label, { color: theme.text }]}>{t("fridge.scanReceipt.quantityLabel")}</Text>
 					<TextInput
 						value={quantityInput}
 						onChangeText={setQuantityInput}
@@ -124,9 +101,7 @@ export const EditReceiptProductModal = ({
 							styles.input,
 							{
 								backgroundColor: theme.inputBg,
-								borderColor: isQuantityInvalid
-									? theme.expiration.expired.solid
-									: theme.inputBorder,
+								borderColor: isQuantityInvalid ? theme.expiration.expired.solid : theme.inputBorder,
 								color: theme.text,
 							},
 						]}
@@ -134,9 +109,7 @@ export const EditReceiptProductModal = ({
 				</View>
 
 				<View style={styles.field}>
-					<Text style={[styles.label, { color: theme.text }]}>
-						{t("fridge.scanReceipt.unitLabel")}
-					</Text>
+					<Text style={[styles.label, { color: theme.text }]}>{t("fridge.scanReceipt.unitLabel")}</Text>
 					<View style={styles.unitRow}>
 						{RECEIPT_PRODUCT_UNITS.map((option) => {
 							const isSelected = option === unit;
@@ -147,12 +120,8 @@ export const EditReceiptProductModal = ({
 									style={[
 										styles.unitChip,
 										{
-											backgroundColor: isSelected
-												? theme.chipSelectedBg
-												: theme.chipBg,
-											borderColor: isSelected
-												? theme.chipSelectedBorder
-												: theme.chipBorder,
+											backgroundColor: isSelected ? theme.chipSelectedBg : theme.chipBg,
+											borderColor: isSelected ? theme.chipSelectedBorder : theme.chipBorder,
 										},
 									]}
 								>
@@ -160,9 +129,7 @@ export const EditReceiptProductModal = ({
 										style={[
 											styles.unitChipLabel,
 											{
-												color: isSelected
-													? theme.chipSelectedText
-													: theme.chipText,
+												color: isSelected ? theme.chipSelectedText : theme.chipText,
 											},
 										]}
 									>
@@ -175,11 +142,7 @@ export const EditReceiptProductModal = ({
 				</View>
 
 				<View style={styles.field}>
-					<DateField
-						label={t("fridge.expirationLabel")}
-						value={expirationDate}
-						onChange={setExpirationDate}
-					/>
+					<DateField label={t("fridge.expirationLabel")} value={expirationDate} onChange={setExpirationDate} />
 					{expirationPreview ? (
 						<Text style={[styles.expirationHint, { color: theme.textMuted }]}>
 							{t("fridge.expiresOn", { date: expirationPreview })}

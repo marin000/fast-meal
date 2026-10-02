@@ -1,9 +1,6 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
-import {
-	initialWindowMetrics,
-	SafeAreaProvider,
-} from "react-native-safe-area-context";
+import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context";
 
 import {
 	DeviceIdProvider,
@@ -43,9 +40,7 @@ export const RootProviders = ({ children }: { children: ReactNode }) => {
 								<HomeIngredientsProvider>
 									<HomeIngredientImageProvider>
 										<ShoppingListProvider>
-											<FeedbackMessageProvider>
-												{children}
-											</FeedbackMessageProvider>
+											<FeedbackMessageProvider>{children}</FeedbackMessageProvider>
 										</ShoppingListProvider>
 									</HomeIngredientImageProvider>
 								</HomeIngredientsProvider>

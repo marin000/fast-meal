@@ -22,21 +22,11 @@ export const RecipeSubstitutions = ({ items }: RecipeSubstitutionsProps) => {
 						key={`${index}-${substitution.ingredient}`}
 						style={[styles.box, { backgroundColor: theme.substitutionBoxBg }]}
 					>
-						<Ionicons
-							name="alert-circle-outline"
-							size={16}
-							color={theme.primary}
-							style={styles.icon}
-						/>
+						<Ionicons name="alert-circle-outline" size={16} color={theme.primary} style={styles.icon} />
 						<Text style={[styles.text, { color: theme.text }]}>
 							<Text style={styles.original}>{substitution.ingredient}</Text>
-							<Text style={[styles.arrow, { color: theme.textMuted }]}>
-								{" "}
-								→{" "}
-							</Text>
-							<Text style={styles.alternatives}>
-								{substitution.alternatives.join(" · ")}
-							</Text>
+							<Text style={[styles.arrow, { color: theme.textMuted }]}> → </Text>
+							<Text style={styles.alternatives}>{substitution.alternatives.join(" · ")}</Text>
 						</Text>
 					</View>
 				))}

@@ -1,11 +1,4 @@
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useMemo,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useMemo, useState } from "react";
 
 import type { IngredientImagePayload } from "@/constants/ingredient-image";
 
@@ -15,14 +8,9 @@ interface HomeIngredientImageContextValue {
 	clearImage: () => void;
 }
 
-const HomeIngredientImageContext =
-	createContext<HomeIngredientImageContextValue | null>(null);
+const HomeIngredientImageContext = createContext<HomeIngredientImageContextValue | null>(null);
 
-export const HomeIngredientImageProvider = ({
-	children,
-}: {
-	children: ReactNode;
-}) => {
+export const HomeIngredientImageProvider = ({ children }: { children: ReactNode }) => {
 	const [image, setImage] = useState<IngredientImagePayload | null>(null);
 
 	const clearImage = useCallback(() => {
@@ -38,19 +26,13 @@ export const HomeIngredientImageProvider = ({
 		[image, clearImage],
 	);
 
-	return (
-		<HomeIngredientImageContext.Provider value={value}>
-			{children}
-		</HomeIngredientImageContext.Provider>
-	);
+	return <HomeIngredientImageContext.Provider value={value}>{children}</HomeIngredientImageContext.Provider>;
 };
 
 export const useHomeIngredientImage = (): HomeIngredientImageContextValue => {
 	const context = useContext(HomeIngredientImageContext);
 	if (!context) {
-		throw new Error(
-			"useHomeIngredientImage must be used within HomeIngredientImageProvider",
-		);
+		throw new Error("useHomeIngredientImage must be used within HomeIngredientImageProvider");
 	}
 	return context;
 };

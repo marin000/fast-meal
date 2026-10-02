@@ -1,16 +1,6 @@
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
-import {
-	deleteSavedRecipeOnBackend,
-	fetchSavedRecipes,
-} from "@/api/saved-recipes";
+import { deleteSavedRecipeOnBackend, fetchSavedRecipes } from "@/api/saved-recipes";
 import { useDeviceId } from "@/context/device-id-context";
 import type { SavedRecipeListItem } from "@/interface/recipe";
 
@@ -21,9 +11,7 @@ interface SavedRecipesListContextValue {
 	removeById: (id: string) => Promise<void>;
 }
 
-const SavedRecipesListContext = createContext<
-	SavedRecipesListContextValue | undefined
->(undefined);
+const SavedRecipesListContext = createContext<SavedRecipesListContextValue | undefined>(undefined);
 
 export const SavedRecipesProvider = ({ children }: { children: ReactNode }) => {
 	const { deviceId } = useDeviceId();
@@ -67,19 +55,13 @@ export const SavedRecipesProvider = ({ children }: { children: ReactNode }) => {
 		removeById,
 	};
 
-	return (
-		<SavedRecipesListContext.Provider value={value}>
-			{children}
-		</SavedRecipesListContext.Provider>
-	);
+	return <SavedRecipesListContext.Provider value={value}>{children}</SavedRecipesListContext.Provider>;
 };
 
 export const useSavedRecipesList = (): SavedRecipesListContextValue => {
 	const ctx = useContext(SavedRecipesListContext);
 	if (ctx === undefined) {
-		throw new Error(
-			"useSavedRecipesList must be used within SavedRecipesProvider",
-		);
+		throw new Error("useSavedRecipesList must be used within SavedRecipesProvider");
 	}
 	return ctx;
 };

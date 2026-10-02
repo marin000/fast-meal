@@ -2,27 +2,18 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "expo-router";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import {
-	ActivityIndicator,
-	StyleSheet,
-	Text,
-	View,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
 import { ScreenScrollView } from "@/components";
 
 import { useShoppingList } from "@/context/shopping-list-context";
-import {
-	AddShoppingItemInput,
-	ShoppingListItemRow,
-} from "@/features/shopping-list";
+import { AddShoppingItemInput, ShoppingListItemRow } from "@/features/shopping-list";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 
 const ShoppingListScreen = () => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
-	const { items, isLoading, addItem, toggleItem, removeItem, reload } =
-		useShoppingList();
+	const { items, isLoading, addItem, toggleItem, removeItem, reload } = useShoppingList();
 
 	useFocusEffect(
 		useCallback(() => {
@@ -42,17 +33,10 @@ const ShoppingListScreen = () => {
 	}
 
 	return (
-		<ScreenScrollView
-			backgroundColor={theme.background}
-			contentContainerStyle={styles.container}
-		>
+		<ScreenScrollView backgroundColor={theme.background} contentContainerStyle={styles.container}>
 			<View style={styles.header}>
-				<Text style={[styles.kicker, { color: theme.textMuted }]}>
-					{t("shopping.kicker")}
-				</Text>
-				<Text style={[styles.title, { color: theme.text }]}>
-					{t("shopping.title")}
-				</Text>
+				<Text style={[styles.kicker, { color: theme.textMuted }]}>{t("shopping.kicker")}</Text>
+				<Text style={[styles.title, { color: theme.text }]}>{t("shopping.title")}</Text>
 			</View>
 
 			<AddShoppingItemInput onAdd={(name) => void addItem(name)} />
@@ -91,12 +75,8 @@ const ShoppingListScreen = () => {
 					<View style={[styles.emptyIcon, { backgroundColor: theme.chipBg }]}>
 						<Ionicons name="cart-outline" size={28} color={theme.iconMuted} />
 					</View>
-					<Text style={[styles.emptyTitle, { color: theme.text }]}>
-						{t("shopping.emptyTitle")}
-					</Text>
-					<Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>
-						{t("shopping.emptySubtitle")}
-					</Text>
+					<Text style={[styles.emptyTitle, { color: theme.text }]}>{t("shopping.emptyTitle")}</Text>
+					<Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>{t("shopping.emptySubtitle")}</Text>
 				</View>
 			)}
 		</ScreenScrollView>

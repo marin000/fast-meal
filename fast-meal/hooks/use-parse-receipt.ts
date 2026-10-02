@@ -1,24 +1,16 @@
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-	DailyLimitError,
-	ParseReceiptError,
-	parseReceipt,
-} from "@/api/parse-receipt";
+import { DailyLimitError, ParseReceiptError, parseReceipt } from "@/api/parse-receipt";
 import type { IngredientImagePayload } from "@/constants/ingredient-image";
 import { SCAN_RECEIPT_STEPS } from "@/constants/receipt-product";
 import { useDeviceId, usePreferences } from "@/context";
 import type { ReceiptProduct } from "@/interface/receipt-product";
 import { ANALYTICS_EVENTS, trackProductEvent } from "@/utils/sentry";
 
-export type ScanReceiptStep =
-	(typeof SCAN_RECEIPT_STEPS)[keyof typeof SCAN_RECEIPT_STEPS];
+export type ScanReceiptStep = (typeof SCAN_RECEIPT_STEPS)[keyof typeof SCAN_RECEIPT_STEPS];
 
-const resolveParseReceiptErrorMessage = (
-	error: unknown,
-	t: (key: string) => string,
-): string => {
+const resolveParseReceiptErrorMessage = (error: unknown, t: (key: string) => string): string => {
 	if (error instanceof DailyLimitError) {
 		return t("fridge.scanReceipt.errors.dailyLimit");
 	}

@@ -1,20 +1,10 @@
 import type { Ionicons } from "@expo/vector-icons";
 
-export type FooterTab =
-	| "home"
-	| "fridge"
-	| "saved"
-	| "shoppingList"
-	| "settings";
+export type FooterTab = "home" | "fridge" | "saved" | "shoppingList" | "settings";
 
 export interface FooterItem {
 	id: FooterTab;
-	labelKey:
-		| "nav.home"
-		| "nav.fridge"
-		| "nav.saved"
-		| "nav.shoppingList"
-		| "nav.settings";
+	labelKey: "nav.home" | "nav.fridge" | "nav.saved" | "nav.shoppingList" | "nav.settings";
 	iconName: keyof typeof Ionicons.glyphMap;
 }
 

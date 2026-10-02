@@ -5,20 +5,10 @@ import { Alert } from "react-native";
 
 import { DailyLimitError, GenerationTimeoutError, generateRecipe } from "@/api";
 import type { QuickFilterOption } from "@/constants/home";
-import {
-	useDeviceId,
-	useFeedbackMessage,
-	useGenerationQuota,
-	useHomeIngredientImage,
-	usePreferences,
-} from "@/context";
+import { useDeviceId, useFeedbackMessage, useGenerationQuota, useHomeIngredientImage, usePreferences } from "@/context";
 import type { Recipe, RecipeImagePayload } from "@/interface";
 import { coerceParam } from "@/utils/helper";
-import {
-	ANALYTICS_EVENTS,
-	captureAppException,
-	trackProductEvent,
-} from "@/utils/sentry";
+import { ANALYTICS_EVENTS, captureAppException, trackProductEvent } from "@/utils/sentry";
 
 interface RecipesParams {
 	ingredients?: string | string[];
@@ -71,9 +61,7 @@ export const useRecipes = () => {
 				const preferencesString = coerceParam(params.preferences);
 				const units = coerceParam(params.units);
 				const hasImageParam = coerceParam(params.hasImage) === "1";
-				const selectedFilters = preferencesString
-					.split(",")
-					.filter(Boolean) as QuickFilterOption[];
+				const selectedFilters = preferencesString.split(",").filter(Boolean) as QuickFilterOption[];
 
 				const currentImage = imageRef.current;
 				const imagePayload: RecipeImagePayload | undefined =
@@ -138,9 +126,7 @@ export const useRecipes = () => {
 					recipeCount: response.recipes.length,
 				});
 				setRecipes(response.recipes);
-				setCacheKey(
-					typeof response.cacheKey === "string" ? response.cacheKey : null,
-				);
+				setCacheKey(typeof response.cacheKey === "string" ? response.cacheKey : null);
 				await refreshQuota();
 			} catch (error) {
 				if (error instanceof DailyLimitError) {

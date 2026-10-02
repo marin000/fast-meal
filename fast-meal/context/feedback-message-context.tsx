@@ -1,12 +1,4 @@
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -18,13 +10,9 @@ interface FeedbackMessageContextValue {
 	showMessage: (message: string, tone?: FeedbackTone) => void;
 }
 
-const FeedbackMessageContext = createContext<
-	FeedbackMessageContextValue | undefined
->(undefined);
+const FeedbackMessageContext = createContext<FeedbackMessageContextValue | undefined>(undefined);
 
-const bannerColors = (
-	tone: FeedbackTone,
-): { backgroundColor: string; borderColor: string; textColor: string } => {
+const bannerColors = (tone: FeedbackTone): { backgroundColor: string; borderColor: string; textColor: string } => {
 	if (tone === "success") {
 		return {
 			backgroundColor: "#15803d",
@@ -46,11 +34,7 @@ const bannerColors = (
 	};
 };
 
-export const FeedbackMessageProvider = ({
-	children,
-}: {
-	children: ReactNode;
-}) => {
+export const FeedbackMessageProvider = ({ children }: { children: ReactNode }) => {
 	const { bottom } = useSafeAreaInsets();
 	const [toast, setToast] = useState<{
 		message: string;
@@ -64,17 +48,14 @@ export const FeedbackMessageProvider = ({
 		};
 	}, []);
 
-	const showMessage = useCallback(
-		(next: string, tone: FeedbackTone = "info") => {
-			setToast({ message: next, tone });
-			if (hideTimer.current) clearTimeout(hideTimer.current);
-			hideTimer.current = setTimeout(() => {
-				setToast(null);
-				hideTimer.current = null;
-			}, TOAST_DURATION_MS);
-		},
-		[],
-	);
+	const showMessage = useCallback((next: string, tone: FeedbackTone = "info") => {
+		setToast({ message: next, tone });
+		if (hideTimer.current) clearTimeout(hideTimer.current);
+		hideTimer.current = setTimeout(() => {
+			setToast(null);
+			hideTimer.current = null;
+		}, TOAST_DURATION_MS);
+	}, []);
 
 	const dismiss = useCallback(() => {
 		if (hideTimer.current) clearTimeout(hideTimer.current);
@@ -89,10 +70,7 @@ export const FeedbackMessageProvider = ({
 			<View style={styles.root} pointerEvents="box-none">
 				{children}
 				{toast !== null && colors !== null && (
-					<View
-						style={[styles.anchor, { paddingBottom: Math.max(bottom, 8) + 52 }]}
-						pointerEvents="box-none"
-					>
+					<View style={[styles.anchor, { paddingBottom: Math.max(bottom, 8) + 52 }]} pointerEvents="box-none">
 						<Pressable onPress={dismiss} style={styles.pressable}>
 							<View
 								style={[
@@ -103,9 +81,7 @@ export const FeedbackMessageProvider = ({
 									},
 								]}
 							>
-								<Text style={[styles.text, { color: colors.textColor }]}>
-									{toast.message}
-								</Text>
+								<Text style={[styles.text, { color: colors.textColor }]}>{toast.message}</Text>
 							</View>
 						</Pressable>
 					</View>
@@ -118,9 +94,7 @@ export const FeedbackMessageProvider = ({
 export const useFeedbackMessage = (): FeedbackMessageContextValue => {
 	const ctx = useContext(FeedbackMessageContext);
 	if (ctx === undefined) {
-		throw new Error(
-			"useFeedbackMessage must be used within FeedbackMessageProvider",
-		);
+		throw new Error("useFeedbackMessage must be used within FeedbackMessageProvider");
 	}
 	return ctx;
 };

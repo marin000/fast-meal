@@ -1,14 +1,9 @@
-const {
-	withGradleProperties,
-	withProjectBuildGradle,
-} = require("@expo/config-plugins");
+const { withGradleProperties, withProjectBuildGradle } = require("@expo/config-plugins");
 
 const LINT_METASPACE_MARKER = "autolinked libraries (Kotlin lint Metaspace)";
 
 function setGradleProperty(modResults, key, value) {
-	const idx = modResults.findIndex(
-		(p) => p.type === "property" && p.key === key,
-	);
+	const idx = modResults.findIndex((p) => p.type === "property" && p.key === key);
 	const prop = { type: "property", key, value };
 	if (idx >= 0) {
 		modResults[idx] = prop;
@@ -28,11 +23,7 @@ module.exports = function withAndroidGradleMemoryLint(config) {
 			"org.gradle.jvmargs",
 			"-Xmx4096m -XX:MaxMetaspaceSize=1536m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
 		);
-		setGradleProperty(
-			modConfig.modResults,
-			"kotlin.daemon.jvmargs",
-			"-Xmx3072m -XX:MaxMetaspaceSize=1024m",
-		);
+		setGradleProperty(modConfig.modResults, "kotlin.daemon.jvmargs", "-Xmx3072m -XX:MaxMetaspaceSize=1024m");
 		return modConfig;
 	});
 

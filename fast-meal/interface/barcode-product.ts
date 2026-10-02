@@ -54,9 +54,7 @@ export interface BarcodeProductDetails {
 	detailsFetchedAt?: string;
 }
 
-export interface BarcodeProduct
-	extends BarcodeProductEssentials,
-		BarcodeProductDetails {}
+export interface BarcodeProduct extends BarcodeProductEssentials, BarcodeProductDetails {}
 
 export interface ScannedDraft {
 	localId: string;

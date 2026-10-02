@@ -21,12 +21,7 @@ export const FridgeImagePreview = ({
 	const { t } = useTranslation();
 
 	return (
-		<Modal
-			visible={visible && Boolean(previewUri)}
-			transparent
-			animationType="fade"
-			onRequestClose={onClose}
-		>
+		<Modal visible={visible && Boolean(previewUri)} transparent animationType="fade" onRequestClose={onClose}>
 			<View style={styles.overlay}>
 				<Pressable
 					accessibilityRole="button"
@@ -35,13 +30,7 @@ export const FridgeImagePreview = ({
 					onPress={onClose}
 				/>
 				<View style={styles.content}>
-					{previewUri ? (
-						<Image
-							source={{ uri: previewUri }}
-							style={styles.image}
-							contentFit="contain"
-						/>
-					) : null}
+					{previewUri ? <Image source={{ uri: previewUri }} style={styles.image} contentFit="contain" /> : null}
 
 					<View style={styles.topActions}>
 						<Pressable

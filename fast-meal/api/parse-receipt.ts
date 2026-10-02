@@ -1,9 +1,6 @@
 import { DailyLimitError } from "@/api/device";
 import type { IngredientImageMimeType } from "@/constants/ingredient-image";
-import type {
-	ParseReceiptErrorCode,
-	ParseReceiptResponse,
-} from "@/interface/receipt-product";
+import type { ParseReceiptErrorCode, ParseReceiptResponse } from "@/interface/receipt-product";
 import { formatApiErrorBody } from "@/utils/api-error-text";
 
 export { DailyLimitError };
@@ -20,10 +17,7 @@ export class ParseReceiptError extends Error {
 
 const apiEndpoint = `${process.env.EXPO_PUBLIC_API_BASE_URL}/api/parse-receipt`;
 
-const parseErrorCode = (
-	status: number,
-	body: string,
-): ParseReceiptErrorCode => {
+const parseErrorCode = (status: number, body: string): ParseReceiptErrorCode => {
 	try {
 		const parsed = JSON.parse(body) as { code?: string };
 		switch (parsed.code) {
@@ -67,10 +61,7 @@ export const parseReceipt = async (params: {
 			}),
 		});
 	} catch {
-		throw new ParseReceiptError(
-			"NETWORK",
-			"Something went wrong while reading the receipt. Try again.",
-		);
+		throw new ParseReceiptError("NETWORK", "Something went wrong while reading the receipt. Try again.");
 	}
 
 	if (!response.ok) {
@@ -78,25 +69,18 @@ export const parseReceipt = async (params: {
 		const code = parseErrorCode(response.status, text);
 
 		if (code === "DAILY_RECEIPT_SCAN_LIMIT") {
-			throw new DailyLimitError(
-				formatApiErrorBody(response.status, text) ||
-					"Daily receipt scan limit reached.",
-			);
+			throw new DailyLimitError(formatApiErrorBody(response.status, text) || "Daily receipt scan limit reached.");
 		}
 
 		throw new ParseReceiptError(
 			code,
-			formatApiErrorBody(response.status, text) ||
-				"Something went wrong while reading the receipt. Try again.",
+			formatApiErrorBody(response.status, text) || "Something went wrong while reading the receipt. Try again.",
 		);
 	}
 
 	const data = (await response.json()) as Partial<ParseReceiptResponse>;
 	if (!Array.isArray(data.products)) {
-		throw new ParseReceiptError(
-			"INVALID_AI_RESPONSE",
-			"Something went wrong while reading the receipt. Try again.",
-		);
+		throw new ParseReceiptError("INVALID_AI_RESPONSE", "Something went wrong while reading the receipt. Try again.");
 	}
 
 	return {

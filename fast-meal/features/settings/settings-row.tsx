@@ -10,29 +10,16 @@ interface SettingsRowProps {
 	hideSeparator?: boolean;
 }
 
-export const SettingsRow = ({
-	label,
-	description,
-	children,
-	hideSeparator = false,
-}: SettingsRowProps) => {
+export const SettingsRow = ({ label, description, children, hideSeparator = false }: SettingsRowProps) => {
 	const theme = useAppAppearance();
 
 	return (
 		<View
-			style={[
-				styles.row,
-				{ borderBottomColor: theme.settingsRowDivider },
-				hideSeparator && styles.rowWithoutSeparator,
-			]}
+			style={[styles.row, { borderBottomColor: theme.settingsRowDivider }, hideSeparator && styles.rowWithoutSeparator]}
 		>
 			<View style={styles.rowCopy}>
 				<Text style={[styles.rowLabel, { color: theme.text }]}>{label}</Text>
-				{description ? (
-					<Text style={[styles.rowDescription, { color: theme.textMuted }]}>
-						{description}
-					</Text>
-				) : null}
+				{description ? <Text style={[styles.rowDescription, { color: theme.textMuted }]}>{description}</Text> : null}
 			</View>
 			<View>{children}</View>
 		</View>

@@ -2,13 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-	ActivityIndicator,
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-} from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import { FridgeImagePreview } from "./fridge-image-preview";
 
@@ -49,21 +43,10 @@ export const FridgeImageUpload = ({
 							},
 						]}
 					>
-						<View
-							style={[
-								styles.thumbnailRing,
-								{ borderColor: `${theme.primary}33` },
-							]}
-						>
-							<Image
-								source={{ uri: previewUri }}
-								style={styles.thumbnail}
-								contentFit="cover"
-							/>
+						<View style={[styles.thumbnailRing, { borderColor: `${theme.primary}33` }]}>
+							<Image source={{ uri: previewUri }} style={styles.thumbnail} contentFit="cover" />
 						</View>
-						<Text style={[styles.photoChipLabel, { color: theme.primary }]}>
-							{t("home.image.photoAdded")}
-						</Text>
+						<Text style={[styles.photoChipLabel, { color: theme.primary }]}>{t("home.image.photoAdded")}</Text>
 					</Pressable>
 
 					<Pressable
@@ -71,10 +54,7 @@ export const FridgeImageUpload = ({
 						accessibilityLabel={t("home.image.remove")}
 						onPress={onRemovePress}
 						hitSlop={8}
-						style={[
-							styles.removeButton,
-							{ backgroundColor: theme.surfaceOverlay },
-						]}
+						style={[styles.removeButton, { backgroundColor: theme.surfaceOverlay }]}
 					>
 						<Ionicons name="close" size={12} color={theme.iconMuted} />
 					</Pressable>
@@ -97,24 +77,14 @@ export const FridgeImageUpload = ({
 						<ActivityIndicator size="small" color={theme.primary} />
 					) : (
 						<>
-							<Ionicons
-								name="camera-outline"
-								size={12}
-								color={theme.textMuted}
-							/>
-							<Text style={[styles.addChipLabel, { color: theme.textMuted }]}>
-								{t("home.image.add")}
-							</Text>
+							<Ionicons name="camera-outline" size={12} color={theme.textMuted} />
+							<Text style={[styles.addChipLabel, { color: theme.textMuted }]}>{t("home.image.add")}</Text>
 						</>
 					)}
 				</Pressable>
 			)}
 
-			{imageError ? (
-				<Text style={[styles.errorText, { color: theme.danger }]}>
-					{imageError}
-				</Text>
-			) : null}
+			{imageError ? <Text style={[styles.errorText, { color: theme.danger }]}>{imageError}</Text> : null}
 
 			<FridgeImagePreview
 				visible={previewVisible}

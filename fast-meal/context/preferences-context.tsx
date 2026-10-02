@@ -1,27 +1,10 @@
 import * as Localization from "expo-localization";
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import type { QuickFilterOption } from "@/constants/home";
-import {
-	type AppLanguage,
-	MAX_EXCLUDED_INGREDIENTS,
-} from "@/constants/settings";
-import {
-	getStoredAppLanguage,
-	setStoredAppLanguage,
-} from "@/utils/app-language-storage";
-import {
-	getStoredExcludedIngredients,
-	setStoredExcludedIngredients,
-} from "@/utils/excluded-ingredients-storage";
+import { type AppLanguage, MAX_EXCLUDED_INGREDIENTS } from "@/constants/settings";
+import { getStoredAppLanguage, setStoredAppLanguage } from "@/utils/app-language-storage";
+import { getStoredExcludedIngredients, setStoredExcludedIngredients } from "@/utils/excluded-ingredients-storage";
 
 import i18n from "../  i18n";
 
@@ -75,9 +58,7 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
 	const [gymMode, setGymMode] = useState(false);
 	const [darkMode, setDarkMode] = useState(false);
 	const [units, setUnits] = useState<DisplayUnits>("metric");
-	const [language, setLanguageState] = useState<AppLanguage>(
-		deviceDefaultLanguage,
-	);
+	const [language, setLanguageState] = useState<AppLanguage>(deviceDefaultLanguage);
 	const [excludedIngredients, setExcludedIngredients] = useState<string[]>([]);
 
 	useEffect(() => {
@@ -117,9 +98,7 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
 		setExcludedIngredients((current) => {
 			if (current.length >= MAX_EXCLUDED_INGREDIENTS) return current;
 
-			const alreadyExists = current.some(
-				(item) => item.toLowerCase() === trimmed.toLowerCase(),
-			);
+			const alreadyExists = current.some((item) => item.toLowerCase() === trimmed.toLowerCase());
 			if (alreadyExists) {
 				return current;
 			}
@@ -182,11 +161,7 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
 		],
 	);
 
-	return (
-		<PreferencesContext.Provider value={contextValue}>
-			{children}
-		</PreferencesContext.Provider>
-	);
+	return <PreferencesContext.Provider value={contextValue}>{children}</PreferencesContext.Provider>;
 };
 
 export const usePreferences = () => {

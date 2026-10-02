@@ -1,6 +1,4 @@
-import DateTimePicker, {
-	type DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
+import DateTimePicker, { type DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
@@ -19,10 +17,7 @@ export const DateField = ({ label, value, onChange }: DateFieldProps) => {
 	const theme = useAppAppearance();
 	const [showPicker, setShowPicker] = useState(false);
 
-	const handlePickerChange = (
-		event: DateTimePickerEvent,
-		selectedDate?: Date,
-	) => {
+	const handlePickerChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
 		if (Platform.OS === "android") setShowPicker(false);
 
 		if (event?.type === "dismissed") {
@@ -47,9 +42,7 @@ export const DateField = ({ label, value, onChange }: DateFieldProps) => {
 					]}
 				>
 					<Text style={[styles.dateText, { color: theme.text }]}>
-						{value
-							? formatDisplayDate(value, i18n.language)
-							: t("common.addDate")}
+						{value ? formatDisplayDate(value, i18n.language) : t("common.addDate")}
 					</Text>
 				</Pressable>
 				{value ? (
@@ -57,9 +50,7 @@ export const DateField = ({ label, value, onChange }: DateFieldProps) => {
 						onPress={() => onChange(undefined)}
 						style={[styles.clearButton, { backgroundColor: theme.chipBg }]}
 					>
-						<Text style={[styles.clearText, { color: theme.textMuted }]}>
-							{t("common.clearDate")}
-						</Text>
+						<Text style={[styles.clearText, { color: theme.textMuted }]}>{t("common.clearDate")}</Text>
 					</Pressable>
 				) : null}
 			</View>

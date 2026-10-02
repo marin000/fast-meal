@@ -3,9 +3,7 @@ import { Platform } from "react-native";
 
 const STORAGE_KEY = "@fast-meal/excluded-ingredients";
 
-export const normalizeExcludedIngredients = (
-	values: readonly string[],
-): string[] => {
+export const normalizeExcludedIngredients = (values: readonly string[]): string[] => {
 	const seen = new Set<string>();
 	const result: string[] = [];
 
@@ -51,9 +49,7 @@ const writeToWeb = (values: string[]): void => {
 	}
 };
 
-export const getStoredExcludedIngredients = async (): Promise<
-	string[] | null
-> => {
+export const getStoredExcludedIngredients = async (): Promise<string[] | null> => {
 	if (Platform.OS === "web") {
 		return readFromWeb();
 	}
@@ -65,9 +61,7 @@ export const getStoredExcludedIngredients = async (): Promise<
 	}
 };
 
-export const setStoredExcludedIngredients = async (
-	values: readonly string[],
-): Promise<void> => {
+export const setStoredExcludedIngredients = async (values: readonly string[]): Promise<void> => {
 	const normalized = normalizeExcludedIngredients(values);
 	if (Platform.OS === "web") {
 		writeToWeb(normalized);

@@ -26,8 +26,7 @@ const parseSemver = (version) => {
 	};
 };
 
-const formatSemver = ({ major, minor, patch }) =>
-	`${major}.${minor}.${patch}`;
+const formatSemver = ({ major, minor, patch }) => `${major}.${minor}.${patch}`;
 
 const bumpSemver = (version, kind) => {
 	const current = parseSemver(version);

@@ -1,11 +1,4 @@
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 import {
 	createShoppingListItem,
@@ -18,10 +11,7 @@ import { useRefetchOnForeground } from "@/hooks/use-refetch-on-foreground";
 import type { Recipe } from "@/interface";
 import type { ShoppingListItem } from "@/interface/shopping-list";
 import { mergeRecipeIngredientsIntoList } from "@/utils/merge-shopping-list-names";
-import {
-	getStoredShoppingList,
-	setStoredShoppingList,
-} from "@/utils/shopping-list-storage";
+import { getStoredShoppingList, setStoredShoppingList } from "@/utils/shopping-list-storage";
 
 interface ShoppingListContextValue {
 	items: ShoppingListItem[];
@@ -33,9 +23,7 @@ interface ShoppingListContextValue {
 	removeItem: (id: string) => Promise<void>;
 }
 
-const ShoppingListContext = createContext<ShoppingListContextValue | undefined>(
-	undefined,
-);
+const ShoppingListContext = createContext<ShoppingListContextValue | undefined>(undefined);
 
 const migrateLocalItemsIfNeeded = async (
 	deviceId: string,
@@ -131,9 +119,7 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
 					deviceId,
 					name: trimmed,
 				});
-				setItems((prev) =>
-					prev.map((item) => (item.id === optimisticId ? created : item)),
-				);
+				setItems((prev) => prev.map((item) => (item.id === optimisticId ? created : item)));
 			} catch {
 				setItems((prev) => prev.filter((item) => item.id !== optimisticId));
 			}
@@ -145,10 +131,7 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
 		async (recipe: Recipe) => {
 			if (!deviceId) return 0;
 
-			const { items: next, addedCount } = mergeRecipeIngredientsIntoList(
-				items,
-				recipe,
-			);
+			const { items: next, addedCount } = mergeRecipeIngredientsIntoList(items, recipe);
 			if (addedCount === 0) return 0;
 
 			const previousItems = items;
@@ -157,18 +140,11 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
 			try {
 				const createdItems = await Promise.all(
 					next
-						.filter(
-							(item) =>
-								!previousItems.some((existing) => existing.id === item.id),
-						)
-						.map((item) =>
-							createShoppingListItem({ deviceId, name: item.name }),
-						),
+						.filter((item) => !previousItems.some((existing) => existing.id === item.id))
+						.map((item) => createShoppingListItem({ deviceId, name: item.name })),
 				);
 				setItems((current) => {
-					const createdByName = new Map(
-						createdItems.map((item) => [item.name.trim().toLowerCase(), item]),
-					);
+					const createdByName = new Map(createdItems.map((item) => [item.name.trim().toLowerCase(), item]));
 					return current.map((item) => {
 						const created = createdByName.get(item.name.trim().toLowerCase());
 						return created ?? item;
@@ -193,11 +169,7 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
 
 			const nextChecked = !target.checked;
 			const previousItems = items;
-			setItems((prev) =>
-				prev.map((item) =>
-					item.id === id ? { ...item, checked: nextChecked } : item,
-				),
-			);
+			setItems((prev) => prev.map((item) => (item.id === id ? { ...item, checked: nextChecked } : item)));
 
 			try {
 				await updateShoppingListItem({

@@ -5,10 +5,5 @@ import { FridgeAiLoading } from "@/components";
 export const LoadingScreen = () => {
 	const { t } = useTranslation();
 
-	return (
-		<FridgeAiLoading
-			title={t("loading.title")}
-			subtitle={t("loading.subtitle")}
-		/>
-	);
+	return <FridgeAiLoading title={t("loading.title")} subtitle={t("loading.subtitle")} />;
 };

@@ -18,12 +18,8 @@ const extractSvgBody = (svg) =>
 		.replace(/<\/svg>/, "")
 		.trim();
 
-const markBody = extractSvgBody(
-	readFileSync(join(sourceDir, "fridge-ai-mark.svg"), "utf8"),
-);
-const monochromeMarkBody = extractSvgBody(
-	readFileSync(join(sourceDir, "fridge-ai-mark-monochrome.svg"), "utf8"),
-);
+const markBody = extractSvgBody(readFileSync(join(sourceDir, "fridge-ai-mark.svg"), "utf8"));
+const monochromeMarkBody = extractSvgBody(readFileSync(join(sourceDir, "fridge-ai-mark-monochrome.svg"), "utf8"));
 
 const wrapMark = (body, scale = LOGO_SCALE) =>
 	`<g transform="translate(${SIZE / 2} ${SIZE / 2}) scale(${scale}) translate(-14 -14)">${body}</g>`;
@@ -31,14 +27,10 @@ const wrapMark = (body, scale = LOGO_SCALE) =>
 const buildSvg = (body) =>
 	`<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}">${body}</svg>`;
 
-const fullIconSvg = buildSvg(
-	`<rect width="${SIZE}" height="${SIZE}" fill="${BRAND_GREEN}" />${wrapMark(markBody)}`,
-);
+const fullIconSvg = buildSvg(`<rect width="${SIZE}" height="${SIZE}" fill="${BRAND_GREEN}" />${wrapMark(markBody)}`);
 const foregroundSvg = buildSvg(wrapMark(markBody));
 const monochromeSvg = buildSvg(wrapMark(monochromeMarkBody));
-const backgroundSvg = buildSvg(
-	`<rect width="${SIZE}" height="${SIZE}" fill="${BRAND_GREEN}" />`,
-);
+const backgroundSvg = buildSvg(`<rect width="${SIZE}" height="${SIZE}" fill="${BRAND_GREEN}" />`);
 
 const writePng = async (svg, outputPath, size = SIZE) => {
 	await sharp(Buffer.from(svg)).resize(size, size).png().toFile(outputPath);

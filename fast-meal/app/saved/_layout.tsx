@@ -1,17 +1,12 @@
 import { Stack } from "expo-router";
 
-import {
-	appDarkBackgroundColor,
-	appLightBackgroundColor,
-} from "@/constants/navigation-theme";
+import { appDarkBackgroundColor, appLightBackgroundColor } from "@/constants/navigation-theme";
 import { usePreferences } from "@/context";
 import { SavedRecipesProvider } from "@/context/saved-recipes-context";
 
 const SavedLayout = () => {
 	const { darkMode } = usePreferences();
-	const appBackgroundColor = darkMode
-		? appDarkBackgroundColor
-		: appLightBackgroundColor;
+	const appBackgroundColor = darkMode ? appDarkBackgroundColor : appLightBackgroundColor;
 
 	return (
 		<SavedRecipesProvider>
