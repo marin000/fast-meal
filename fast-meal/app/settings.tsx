@@ -4,6 +4,7 @@ import { ScreenScrollView } from "@/components";
 import {
 	DietLifestyleSection,
 	DisplaySection,
+	ExcludedIngredientsSection,
 	FamilySection,
 } from "@/features/settings";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
@@ -17,6 +18,7 @@ const SettingsScreen = () => {
 			contentContainerStyle={styles.screen}
 		>
 			<DietLifestyleSection />
+			<ExcludedIngredientsSection />
 			<DisplaySection />
 			<FamilySection />
 		</ScreenScrollView>

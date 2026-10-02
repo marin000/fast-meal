@@ -30,6 +30,11 @@ Rules:
   - lunch: lunch-style dishes.
   - glutenFree: avoid gluten (no wheat, barley, rye); warn about cross-contamination if uncertain.
   - dessert: sweet finishes or treats using only allowed ingredients.
+- Strict exclusions (User excluded ingredients / allergens):
+  - Treat every listed item as a hard dietary restriction for ALL recipes.
+  - Never include those ingredients, or obvious derivatives / close forms of them (e.g. peanut butter for peanuts, shrimp paste for shrimp).
+  - If an excluded item appears among the user's available ingredients or in an image, do not use it.
+  - When there is a meaningful cross-contamination or hidden-source risk, add a short note in warnings.
 - If ingredients are missing, suggest realistic substitutions.
 - Include 2-3 short cooking tips per recipe that improve texture, flavor, or technique.
 - Respect "User units preference":

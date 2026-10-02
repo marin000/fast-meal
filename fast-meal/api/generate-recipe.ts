@@ -41,6 +41,7 @@ export const generateRecipe = async ({
 	selectedFilters,
 	units,
 	language,
+	excludedIngredients = [],
 	retryAttempt = 1,
 	image,
 }: GenerateRecipeInput): Promise<GenerateRecipeResponse> => {
@@ -50,6 +51,7 @@ export const generateRecipe = async ({
 		preferences: [...selectedFilters],
 		units,
 		language,
+		excludedIngredients: [...excludedIngredients],
 		retryAttempt,
 		...(image ? { image } : {}),
 	};

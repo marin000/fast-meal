@@ -11,6 +11,7 @@ export interface GenerateRecipeRequestBody {
 	preferences: string[];
 	units: "metric" | "imperial";
 	language: "en" | "hr";
+	excludedIngredients?: string[];
 	retryAttempt?: number;
 	image?: RecipeImagePayload;
 }

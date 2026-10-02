@@ -310,8 +310,17 @@
 	"settings": {
 		"sections": {
 			"dietLifestyle": "Prehrana i stil života",
+			"excludedIngredients": "Alergije i isključene namjernice",
 			"display": "Prikaz",
 			"family": "Dijeljenje u kućanstvu"
+		},
+		"excludedIngredients": {
+			"description": "Sastojci ili alergeni koje uvijek treba izbjegavati u receptima",
+			"placeholder": "npr. kikiriki, škampi",
+			"add": "Dodaj",
+			"empty": "Još nema isključenja. Dodaj što ne smiješ jesti.",
+			"limitReached": "Možeš dodati najviše {{count}} stavki.",
+			"remove": "Ukloni {{name}}"
 		},
 		"family": {
 			"inviteCodeLabel": "Tvoj pozivni kod",

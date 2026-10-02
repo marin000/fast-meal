@@ -40,6 +40,7 @@ export const parseRequestBody = (
 		deviceId,
 		ingredients,
 		preferences,
+		excludedIngredients,
 		units,
 		language,
 		retryAttempt,
@@ -57,6 +58,13 @@ export const parseRequestBody = (
 
 	if (ingredients.length === 0 && !parsedImage) return null;
 
+	if (
+		excludedIngredients !== undefined &&
+		!isStringArray(excludedIngredients)
+	) {
+		return null;
+	}
+
 	const parsedRetryAttempt =
 		typeof retryAttempt === "number" &&
 		Number.isInteger(retryAttempt) &&
@@ -65,10 +73,19 @@ export const parseRequestBody = (
 			? retryAttempt
 			: 1;
 
+	const parsedExcludedIngredients = isStringArray(excludedIngredients)
+		? [
+				...new Set(
+					excludedIngredients.map((value) => value.trim()).filter(Boolean),
+				),
+			].slice(0, 20)
+		: [];
+
 	return {
 		deviceId: deviceId.trim(),
 		ingredients,
 		preferences: isStringArray(preferences) ? preferences : [],
+		excludedIngredients: parsedExcludedIngredients,
 		units: isUnitsValue(units) ? units : "metric",
 		language: isAppLanguage(language) ? language : "en",
 		retryAttempt: parsedRetryAttempt,

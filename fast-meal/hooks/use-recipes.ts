@@ -35,7 +35,7 @@ export const useRecipes = () => {
 	const { deviceId } = useDeviceId();
 	const { showMessage } = useFeedbackMessage();
 	const { refreshQuota } = useGenerationQuota();
-	const { language } = usePreferences();
+	const { language, excludedIngredients } = usePreferences();
 	const { image, clearImage } = useHomeIngredientImage();
 	const imageRef = useRef(image);
 	imageRef.current = image;
@@ -101,6 +101,7 @@ export const useRecipes = () => {
 					selectedFilters,
 					units: units === "imperial" ? "imperial" : "metric",
 					language,
+					excludedIngredients,
 					retryAttempt: attempt + 1,
 					image: imagePayload,
 				});
@@ -181,6 +182,7 @@ export const useRecipes = () => {
 		attempt,
 		clearImage,
 		deviceId,
+		excludedIngredients,
 		language,
 		params.hasImage,
 		params.ingredients,
