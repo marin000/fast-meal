@@ -310,8 +310,17 @@
 	"settings": {
 		"sections": {
 			"dietLifestyle": "Diet & Lifestyle",
+			"excludedIngredients": "Allergies & exclusions",
 			"display": "Display",
 			"family": "Family sharing"
+		},
+		"excludedIngredients": {
+			"description": "Ingredients or allergens to always avoid in recipe ideas",
+			"placeholder": "e.g. peanuts, shrimp",
+			"add": "Add",
+			"empty": "No exclusions yet. Add items you cannot eat.",
+			"limitReached": "You can add up to {{count}} items.",
+			"remove": "Remove {{name}}"
 		},
 		"family": {
 			"inviteCodeLabel": "Your invite code",

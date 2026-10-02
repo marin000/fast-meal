@@ -22,13 +22,8 @@ const RecipeDetailScreen = () => {
 	const theme = useAppAppearance();
 	const { index: indexParam } = useLocalSearchParams<{ index: string }>();
 	const recipeIndex = Number(indexParam);
-	const {
-		recipes,
-		getSavedBackendIdForIndex,
-		saveRecipeAtIndex,
-		removeSavedRecipeAtIndex,
-		isBusyForIndex,
-	} = useRecipesContext();
+	const { recipes, getSavedBackendIdForIndex, saveRecipeAtIndex, removeSavedRecipeAtIndex, isBusyForIndex } =
+		useRecipesContext();
 	const recipe = recipes[recipeIndex];
 
 	if (!recipe) {
@@ -45,10 +40,7 @@ const RecipeDetailScreen = () => {
 				accessibilityRole="button"
 				disabled={isBusy || isSaved}
 				onPress={() => saveRecipeAtIndex(recipeIndex)}
-				style={[
-					styles.heroIconButton,
-					{ backgroundColor: theme.substitutionBoxBg },
-				]}
+				style={[styles.heroIconButton, { backgroundColor: theme.substitutionBoxBg }]}
 			>
 				<Ionicons
 					name={isSaved ? "bookmark" : "bookmark-outline"}
@@ -61,10 +53,7 @@ const RecipeDetailScreen = () => {
 					accessibilityRole="button"
 					disabled={isBusy}
 					onPress={() => removeSavedRecipeAtIndex(recipeIndex)}
-					style={[
-						styles.heroIconButton,
-						{ backgroundColor: theme.surfaceOverlay },
-					]}
+					style={[styles.heroIconButton, { backgroundColor: theme.surfaceOverlay }]}
 				>
 					<Ionicons name="trash-outline" size={18} color={theme.iconMuted} />
 				</Pressable>
@@ -73,32 +62,19 @@ const RecipeDetailScreen = () => {
 	);
 
 	return (
-		<ScreenScrollView
-			backgroundColor={theme.background}
-			contentContainerStyle={styles.container}
-		>
-			<RecipeHero
-				recipe={recipe}
-				onBack={() => router.back()}
-				rightActions={heroRight}
-			/>
+		<ScreenScrollView backgroundColor={theme.background} contentContainerStyle={styles.container}>
+			<RecipeHero recipe={recipe} onBack={() => router.back()} rightActions={heroRight} />
 
 			<View style={styles.body}>
-				<Text style={[styles.description, { color: theme.textMuted }]}>
-					{recipe.description}
-				</Text>
+				<Text style={[styles.description, { color: theme.textMuted }]}>{recipe.description}</Text>
 
 				<RecipeNutrition macros={recipe.macros} />
 				<AddToShoppingListButton recipe={recipe} />
 				<RecipeIngredients items={recipe.ingredients} />
 				<RecipeInstructions steps={recipe.steps} />
-				{recipe.substitutions.length > 0 && (
-					<RecipeSubstitutions items={recipe.substitutions} />
-				)}
+				{recipe.substitutions.length > 0 && <RecipeSubstitutions items={recipe.substitutions} />}
 				{recipe.tips.length > 0 && <RecipeTips items={recipe.tips} />}
-				{recipe.warnings.length > 0 && (
-					<RecipeWarnings items={recipe.warnings} />
-				)}
+				{recipe.warnings.length > 0 && <RecipeWarnings items={recipe.warnings} />}
 			</View>
 		</ScreenScrollView>
 	);

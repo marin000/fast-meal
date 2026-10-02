@@ -1,20 +1,10 @@
 import * as Localization from "expo-localization";
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import type { QuickFilterOption } from "@/constants/home";
-import type { AppLanguage } from "@/constants/settings";
-import {
-	getStoredAppLanguage,
-	setStoredAppLanguage,
-} from "@/utils/app-language-storage";
+import { type AppLanguage, MAX_EXCLUDED_INGREDIENTS } from "@/constants/settings";
+import { getStoredAppLanguage, setStoredAppLanguage } from "@/utils/app-language-storage";
+import { getStoredExcludedIngredients, setStoredExcludedIngredients } from "@/utils/excluded-ingredients-storage";
 
 import i18n from "../  i18n";
 
@@ -39,6 +29,9 @@ interface PreferencesContextValue {
 	setUnits: (value: DisplayUnits) => void;
 	language: AppLanguage;
 	setLanguage: (value: AppLanguage) => void;
+	excludedIngredients: string[];
+	addExcludedIngredient: (name: string) => boolean;
+	removeExcludedIngredient: (name: string) => void;
 	lockedQuickFilters: QuickFilterOption[];
 }
 
@@ -65,19 +58,24 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
 	const [gymMode, setGymMode] = useState(false);
 	const [darkMode, setDarkMode] = useState(false);
 	const [units, setUnits] = useState<DisplayUnits>("metric");
-	const [language, setLanguageState] = useState<AppLanguage>(
-		deviceDefaultLanguage,
-	);
+	const [language, setLanguageState] = useState<AppLanguage>(deviceDefaultLanguage);
+	const [excludedIngredients, setExcludedIngredients] = useState<string[]>([]);
 
 	useEffect(() => {
 		let cancelled = false;
 
 		void (async () => {
-			const stored = await getStoredAppLanguage();
+			const [storedLanguage, storedExcluded] = await Promise.all([
+				getStoredAppLanguage(),
+				getStoredExcludedIngredients(),
+			]);
 			if (cancelled) return;
-			if (stored) {
-				setLanguageState(stored);
-				await i18n.changeLanguage(stored);
+			if (storedLanguage) {
+				setLanguageState(storedLanguage);
+				await i18n.changeLanguage(storedLanguage);
+			}
+			if (storedExcluded) {
+				setExcludedIngredients(storedExcluded);
 			}
 		})();
 
@@ -90,6 +88,38 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
 		setLanguageState(lng);
 		void i18n.changeLanguage(lng);
 		void setStoredAppLanguage(lng);
+	}, []);
+
+	const addExcludedIngredient = useCallback((name: string): boolean => {
+		const trimmed = name.trim();
+		if (!trimmed) return false;
+
+		let didAdd = false;
+		setExcludedIngredients((current) => {
+			if (current.length >= MAX_EXCLUDED_INGREDIENTS) return current;
+
+			const alreadyExists = current.some((item) => item.toLowerCase() === trimmed.toLowerCase());
+			if (alreadyExists) {
+				return current;
+			}
+			const next = [...current, trimmed];
+			didAdd = true;
+			void setStoredExcludedIngredients(next);
+			return next;
+		});
+		return didAdd;
+	}, []);
+
+	const removeExcludedIngredient = useCallback((name: string) => {
+		const key = name.trim().toLowerCase();
+		if (!key) return;
+		setExcludedIngredients((current) => {
+			const next = current.filter((item) => item.toLowerCase() !== key);
+			if (next.length === current.length) return current;
+
+			void setStoredExcludedIngredients(next);
+			return next;
+		});
 	}, []);
 
 	const lockedQuickFilters = useMemo(
@@ -111,6 +141,9 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
 			setUnits,
 			language,
 			setLanguage,
+			excludedIngredients,
+			addExcludedIngredient,
+			removeExcludedIngredient,
 			lockedQuickFilters,
 		}),
 		[
@@ -121,15 +154,14 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
 			units,
 			language,
 			setLanguage,
+			excludedIngredients,
+			addExcludedIngredient,
+			removeExcludedIngredient,
 			lockedQuickFilters,
 		],
 	);
 
-	return (
-		<PreferencesContext.Provider value={contextValue}>
-			{children}
-		</PreferencesContext.Provider>
-	);
+	return <PreferencesContext.Provider value={contextValue}>{children}</PreferencesContext.Provider>;
 };
 
 export const usePreferences = () => {

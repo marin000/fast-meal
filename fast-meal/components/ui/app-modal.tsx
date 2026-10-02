@@ -46,10 +46,8 @@ export const AppModal = ({
 			return;
 		}
 
-		const showEvent =
-			Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
-		const hideEvent =
-			Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+		const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+		const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
 
 		const showSubscription = Keyboard.addListener(showEvent, () => {
 			setKeyboardVisible(true);
@@ -80,24 +78,15 @@ export const AppModal = ({
 			{(title || description) && (
 				<View style={styles.header}>
 					<View style={styles.headerText}>
-						{title ? (
-							<Text style={[styles.title, { color: theme.text }]}>{title}</Text>
-						) : null}
-						{description ? (
-							<Text style={[styles.description, { color: theme.textMuted }]}>
-								{description}
-							</Text>
-						) : null}
+						{title ? <Text style={[styles.title, { color: theme.text }]}>{title}</Text> : null}
+						{description ? <Text style={[styles.description, { color: theme.textMuted }]}>{description}</Text> : null}
 					</View>
 
 					<Pressable
 						accessibilityRole="button"
 						accessibilityLabel="Close"
 						onPress={onClose}
-						style={[
-							styles.closeButton,
-							{ backgroundColor: theme.surfaceOverlay },
-						]}
+						style={[styles.closeButton, { backgroundColor: theme.surfaceOverlay }]}
 					>
 						<Ionicons name="close" size={16} color={theme.iconMuted} />
 					</Pressable>
@@ -118,24 +107,14 @@ export const AppModal = ({
 				<View style={styles.body}>{children}</View>
 			)}
 
-			{footer && !keyboardVisible ? (
-				<View style={styles.footer}>{footer}</View>
-			) : null}
+			{footer && !keyboardVisible ? <View style={styles.footer}>{footer}</View> : null}
 		</View>
 	);
 
 	return (
-		<Modal
-			visible={visible}
-			transparent
-			animationType="slide"
-			onRequestClose={onClose}
-		>
+		<Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
 			{avoidKeyboard ? (
-				<KeyboardAvoidingView
-					style={styles.overlay}
-					behavior={Platform.OS === "ios" ? "padding" : "height"}
-				>
+				<KeyboardAvoidingView style={styles.overlay} behavior={Platform.OS === "ios" ? "padding" : "height"}>
 					<Pressable
 						accessibilityRole="button"
 						accessibilityLabel="Close modal"

@@ -14,9 +14,7 @@ interface AddToShoppingListButtonProps {
 	recipe: Recipe;
 }
 
-export const AddToShoppingListButton = ({
-	recipe,
-}: AddToShoppingListButtonProps) => {
+export const AddToShoppingListButton = ({ recipe }: AddToShoppingListButtonProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 	const { showMessage } = useFeedbackMessage();
@@ -26,10 +24,7 @@ export const AddToShoppingListButton = ({
 		void (async () => {
 			const added = await addFromRecipe(recipe);
 			if (added > ZERO_ITEMS) {
-				const key =
-					added === ONE_ITEM
-						? "shopping.toast.added_one"
-						: "shopping.toast.added";
+				const key = added === ONE_ITEM ? "shopping.toast.added_one" : "shopping.toast.added";
 				showMessage(t(key, { count: added }), "success");
 				return;
 			}
@@ -50,9 +45,7 @@ export const AddToShoppingListButton = ({
 			]}
 		>
 			<Ionicons name="cart-outline" size={18} color={theme.primary} />
-			<Text style={[styles.label, { color: theme.text }]}>
-				{t("shopping.addFromRecipe")}
-			</Text>
+			<Text style={[styles.label, { color: theme.text }]}>{t("shopping.addFromRecipe")}</Text>
 		</Pressable>
 	);
 };

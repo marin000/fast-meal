@@ -18,10 +18,7 @@ const readFromWeb = (): ShoppingListItem[] | null => {
 const writeToWeb = (items: ShoppingListItem[]): void => {
 	try {
 		if (typeof globalThis.localStorage === "undefined") return;
-		globalThis.localStorage.setItem(
-			SHOPPING_LIST_STORAGE_KEY,
-			JSON.stringify(items),
-		);
+		globalThis.localStorage.setItem(SHOPPING_LIST_STORAGE_KEY, JSON.stringify(items));
 	} catch {
 		/* unavailable */
 	}
@@ -59,18 +56,13 @@ export const getStoredShoppingList = async (): Promise<ShoppingListItem[]> => {
 	}
 };
 
-export const setStoredShoppingList = async (
-	items: ShoppingListItem[],
-): Promise<void> => {
+export const setStoredShoppingList = async (items: ShoppingListItem[]): Promise<void> => {
 	if (Platform.OS === "web") {
 		writeToWeb(items);
 		return;
 	}
 	try {
-		await AsyncStorage.setItem(
-			SHOPPING_LIST_STORAGE_KEY,
-			JSON.stringify(items),
-		);
+		await AsyncStorage.setItem(SHOPPING_LIST_STORAGE_KEY, JSON.stringify(items));
 	} catch {
 		/* native module missing */
 	}

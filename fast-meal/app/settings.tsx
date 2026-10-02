@@ -1,22 +1,16 @@
 import { StyleSheet } from "react-native";
 
 import { ScreenScrollView } from "@/components";
-import {
-	DietLifestyleSection,
-	DisplaySection,
-	FamilySection,
-} from "@/features/settings";
+import { DietLifestyleSection, DisplaySection, ExcludedIngredientsSection, FamilySection } from "@/features/settings";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 
 const SettingsScreen = () => {
 	const theme = useAppAppearance();
 
 	return (
-		<ScreenScrollView
-			backgroundColor={theme.background}
-			contentContainerStyle={styles.screen}
-		>
+		<ScreenScrollView backgroundColor={theme.background} contentContainerStyle={styles.screen}>
 			<DietLifestyleSection />
+			<ExcludedIngredientsSection />
 			<DisplaySection />
 			<FamilySection />
 		</ScreenScrollView>

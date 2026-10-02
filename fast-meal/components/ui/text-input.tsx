@@ -1,13 +1,6 @@
 import type { ReactNode } from "react";
 import type { TextInputProps } from "react-native";
-import {
-	Keyboard,
-	Pressable,
-	StyleSheet,
-	Text,
-	TextInput,
-	View,
-} from "react-native";
+import { Keyboard, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 
@@ -18,14 +11,7 @@ interface AppTextInputProps extends TextInputProps {
 	footer?: ReactNode;
 }
 
-export const AppTextInput = ({
-	label,
-	labelRight,
-	placeholder,
-	footer,
-	style,
-	...props
-}: AppTextInputProps) => {
+export const AppTextInput = ({ label, labelRight, placeholder, footer, style, ...props }: AppTextInputProps) => {
 	const theme = useAppAppearance();
 
 	return (
@@ -50,12 +36,7 @@ export const AppTextInput = ({
 					numberOfLines={4}
 					placeholder={placeholder}
 					placeholderTextColor={theme.inputPlaceholder}
-					style={[
-						styles.input,
-						footer ? styles.inputWithFooter : null,
-						{ color: theme.text },
-						style,
-					]}
+					style={[styles.input, footer ? styles.inputWithFooter : null, { color: theme.text }, style]}
 					textAlignVertical="top"
 					{...props}
 				/>

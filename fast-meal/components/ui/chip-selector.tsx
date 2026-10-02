@@ -28,20 +28,12 @@ export const ChipSelector = <T extends string>({
 				return (
 					<Pressable
 						key={option}
-						onPress={() =>
-							isDisabled
-								? onDisabledOptionPress?.(option)
-								: onToggleOption(option)
-						}
+						onPress={() => (isDisabled ? onDisabledOptionPress?.(option) : onToggleOption(option))}
 						style={[
 							styles.chip,
 							{
-								backgroundColor: isSelected
-									? theme.chipSelectedBg
-									: theme.chipBg,
-								borderColor: isSelected
-									? theme.chipSelectedBorder
-									: theme.chipBorder,
+								backgroundColor: isSelected ? theme.chipSelectedBg : theme.chipBg,
+								borderColor: isSelected ? theme.chipSelectedBorder : theme.chipBorder,
 							},
 							isDisabled && styles.disabledChip,
 						]}

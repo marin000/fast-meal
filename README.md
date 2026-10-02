@@ -11,6 +11,7 @@
 4. [Environment Variables](#4-environment-variables)
 5. [API Overview](#5-api-overview)
 6. [Scripts](#6-scripts)
+7. [Release Process (CI/CD)](#7-release-process-cicd)
 
 ## 1. About The App
 
@@ -137,6 +138,8 @@ Then press `i` for iOS simulator, `a` for Android emulator, or scan the QR code 
 | `npm run ios` | Run on iOS |
 | `npm run web` | Run in browser |
 | `npm run lint` | Run Biome linter |
+| `npm run typecheck` | Run TypeScript (`tsc --noEmit`) |
+| `npm run bump` | Bump app version / local build numbers |
 
 ### Backend (`meal-backend/`)
 
@@ -146,5 +149,67 @@ Then press `i` for iOS simulator, `a` for Android emulator, or scan the QR code 
 | `npm run build` | Production build |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
+
+## 7. Release Process (CI/CD)
+
+Android-only. Permanent branches: **`main`** (development) and **`release`** (production). Do **not** use `release/*` version branches.
+
+### Flow
+
+1. Develop on a feature branch
+2. Open a PR to `main`
+3. CI runs (`lint` + `typecheck`)
+4. Merge to `main`
+5. Preview EAS build runs automatically (internal distribution)
+6. QA tests the Preview build
+7. Open a PR: `main` → `release`
+8. CI runs again
+9. Approve and merge the PR
+10. Production EAS build runs automatically
+11. On success, the build is submitted to Google Play (**production** track)
+
+### Preview vs production
+
+| | Preview | Production |
+|--|---------|------------|
+| Branch | `main` | `release` |
+| Workflow | `.github/workflows/preview.yml` | `.github/workflows/production.yml` |
+| EAS profile | `preview` | `production` |
+| Channel | `preview` | `production` |
+| Distribution | Internal (EAS) | Google Play store |
+| Submit | No | Yes (`--auto-submit`) |
+
+PR CI: `.github/workflows/ci.yml` on pull requests to `main` or `release`. Commands: `npm ci`, `npm run lint`, `npm run typecheck`.
+
+### Versioning
+
+- EAS uses **remote** app version source (`eas.json` → `cli.appVersionSource: "remote"`).
+- Production builds use **`autoIncrement: true`** so Android `versionCode` always increases.
+- User-facing semver (`expo.version` / `package.json`) is managed separately (e.g. `npm run bump -- patch` before promoting to `release`). Never derive version numbers from the branch name.
+
+### Required secrets and credentials
+
+| Item | Where | Purpose |
+|------|--------|---------|
+| `EXPO_TOKEN` | GitHub → Settings → Secrets and variables → Actions | Authenticates EAS CLI in GitHub Actions |
+| Google Play service account JSON | Expo project Credentials (Android → `com.marin1997.fastmeal`) | Lets EAS Submit upload to Play |
+
+Never commit the service account JSON or Expo tokens to the repo.
+
+Expo token: [https://expo.dev/settings/access-tokens](https://expo.dev/settings/access-tokens)  
+Play service account guide: [https://expo.fyi/creating-google-service-account](https://expo.fyi/creating-google-service-account)
+
+### Branch protection (manual)
+
+On GitHub, protect **`release`** (and ideally **`main`**):
+
+- Disallow direct pushes
+- Require a pull request
+- Require the CI status check to pass
+
+### Rerunning failed workflows
+
+GitHub → **Actions** → select the failed run → **Re-run failed jobs** (or **Re-run all jobs**).  
+Production submit only runs after a successful build in the same job (`--auto-submit --wait`); a failed build does not submit.
 
 [back to top](#FastMeal)

@@ -19,7 +19,7 @@ export type RecipeCountMode = typeof RECIPE_STANDARD | typeof RECIPE_REDUCED;
 
 type MealPromptInput = Pick<
 	GenerateRecipeRequestBody,
-	"ingredients" | "preferences" | "units" | "language"
+	"ingredients" | "preferences" | "units" | "language" | "excludedIngredients"
 > & {
 	recipeCountMode: RecipeCountMode;
 	hasImage?: boolean;
@@ -43,6 +43,7 @@ export const buildMealGenerationPrompt = ({
 	preferences,
 	units,
 	language,
+	excludedIngredients = [],
 	recipeCountMode,
 	hasImage = false,
 }: MealPromptInput): string => {
@@ -62,6 +63,7 @@ export const buildMealGenerationPrompt = ({
 
     User ingredients: ${JSON.stringify(ingredients, null, 2)}
     User preferences / filters: ${JSON.stringify(preferences, null, 2)}
+    User excluded ingredients / allergens: ${JSON.stringify(excludedIngredients, null, 2)}
     User units preference: ${JSON.stringify(units)}
     User interface language: ${JSON.stringify(language)} (${recipeLanguageLabel}). Use this as the recipe language (overrides ingredient-list detection).${imageNote}`;
 };

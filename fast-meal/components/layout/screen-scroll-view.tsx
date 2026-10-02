@@ -2,8 +2,7 @@ import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Keyboard, ScrollView, type ScrollViewProps } from "react-native";
 
-interface ScreenScrollViewProps
-	extends Omit<ScrollViewProps, "style" | "contentContainerStyle"> {
+interface ScreenScrollViewProps extends Omit<ScrollViewProps, "style" | "contentContainerStyle"> {
 	children: ReactNode;
 	backgroundColor: string;
 	contentContainerStyle?: StyleProp<ViewStyle>;

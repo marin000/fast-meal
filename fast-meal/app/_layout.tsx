@@ -30,21 +30,13 @@ const RootLayoutContent = () => {
 	const pathname = usePathname();
 	const router = useRouter();
 	const isDarkMode = darkMode;
-	const appBackgroundColor = isDarkMode
-		? appDarkBackgroundColor
-		: appLightBackgroundColor;
+	const appBackgroundColor = isDarkMode ? appDarkBackgroundColor : appLightBackgroundColor;
 
-	const isRecipeDetail =
-		pathname.startsWith("/recipes/") && pathname !== "/recipes";
+	const isRecipeDetail = pathname.startsWith("/recipes/") && pathname !== "/recipes";
 	const isSavedRecipeDetail = /^\/saved\/.+/.test(pathname);
-	const isFridgeScan =
-		pathname === "/fridge/scan" || pathname === "/fridge/scan-receipt";
+	const isFridgeScan = pathname === "/fridge/scan" || pathname === "/fridge/scan-receipt";
 	const isFridgeProductDetail = pathname.startsWith("/fridge/product/");
-	const hideChrome =
-		isRecipeDetail ||
-		isSavedRecipeDetail ||
-		isFridgeScan ||
-		isFridgeProductDetail;
+	const hideChrome = isRecipeDetail || isSavedRecipeDetail || isFridgeScan || isFridgeProductDetail;
 	const needsTopSafeArea = hideChrome && !isFridgeScan;
 
 	const handleTabPress = (tab: FooterTab) => {
@@ -71,9 +63,7 @@ const RootLayoutContent = () => {
 	};
 
 	return (
-		<ThemeProvider
-			value={isDarkMode ? navigationDarkTheme : navigationLightTheme}
-		>
+		<ThemeProvider value={isDarkMode ? navigationDarkTheme : navigationLightTheme}>
 			<View style={[styles.container, { backgroundColor: appBackgroundColor }]}>
 				<ExpirationNotificationSetup />
 				{!hideChrome ? (
@@ -104,12 +94,7 @@ const RootLayoutContent = () => {
 						<Stack.Screen name="shopping-list/index" />
 					</Stack>
 				</View>
-				{!hideChrome && (
-					<Footer
-						activeTab={getActiveTab(pathname)}
-						onTabPress={handleTabPress}
-					/>
-				)}
+				{!hideChrome && <Footer activeTab={getActiveTab(pathname)} onTabPress={handleTabPress} />}
 			</View>
 			<StatusBar style={isDarkMode ? "light" : "dark"} />
 		</ThemeProvider>

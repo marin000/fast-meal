@@ -4,18 +4,14 @@ export const startOfLocalDay = (date: Date): Date => {
 	return day;
 };
 
-export const getDaysUntilExpiration = (
-	expirationIso: string,
-): number | null => {
+export const getDaysUntilExpiration = (expirationIso: string): number | null => {
 	const expiration = new Date(expirationIso);
 	if (Number.isNaN(expiration.getTime())) return null;
 
 	const today = startOfLocalDay(new Date());
 	const expDay = startOfLocalDay(expiration);
 
-	return Math.ceil(
-		(expDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
-	);
+	return Math.ceil((expDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 };
 
 export const formatDisplayDate = (date: Date, locale: string): string => {
@@ -34,7 +30,5 @@ export const getExpirationDaysLeft = (iso: string): number => {
 	today.setHours(0, 0, 0, 0);
 	const expDay = new Date(expiration);
 	expDay.setHours(0, 0, 0, 0);
-	return Math.ceil(
-		(expDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
-	);
+	return Math.ceil((expDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 };

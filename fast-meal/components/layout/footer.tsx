@@ -33,18 +33,11 @@ export const Footer = ({ activeTab, onTabPress }: BottomFooterNavProps) => {
 					const isActive = item.id === activeTab;
 
 					return (
-						<Pressable
-							key={item.id}
-							accessibilityRole="button"
-							onPress={() => onTabPress(item.id)}
-							style={styles.item}
-						>
+						<Pressable key={item.id} accessibilityRole="button" onPress={() => onTabPress(item.id)} style={styles.item}>
 							{item.id === "fridge" ? (
 								<FridgeIcon
 									size={18}
-									color={
-										isActive ? theme.footerTabActive : theme.footerTabInactive
-									}
+									color={isActive ? theme.footerTabActive : theme.footerTabInactive}
 									filled={isActive}
 								/>
 							) : (
@@ -59,18 +52,11 @@ export const Footer = ({ activeTab, onTabPress }: BottomFooterNavProps) => {
 												: item.iconName
 									}
 									size={18}
-									color={
-										isActive ? theme.footerTabActive : theme.footerTabInactive
-									}
+									color={isActive ? theme.footerTabActive : theme.footerTabInactive}
 								/>
 							)}
 							<Text
-								style={[
-									styles.label,
-									isActive
-										? { color: theme.footerTabActive }
-										: { color: theme.footerTabInactive },
-								]}
+								style={[styles.label, isActive ? { color: theme.footerTabActive } : { color: theme.footerTabInactive }]}
 							>
 								{t(item.labelKey)}
 							</Text>

@@ -5,15 +5,8 @@ import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import {
-	useFeedbackMessage,
-	useFridgeProducts,
-	usePreferences,
-} from "@/context";
-import {
-	BarcodeScannerView,
-	ScanReviewSheet,
-} from "@/features/fridge-products-scan";
+import { useFeedbackMessage, useFridgeProducts, usePreferences } from "@/context";
+import { BarcodeScannerView, ScanReviewSheet } from "@/features/fridge-products-scan";
 import { useBarcodeScanSession } from "@/hooks/use-barcode-scan-session";
 import { ensureExpirationNotificationPermission } from "@/services/expiration-notifications";
 import { ANALYTICS_EVENTS, trackProductEvent } from "@/utils/sentry";
@@ -25,19 +18,11 @@ const FridgeScanScreen = () => {
 	const { language } = usePreferences();
 	const { addProducts } = useFridgeProducts();
 	const { showMessage } = useFeedbackMessage();
-	const {
-		drafts,
-		handleBarcodeScanned,
-		updateDraft,
-		removeDraft,
-		clearDrafts,
-	} = useBarcodeScanSession(language);
+	const { drafts, handleBarcodeScanned, updateDraft, removeDraft, clearDrafts } = useBarcodeScanSession(language);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const handleAddAll = async () => {
-		const ready = drafts.filter(
-			(draft) => !draft.isLoading && draft.name.trim().length > 0,
-		);
+		const ready = drafts.filter((draft) => !draft.isLoading && draft.name.trim().length > 0);
 		if (ready.length === 0 || isSubmitting) return;
 
 		setIsSubmitting(true);
@@ -61,10 +46,7 @@ const FridgeScanScreen = () => {
 				count: ready.length,
 			});
 			clearDrafts();
-			showMessage(
-				t("fridge.scan.toast.added", { count: ready.length }),
-				"success",
-			);
+			showMessage(t("fridge.scan.toast.added", { count: ready.length }), "success");
 			router.back();
 		} catch {
 			showMessage(t("fridge.scan.toast.addFailed"), "error");
@@ -76,11 +58,7 @@ const FridgeScanScreen = () => {
 	return (
 		<View style={[styles.container, { backgroundColor: "#000" }]}>
 			<View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
-				<Pressable
-					accessibilityRole="button"
-					onPress={() => router.back()}
-					style={styles.backButton}
-				>
+				<Pressable accessibilityRole="button" onPress={() => router.back()} style={styles.backButton}>
 					<Ionicons name="close" size={22} color="#FFFFFF" />
 				</Pressable>
 				<Text style={styles.title}>{t("fridge.scan.title")}</Text>

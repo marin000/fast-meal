@@ -3,13 +3,7 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-	ActivityIndicator,
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-} from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { PrimaryButton } from "@/components";
@@ -25,11 +19,7 @@ interface ReceiptCaptureViewProps {
 	onCaptureError: () => void;
 }
 
-export const ReceiptCaptureView = ({
-	onCaptured,
-	onBack,
-	onCaptureError,
-}: ReceiptCaptureViewProps) => {
+export const ReceiptCaptureView = ({ onCaptured, onBack, onCaptureError }: ReceiptCaptureViewProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 	const insets = useSafeAreaInsets();
@@ -74,8 +64,7 @@ export const ReceiptCaptureView = ({
 
 	const handleGallery = async () => {
 		if (isCapturing) return;
-		const libraryPermission =
-			await ImagePicker.requestMediaLibraryPermissionsAsync();
+		const libraryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 		if (!libraryPermission.granted) {
 			onCaptureError();
 			return;
@@ -108,9 +97,7 @@ export const ReceiptCaptureView = ({
 		return (
 			<View style={[styles.centered, { backgroundColor: theme.background }]}>
 				<Ionicons name="camera-outline" size={40} color={theme.iconMuted} />
-				<Text style={[styles.permissionTitle, { color: theme.text }]}>
-					{t("fridge.scanReceipt.permissionTitle")}
-				</Text>
+				<Text style={[styles.permissionTitle, { color: theme.text }]}>{t("fridge.scanReceipt.permissionTitle")}</Text>
 				<Text style={[styles.permissionBody, { color: theme.textMuted }]}>
 					{t("fridge.scanReceipt.permissionBody")}
 				</Text>
@@ -122,9 +109,7 @@ export const ReceiptCaptureView = ({
 					leftIconName="camera"
 				/>
 				<Pressable accessibilityRole="button" onPress={onBack}>
-					<Text style={[styles.backLink, { color: theme.textMuted }]}>
-						{t("fridge.scanReceipt.back")}
-					</Text>
+					<Text style={[styles.backLink, { color: theme.textMuted }]}>{t("fridge.scanReceipt.back")}</Text>
 				</Pressable>
 			</View>
 		);
@@ -132,11 +117,7 @@ export const ReceiptCaptureView = ({
 
 	return (
 		<View style={styles.container}>
-			<CameraView
-				ref={cameraRef}
-				style={StyleSheet.absoluteFill}
-				facing="back"
-			/>
+			<CameraView ref={cameraRef} style={StyleSheet.absoluteFill} facing="back" />
 
 			<View style={styles.overlay} pointerEvents="box-none">
 				<View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
@@ -163,17 +144,10 @@ export const ReceiptCaptureView = ({
 
 				<View style={styles.frameWrap} pointerEvents="none">
 					<View style={styles.frame} />
-					<Text style={styles.instruction}>
-						{t("fridge.scanReceipt.frameInstruction")}
-					</Text>
+					<Text style={styles.instruction}>{t("fridge.scanReceipt.frameInstruction")}</Text>
 				</View>
 
-				<View
-					style={[
-						styles.bottomBar,
-						{ paddingBottom: Math.max(insets.bottom, 16) },
-					]}
-				>
+				<View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 16) }]}>
 					<Pressable
 						accessibilityRole="button"
 						accessibilityLabel={t("fridge.scanReceipt.capture")}
@@ -183,11 +157,7 @@ export const ReceiptCaptureView = ({
 						}}
 						style={[styles.captureButton, { opacity: isCapturing ? 0.7 : 1 }]}
 					>
-						{isCapturing ? (
-							<ActivityIndicator color="#FFFFFF" />
-						) : (
-							<Ionicons name="camera" size={28} color="#FFFFFF" />
-						)}
+						{isCapturing ? <ActivityIndicator color="#FFFFFF" /> : <Ionicons name="camera" size={28} color="#FFFFFF" />}
 					</Pressable>
 				</View>
 			</View>

@@ -4,9 +4,7 @@ import { formatApiErrorBody } from "@/utils/api-error-text";
 
 const apiEndpoint = `${process.env.EXPO_PUBLIC_API_BASE_URL}/api/recipes`;
 
-export const fetchSavedRecipes = async (
-	deviceId: string,
-): Promise<SavedRecipeListItem[]> => {
+export const fetchSavedRecipes = async (deviceId: string): Promise<SavedRecipeListItem[]> => {
 	const params = new URLSearchParams({ deviceId });
 	const response = await fetch(`${apiEndpoint}?${params.toString()}`, {
 		method: "GET",
@@ -14,9 +12,7 @@ export const fetchSavedRecipes = async (
 
 	if (!response.ok) {
 		const text = await response.text();
-		throw new Error(
-			`Failed to load saved recipes (${response.status}): ${formatApiErrorBody(response.status, text)}`,
-		);
+		throw new Error(`Failed to load saved recipes (${response.status}): ${formatApiErrorBody(response.status, text)}`);
 	}
 
 	const data = (await response.json()) as {
@@ -42,9 +38,7 @@ export const saveRecipeToBackend = async (params: {
 
 	if (!response.ok) {
 		const text = await response.text();
-		throw new Error(
-			`Save recipe failed (${response.status}): ${formatApiErrorBody(response.status, text)}`,
-		);
+		throw new Error(`Save recipe failed (${response.status}): ${formatApiErrorBody(response.status, text)}`);
 	}
 
 	const data = (await response.json()) as { id?: string };
@@ -54,10 +48,7 @@ export const saveRecipeToBackend = async (params: {
 	return data.id;
 };
 
-export const deleteSavedRecipeOnBackend = async (
-	deviceId: string,
-	savedRecipeId: string,
-): Promise<void> => {
+export const deleteSavedRecipeOnBackend = async (deviceId: string, savedRecipeId: string): Promise<void> => {
 	const params = new URLSearchParams({ deviceId, id: savedRecipeId });
 	const response = await fetch(`${apiEndpoint}?${params.toString()}`, {
 		method: "DELETE",
@@ -65,8 +56,6 @@ export const deleteSavedRecipeOnBackend = async (
 
 	if (!response.ok) {
 		const text = await response.text();
-		throw new Error(
-			`Delete recipe failed (${response.status}): ${formatApiErrorBody(response.status, text)}`,
-		);
+		throw new Error(`Delete recipe failed (${response.status}): ${formatApiErrorBody(response.status, text)}`);
 	}
 };

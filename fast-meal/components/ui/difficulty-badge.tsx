@@ -8,10 +8,7 @@ interface DifficultyBadgeProps {
 	variant?: "soft" | "overlay";
 }
 
-export const DifficultyBadge = ({
-	difficulty,
-	variant = "soft",
-}: DifficultyBadgeProps) => {
+export const DifficultyBadge = ({ difficulty, variant = "soft" }: DifficultyBadgeProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 	const palette = theme.difficulty[difficulty];
@@ -19,9 +16,7 @@ export const DifficultyBadge = ({
 
 	return (
 		<View style={[styles.badge, { backgroundColor }]}>
-			<Text style={[styles.text, { color: palette.solid }]}>
-				{t(`recipe.difficulty.${difficulty}`)}
-			</Text>
+			<Text style={[styles.text, { color: palette.solid }]}>{t(`recipe.difficulty.${difficulty}`)}</Text>
 		</View>
 	);
 };

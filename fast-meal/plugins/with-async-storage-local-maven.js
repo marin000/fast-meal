@@ -1,7 +1,6 @@
 const { withProjectBuildGradle } = require("@expo/config-plugins");
 
-const LOCAL_REPO_MARKER =
-	"@react-native-async-storage/async-storage/android/local_repo";
+const LOCAL_REPO_MARKER = "@react-native-async-storage/async-storage/android/local_repo";
 
 /**
  * Async Storage v3 depends on `org.asyncstorage.shared_storage:storage-android`,
@@ -14,7 +13,7 @@ function withAsyncStorageLocalMavenRepository(config) {
 			return modConfig;
 		}
 
-		let contents = modConfig.modResults.contents;
+		const contents = modConfig.modResults.contents;
 		if (contents.includes(LOCAL_REPO_MARKER)) {
 			return modConfig;
 		}

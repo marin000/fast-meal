@@ -1,9 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import {
-	type BarcodeScanningResult,
-	CameraView,
-	useCameraPermissions,
-} from "expo-camera";
+import { type BarcodeScanningResult, CameraView, useCameraPermissions } from "expo-camera";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -19,10 +15,7 @@ interface BarcodeScannerViewProps {
 
 const SCAN_BUTTON_GREEN = "#2D8A4E";
 
-export const BarcodeScannerView = ({
-	onBarcodeScanned,
-	enabled = true,
-}: BarcodeScannerViewProps) => {
+export const BarcodeScannerView = ({ onBarcodeScanned, enabled = true }: BarcodeScannerViewProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 	const [permission, requestPermission] = useCameraPermissions();
@@ -65,12 +58,8 @@ export const BarcodeScannerView = ({
 		return (
 			<View style={[styles.centered, { backgroundColor: theme.background }]}>
 				<Ionicons name="camera-outline" size={40} color={theme.iconMuted} />
-				<Text style={[styles.permissionTitle, { color: theme.text }]}>
-					{t("fridge.scan.permissionTitle")}
-				</Text>
-				<Text style={[styles.permissionBody, { color: theme.textMuted }]}>
-					{t("fridge.scan.permissionBody")}
-				</Text>
+				<Text style={[styles.permissionTitle, { color: theme.text }]}>{t("fridge.scan.permissionTitle")}</Text>
+				<Text style={[styles.permissionBody, { color: theme.textMuted }]}>{t("fridge.scan.permissionBody")}</Text>
 				<PrimaryButton
 					label={t("fridge.scan.permissionCta")}
 					onPress={() => {
@@ -101,16 +90,9 @@ export const BarcodeScannerView = ({
 					<Pressable
 						accessibilityRole="button"
 						onPress={() => setTorchOn((prev) => !prev)}
-						style={[
-							styles.torchButton,
-							{ backgroundColor: "rgba(0,0,0,0.45)" },
-						]}
+						style={[styles.torchButton, { backgroundColor: "rgba(0,0,0,0.45)" }]}
 					>
-						<Ionicons
-							name={torchOn ? "flash" : "flash-outline"}
-							size={22}
-							color="#FFFFFF"
-						/>
+						<Ionicons name={torchOn ? "flash" : "flash-outline"} size={22} color="#FFFFFF" />
 					</Pressable>
 				</View>
 

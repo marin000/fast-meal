@@ -34,27 +34,16 @@ const SavedRecipesScreen = () => {
 	}
 
 	return (
-		<ScreenScrollView
-			backgroundColor={theme.background}
-			contentContainerStyle={styles.container}
-		>
+		<ScreenScrollView backgroundColor={theme.background} contentContainerStyle={styles.container}>
 			<View style={styles.header}>
-				<Text style={[styles.kicker, { color: theme.textMuted }]}>
-					{t("saved.kicker")}
-				</Text>
-				<Text style={[styles.title, { color: theme.text }]}>
-					{t("saved.title")}
-				</Text>
+				<Text style={[styles.kicker, { color: theme.textMuted }]}>{t("saved.kicker")}</Text>
+				<Text style={[styles.title, { color: theme.text }]}>{t("saved.title")}</Text>
 			</View>
 
 			{items.length === 0 ? (
 				<View style={styles.empty}>
-					<Text style={[styles.emptyTitle, { color: theme.text }]}>
-						{t("saved.emptyTitle")}
-					</Text>
-					<Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>
-						{t("saved.emptySubtitle")}
-					</Text>
+					<Text style={[styles.emptyTitle, { color: theme.text }]}>{t("saved.emptyTitle")}</Text>
+					<Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>{t("saved.emptySubtitle")}</Text>
 				</View>
 			) : (
 				<View style={styles.list}>

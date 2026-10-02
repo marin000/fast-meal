@@ -10,9 +10,7 @@ export class DailyLimitError extends Error {
 	}
 }
 
-export const fetchRemainingGenerations = async (
-	deviceId: string,
-): Promise<number> => {
+export const fetchRemainingGenerations = async (deviceId: string): Promise<number> => {
 	const response = await fetch(apiEndpoint, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -21,9 +19,7 @@ export const fetchRemainingGenerations = async (
 
 	if (!response.ok) {
 		const text = await response.text();
-		throw new Error(
-			`Failed to load device quota (${response.status}): ${formatApiErrorBody(response.status, text)}`,
-		);
+		throw new Error(`Failed to load device quota (${response.status}): ${formatApiErrorBody(response.status, text)}`);
 	}
 
 	const data = (await response.json()) as DeviceResponse;

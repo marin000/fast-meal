@@ -1,9 +1,5 @@
 import { DailyLimitError } from "@/api/device";
-import type {
-	GenerateRecipeInput,
-	GenerateRecipeRequestBody,
-	GenerateRecipeResponse,
-} from "@/interface";
+import type { GenerateRecipeInput, GenerateRecipeRequestBody, GenerateRecipeResponse } from "@/interface";
 import { formatApiErrorBody } from "@/utils/api-error-text";
 import { parseIngredientsInput } from "@/utils/helper";
 
@@ -16,10 +12,7 @@ export class GenerationTimeoutError extends Error {
 	}
 }
 
-const isGenerationTimeoutResponse = (
-	status: number,
-	errorText: string,
-): boolean => {
+const isGenerationTimeoutResponse = (status: number, errorText: string): boolean => {
 	if (status === 504) return true;
 
 	const lower = errorText.toLowerCase();
@@ -41,6 +34,7 @@ export const generateRecipe = async ({
 	selectedFilters,
 	units,
 	language,
+	excludedIngredients = [],
 	retryAttempt = 1,
 	image,
 }: GenerateRecipeInput): Promise<GenerateRecipeResponse> => {
@@ -50,6 +44,7 @@ export const generateRecipe = async ({
 		preferences: [...selectedFilters],
 		units,
 		language,
+		excludedIngredients: [...excludedIngredients],
 		retryAttempt,
 		...(image ? { image } : {}),
 	};
@@ -88,9 +83,7 @@ export const generateRecipe = async ({
 			}
 			throw new GenerationTimeoutError(message);
 		}
-		throw new Error(
-			`Recipe generation failed (${response.status}): ${formatApiErrorBody(response.status, errorText)}`,
-		);
+		throw new Error(`Recipe generation failed (${response.status}): ${formatApiErrorBody(response.status, errorText)}`);
 	}
 
 	const text = await response.text();
@@ -98,8 +91,6 @@ export const generateRecipe = async ({
 	try {
 		return JSON.parse(text) as GenerateRecipeResponse;
 	} catch {
-		throw new Error(
-			`Invalid JSON from server (first 200 chars): ${text.slice(0, 200)}`,
-		);
+		throw new Error(`Invalid JSON from server (first 200 chars): ${text.slice(0, 200)}`);
 	}
 };

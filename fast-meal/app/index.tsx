@@ -2,12 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
-import {
-	AppTextInput,
-	FridgeIcon,
-	PrimaryButton,
-	ScreenScrollView,
-} from "@/components";
+import { AppTextInput, FridgeIcon, PrimaryButton, ScreenScrollView } from "@/components";
 import { useFridgeProducts, useHomeIngredients } from "@/context";
 import { FridgePickerModal } from "@/features/fridge-products";
 import { FridgeImageUpload, HomeFilters, HomeHeader } from "@/features/home";
@@ -31,13 +26,7 @@ const HomeScreen = () => {
 		canSubmit,
 		submitForm,
 	} = useHomeForm();
-	const {
-		previewUri,
-		imageError,
-		isProcessing,
-		showPickerOptions,
-		removeImage,
-	} = useIngredientImage();
+	const { previewUri, imageError, isProcessing, showPickerOptions, removeImage } = useIngredientImage();
 
 	const handlePickerConfirm = (names: string[]) => {
 		appendIngredients(names);
@@ -68,11 +57,7 @@ const HomeScreen = () => {
 							</View>
 						) : undefined
 					}
-					placeholder={
-						previewUri
-							? t("home.ingredientsPlaceholderWithPhoto")
-							: t("home.ingredientsPlaceholder")
-					}
+					placeholder={previewUri ? t("home.ingredientsPlaceholderWithPhoto") : t("home.ingredientsPlaceholder")}
 					value={ingredientsInputValue}
 					onChangeText={setIngredientsInputValue}
 					footer={

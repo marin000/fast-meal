@@ -63,6 +63,7 @@ export async function POST(req: Request) {
 		deviceId,
 		ingredients,
 		preferences,
+		excludedIngredients,
 		units,
 		language,
 		retryAttempt,
@@ -88,6 +89,7 @@ export async function POST(req: Request) {
 	const cacheKey = generateRecipeService.buildCacheKey({
 		ingredients,
 		preferences,
+		excludedIngredients,
 		units,
 		language,
 		recipeCountMode,
@@ -143,6 +145,7 @@ export async function POST(req: Request) {
 	const prompt = buildMealGenerationPrompt({
 		ingredients,
 		preferences,
+		excludedIngredients,
 		units,
 		language,
 		recipeCountMode,
@@ -173,7 +176,10 @@ export async function POST(req: Request) {
 				{ status: 504 },
 			);
 		}
-		captureApiError(error, { feature: "generate_recipe", step: "openai_fetch" });
+		captureApiError(error, {
+			feature: "generate_recipe",
+			step: "openai_fetch",
+		});
 		throw error;
 	}
 

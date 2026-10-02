@@ -47,9 +47,7 @@ export const ReceiptResultsView = ({
 	const insets = useSafeAreaInsets();
 	const [editing, setEditing] = useState<ReceiptProductDraft | null>(null);
 
-	const selectedCount = drafts.filter(
-		(draft) => draft.isSelected && draft.name.trim().length > 0,
-	).length;
+	const selectedCount = drafts.filter((draft) => draft.isSelected && draft.name.trim().length > 0).length;
 	const canSubmit = selectedCount > 0 && !isSubmitting;
 
 	return (
@@ -64,29 +62,19 @@ export const ReceiptResultsView = ({
 			]}
 		>
 			<View style={styles.header}>
-				<Text style={[styles.title, { color: theme.text }]}>
-					{t("fridge.scanReceipt.resultsTitle")}
-				</Text>
+				<Text style={[styles.title, { color: theme.text }]}>{t("fridge.scanReceipt.resultsTitle")}</Text>
 				<Text style={[styles.subtitle, { color: theme.textMuted }]}>
 					{t("fridge.scanReceipt.resultsSubtitle", { count: drafts.length })}
 				</Text>
 				{partial ? (
-					<Text
-						style={[styles.partial, { color: theme.expiration.soon.solid }]}
-					>
+					<Text style={[styles.partial, { color: theme.expiration.soon.solid }]}>
 						{t("fridge.scanReceipt.partialWarning")}
 					</Text>
 				) : null}
-				<Text style={[styles.purchasedHint, { color: theme.textMuted }]}>
-					{t("fridge.scanReceipt.purchasedToday")}
-				</Text>
+				<Text style={[styles.purchasedHint, { color: theme.textMuted }]}>{t("fridge.scanReceipt.purchasedToday")}</Text>
 			</View>
 
-			<ScrollView
-				style={styles.list}
-				contentContainerStyle={styles.listContent}
-				showsVerticalScrollIndicator={false}
-			>
+			<ScrollView style={styles.list} contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
 				{drafts.map((draft) => (
 					<ReceiptProductRow
 						key={draft.localId}
@@ -105,15 +93,8 @@ export const ReceiptResultsView = ({
 					disabled={!canSubmit}
 					leftIconName="checkmark"
 				/>
-				<Pressable
-					accessibilityRole="button"
-					onPress={onBack}
-					disabled={isSubmitting}
-					style={styles.retakeButton}
-				>
-					<Text style={[styles.retakeLabel, { color: theme.textMuted }]}>
-						{t("fridge.scanReceipt.retake")}
-					</Text>
+				<Pressable accessibilityRole="button" onPress={onBack} disabled={isSubmitting} style={styles.retakeButton}>
+					<Text style={[styles.retakeLabel, { color: theme.textMuted }]}>{t("fridge.scanReceipt.retake")}</Text>
 				</Pressable>
 			</View>
 

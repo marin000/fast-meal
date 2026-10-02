@@ -12,12 +12,14 @@ import type { GenerateRecipeResponse } from "../interface";
 const buildCacheKey = ({
 	ingredients,
 	preferences,
+	excludedIngredients,
 	units,
 	language,
 	recipeCountMode,
 }: {
 	ingredients: string[];
 	preferences: string[];
+	excludedIngredients?: string[];
 	units: "metric" | "imperial";
 	language: "en" | "hr";
 	recipeCountMode: RecipeCountMode;
@@ -25,6 +27,7 @@ const buildCacheKey = ({
 	const normalizedPayload = {
 		ingredients: normalizeStringList(ingredients),
 		preferences: normalizeStringList(preferences),
+		excludedIngredients: normalizeStringList(excludedIngredients ?? []),
 		units,
 		language,
 		model: MODEL,

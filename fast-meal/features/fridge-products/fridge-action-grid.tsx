@@ -11,11 +11,7 @@ interface FridgeActionGridProps {
 	onScanReceipt: () => void;
 }
 
-export const FridgeActionGrid = ({
-	onAddProduct,
-	onScanProducts,
-	onScanReceipt,
-}: FridgeActionGridProps) => {
+export const FridgeActionGrid = ({ onAddProduct, onScanProducts, onScanReceipt }: FridgeActionGridProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 
@@ -24,11 +20,7 @@ export const FridgeActionGrid = ({
 			<Pressable
 				accessibilityRole="button"
 				onPress={onAddProduct}
-				style={[
-					styles.tile,
-					styles.primaryTile,
-					{ backgroundColor: theme.primary },
-				]}
+				style={[styles.tile, styles.primaryTile, { backgroundColor: theme.primary }]}
 			>
 				<Ionicons name="create-outline" size={20} color="#FFFFFF" />
 				<Text style={styles.primaryLabel}>{t("fridge.addProduct")}</Text>
@@ -47,9 +39,7 @@ export const FridgeActionGrid = ({
 				]}
 			>
 				<Ionicons name="scan-outline" size={20} color={theme.text} />
-				<Text style={[styles.outlinedLabel, { color: theme.text }]}>
-					{t("fridge.scan.scanProduct")}
-				</Text>
+				<Text style={[styles.outlinedLabel, { color: theme.text }]}>{t("fridge.scan.scanProduct")}</Text>
 			</Pressable>
 
 			<Pressable
@@ -65,9 +55,7 @@ export const FridgeActionGrid = ({
 				]}
 			>
 				<ReceiptIcon size={20} color={theme.text} />
-				<Text style={[styles.outlinedLabel, { color: theme.text }]}>
-					{t("fridge.scanReceipt.label")}
-				</Text>
+				<Text style={[styles.outlinedLabel, { color: theme.text }]}>{t("fridge.scanReceipt.label")}</Text>
 			</Pressable>
 		</View>
 	);

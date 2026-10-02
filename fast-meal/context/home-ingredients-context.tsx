@@ -1,11 +1,4 @@
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useMemo,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useMemo, useState } from "react";
 
 import { mergeIngredientNames } from "@/utils/helper";
 
@@ -15,14 +8,9 @@ interface HomeIngredientsContextValue {
 	appendIngredients: (names: string[]) => void;
 }
 
-const HomeIngredientsContext =
-	createContext<HomeIngredientsContextValue | null>(null);
+const HomeIngredientsContext = createContext<HomeIngredientsContextValue | null>(null);
 
-export const HomeIngredientsProvider = ({
-	children,
-}: {
-	children: ReactNode;
-}) => {
+export const HomeIngredientsProvider = ({ children }: { children: ReactNode }) => {
 	const [ingredients, setIngredients] = useState("");
 
 	const appendIngredients = useCallback((names: string[]) => {
@@ -38,19 +26,13 @@ export const HomeIngredientsProvider = ({
 		[ingredients, appendIngredients],
 	);
 
-	return (
-		<HomeIngredientsContext.Provider value={value}>
-			{children}
-		</HomeIngredientsContext.Provider>
-	);
+	return <HomeIngredientsContext.Provider value={value}>{children}</HomeIngredientsContext.Provider>;
 };
 
 export const useHomeIngredients = (): HomeIngredientsContextValue => {
 	const context = useContext(HomeIngredientsContext);
 	if (!context) {
-		throw new Error(
-			"useHomeIngredients must be used within HomeIngredientsProvider",
-		);
+		throw new Error("useHomeIngredients must be used within HomeIngredientsProvider");
 	}
 	return context;
 };

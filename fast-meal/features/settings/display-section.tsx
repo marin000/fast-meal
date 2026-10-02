@@ -12,8 +12,7 @@ import { SettingsRow } from "./settings-row";
 export const DisplaySection = () => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
-	const { darkMode, setDarkMode, language, setLanguage, units, setUnits } =
-		usePreferences();
+	const { darkMode, setDarkMode, language, setLanguage, units, setUnits } = usePreferences();
 
 	return (
 		<View
@@ -25,16 +24,11 @@ export const DisplaySection = () => {
 				},
 			]}
 		>
-			<Text style={[styles.sectionTitle, { color: theme.textMuted }]}>
-				{t("settings.sections.display")}
-			</Text>
+			<Text style={[styles.sectionTitle, { color: theme.textMuted }]}>{t("settings.sections.display")}</Text>
 			<SettingsRow label={t("settings.darkMode.label")}>
 				<ToggleSwitch value={darkMode} onValueChange={setDarkMode} />
 			</SettingsRow>
-			<SettingsRow
-				label={t("settings.language.label")}
-				description={t("settings.language.description")}
-			>
+			<SettingsRow label={t("settings.language.label")} description={t("settings.language.description")}>
 				<SegmentedControl
 					options={languageOptions}
 					selectedOption={language}
@@ -42,11 +36,7 @@ export const DisplaySection = () => {
 					getOptionLabel={(option) => t(`settings.language.options.${option}`)}
 				/>
 			</SettingsRow>
-			<SettingsRow
-				label={t("settings.units.label")}
-				description={t("settings.units.description")}
-				hideSeparator
-			>
+			<SettingsRow label={t("settings.units.label")} description={t("settings.units.description")} hideSeparator>
 				<SegmentedControl
 					options={unitsOptions}
 					selectedOption={units}

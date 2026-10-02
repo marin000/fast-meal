@@ -2,14 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-	ActivityIndicator,
-	Pressable,
-	StyleSheet,
-	Text,
-	TextInput,
-	View,
-} from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { DateField } from "@/components";
 import type { FridgeProductUnit } from "@/constants/fridge";
@@ -25,16 +18,10 @@ interface ScannedProductCardProps {
 	onRemove: () => void;
 }
 
-export const ScannedProductCard = ({
-	draft,
-	onChange,
-	onRemove,
-}: ScannedProductCardProps) => {
+export const ScannedProductCard = ({ draft, onChange, onRemove }: ScannedProductCardProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
-	const [quantityInput, setQuantityInput] = useState(
-		draft.quantity !== undefined ? String(draft.quantity) : "",
-	);
+	const [quantityInput, setQuantityInput] = useState(draft.quantity !== undefined ? String(draft.quantity) : "");
 
 	const parsedQuantity = parseQuantityInput(quantityInput);
 	const hasQuantityInput = quantityInput.trim().length > 0;
@@ -77,20 +64,10 @@ export const ScannedProductCard = ({
 		>
 			<View style={styles.header}>
 				{draft.imageThumbUrl ? (
-					<Image
-						source={{ uri: draft.imageThumbUrl }}
-						style={styles.thumb}
-						contentFit="contain"
-					/>
+					<Image source={{ uri: draft.imageThumbUrl }} style={styles.thumb} contentFit="contain" />
 				) : (
-					<View
-						style={[styles.thumbPlaceholder, { backgroundColor: theme.chipBg }]}
-					>
-						<Ionicons
-							name="barcode-outline"
-							size={20}
-							color={theme.iconMuted}
-						/>
+					<View style={[styles.thumbPlaceholder, { backgroundColor: theme.chipBg }]}>
+						<Ionicons name="barcode-outline" size={20} color={theme.iconMuted} />
 					</View>
 				)}
 
@@ -98,9 +75,7 @@ export const ScannedProductCard = ({
 					{draft.isLoading ? (
 						<View style={styles.loadingRow}>
 							<ActivityIndicator size="small" color={theme.primary} />
-							<Text style={[styles.loadingLabel, { color: theme.textMuted }]}>
-								{t("fridge.scan.lookingUp")}
-							</Text>
+							<Text style={[styles.loadingLabel, { color: theme.textMuted }]}>{t("fridge.scan.lookingUp")}</Text>
 						</View>
 					) : (
 						<>
@@ -118,29 +93,20 @@ export const ScannedProductCard = ({
 									styles.nameInput,
 									{
 										backgroundColor: theme.background,
-										borderColor: draft.needsName
-											? theme.danger
-											: theme.inputBorder,
+										borderColor: draft.needsName ? theme.danger : theme.inputBorder,
 										color: theme.text,
 									},
 								]}
 							/>
 							{draft.brandLabel ? (
-								<Text
-									style={[styles.brand, { color: theme.textMuted }]}
-									numberOfLines={1}
-								>
+								<Text style={[styles.brand, { color: theme.textMuted }]} numberOfLines={1}>
 									{draft.brandLabel}
 								</Text>
 							) : null}
 							{draft.lookupFailed ? (
-								<Text style={[styles.miss, { color: theme.warning }]}>
-									{t("fridge.scan.notFound")}
-								</Text>
+								<Text style={[styles.miss, { color: theme.warning }]}>{t("fridge.scan.notFound")}</Text>
 							) : null}
-							<Text style={[styles.code, { color: theme.textMuted }]}>
-								{draft.code}
-							</Text>
+							<Text style={[styles.code, { color: theme.textMuted }]}>{draft.code}</Text>
 						</>
 					)}
 				</View>

@@ -6,14 +6,6 @@ interface FridgeIconProps {
 	filled?: boolean;
 }
 
-export const FridgeIcon = ({
-	size = 24,
-	color,
-	filled = false,
-}: FridgeIconProps) => (
-	<MaterialCommunityIcons
-		name={filled ? "fridge" : "fridge-outline"}
-		size={size}
-		color={color}
-	/>
+export const FridgeIcon = ({ size = 24, color, filled = false }: FridgeIconProps) => (
+	<MaterialCommunityIcons name={filled ? "fridge" : "fridge-outline"} size={size} color={color} />
 );

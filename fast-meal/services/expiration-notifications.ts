@@ -7,10 +7,7 @@ import {
 	PERMISSION_ASKED_KEY,
 } from "@/constants/notifications";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
-import {
-	getExpirationNotificationTrigger,
-	getNotificationsModule,
-} from "@/utils/notifications";
+import { getExpirationNotificationTrigger, getNotificationsModule } from "@/utils/notifications";
 import i18n from "../  i18n";
 
 let handlerConfigured = false;
@@ -53,31 +50,29 @@ const hasNotificationPermission = async (): Promise<boolean> => {
 	return status === "granted";
 };
 
-export const requestExpirationNotificationPermission =
-	async (): Promise<boolean> => {
-		const Notifications = getNotificationsModule();
-		if (!Notifications) return false;
+export const requestExpirationNotificationPermission = async (): Promise<boolean> => {
+	const Notifications = getNotificationsModule();
+	if (!Notifications) return false;
 
-		configureNotificationHandler();
-		await configureAndroidChannel();
+	configureNotificationHandler();
+	await configureAndroidChannel();
 
-		const { status: existing } = await Notifications.getPermissionsAsync();
-		if (existing === "granted") return true;
+	const { status: existing } = await Notifications.getPermissionsAsync();
+	if (existing === "granted") return true;
 
-		const { status } = await Notifications.requestPermissionsAsync();
-		return status === "granted";
-	};
+	const { status } = await Notifications.requestPermissionsAsync();
+	return status === "granted";
+};
 
-export const ensureExpirationNotificationPermission =
-	async (): Promise<boolean> => {
-		if (!getNotificationsModule()) return false;
+export const ensureExpirationNotificationPermission = async (): Promise<boolean> => {
+	if (!getNotificationsModule()) return false;
 
-		const alreadyAsked = await AsyncStorage.getItem(PERMISSION_ASKED_KEY);
-		if (alreadyAsked) return hasNotificationPermission();
+	const alreadyAsked = await AsyncStorage.getItem(PERMISSION_ASKED_KEY);
+	if (alreadyAsked) return hasNotificationPermission();
 
-		await AsyncStorage.setItem(PERMISSION_ASKED_KEY, "true");
-		return requestExpirationNotificationPermission();
-	};
+	await AsyncStorage.setItem(PERMISSION_ASKED_KEY, "true");
+	return requestExpirationNotificationPermission();
+};
 
 const cancelFridgeExpirationNotifications = async (): Promise<void> => {
 	const Notifications = getNotificationsModule();
@@ -87,12 +82,8 @@ const cancelFridgeExpirationNotifications = async (): Promise<void> => {
 
 	await Promise.all(
 		scheduled
-			.filter((notification) =>
-				notification.identifier.startsWith(EXPIRATION_NOTIFICATION_ID_PREFIX),
-			)
-			.map((notification) =>
-				Notifications.cancelScheduledNotificationAsync(notification.identifier),
-			),
+			.filter((notification) => notification.identifier.startsWith(EXPIRATION_NOTIFICATION_ID_PREFIX))
+			.map((notification) => Notifications.cancelScheduledNotificationAsync(notification.identifier)),
 	);
 };
 
@@ -102,15 +93,11 @@ const buildNotificationContent = (productName: string) => {
 		title: i18n.t("notifications.expirationTitle"),
 		body: i18n.t("notifications.expirationBody", { name: productName }),
 		data: { screen: "fridge" },
-		...(Platform.OS === "android" && Notifications
-			? { channelId: ANDROID_CHANNEL_ID }
-			: {}),
+		...(Platform.OS === "android" && Notifications ? { channelId: ANDROID_CHANNEL_ID } : {}),
 	};
 };
 
-export const syncExpirationNotifications = async (
-	products: FridgeProductListItem[],
-): Promise<void> => {
+export const syncExpirationNotifications = async (products: FridgeProductListItem[]): Promise<void> => {
 	const Notifications = getNotificationsModule();
 	if (!Notifications) return;
 
@@ -124,9 +111,7 @@ export const syncExpirationNotifications = async (
 	for (const product of products) {
 		if (!product.expirationDate) continue;
 
-		const triggerDate = getExpirationNotificationTrigger(
-			product.expirationDate,
-		);
+		const triggerDate = getExpirationNotificationTrigger(product.expirationDate);
 		if (!triggerDate) continue;
 
 		await Notifications.scheduleNotificationAsync({

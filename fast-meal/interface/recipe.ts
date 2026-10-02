@@ -16,6 +16,7 @@ export interface GenerateRecipeInput {
 	selectedFilters: readonly QuickFilterOption[];
 	units: DisplayUnits;
 	language: AppLanguage;
+	excludedIngredients?: readonly string[];
 	retryAttempt?: number;
 	image?: RecipeImagePayload;
 }
@@ -26,6 +27,7 @@ export interface GenerateRecipeRequestBody {
 	preferences: QuickFilterOption[];
 	units: DisplayUnits;
 	language: AppLanguage;
+	excludedIngredients?: string[];
 	retryAttempt?: number;
 	image?: RecipeImagePayload;
 }

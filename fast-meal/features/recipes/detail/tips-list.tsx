@@ -19,12 +19,7 @@ export const RecipeTips = ({ items }: RecipeTipsProps) => {
 			<View style={styles.list}>
 				{items.map((tip) => (
 					<View key={tip} style={styles.row}>
-						<Ionicons
-							name="sparkles"
-							size={14}
-							color={theme.primary}
-							style={styles.icon}
-						/>
+						<Ionicons name="sparkles" size={14} color={theme.primary} style={styles.icon} />
 						<Text style={[styles.text, { color: theme.textMuted }]}>{tip}</Text>
 					</View>
 				))}

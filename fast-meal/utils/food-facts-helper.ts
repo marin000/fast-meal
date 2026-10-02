@@ -24,10 +24,7 @@ const stripNoise = (value: string, brands: string | undefined): string => {
 		for (const brand of brands.split(/[,;]/)) {
 			const token = brand.trim();
 			if (token.length < 2) continue;
-			const pattern = new RegExp(
-				`\\b${token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
-				"gi",
-			);
+			const pattern = new RegExp(`\\b${token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "gi");
 			result = result.replace(pattern, " ");
 		}
 	}
@@ -53,8 +50,7 @@ const pickLocalizedField = (
 ): string | undefined => {
 	const preferredKey = `${baseKey}_${language}`;
 	const preferred = product[preferredKey];
-	if (typeof preferred === "string" && preferred.trim())
-		return preferred.trim();
+	if (typeof preferred === "string" && preferred.trim()) return preferred.trim();
 
 	const enKey = `${baseKey}_en`;
 	const en = product[enKey];
@@ -66,11 +62,8 @@ const pickLocalizedField = (
 	return undefined;
 };
 
-export const resolveOffProductName = (
-	product: Record<string, unknown>,
-): { en?: string; hr?: string } => {
-	const brands =
-		typeof product.brands === "string" ? product.brands : undefined;
+export const resolveOffProductName = (product: Record<string, unknown>): { en?: string; hr?: string } => {
+	const brands = typeof product.brands === "string" ? product.brands : undefined;
 	const primaryBrand = brands
 		?.split(/[,;]/)
 		.map((part) => part.trim())
@@ -103,13 +96,9 @@ export const resolveOffProductName = (
 	};
 };
 
-export const resolveOffBrandLabel = (
-	product: Record<string, unknown>,
-	language: AppLanguage,
-): string | undefined => {
+export const resolveOffBrandLabel = (product: Record<string, unknown>, language: AppLanguage): string | undefined => {
 	const productName = pickLocalizedField(product, "product_name", language);
-	const brands =
-		typeof product.brands === "string" ? product.brands.trim() : undefined;
+	const brands = typeof product.brands === "string" ? product.brands.trim() : undefined;
 
 	if (productName && brands) {
 		return `${brands} — ${productName}`;
@@ -119,9 +108,7 @@ export const resolveOffBrandLabel = (
 
 export const asStringArray = (value: unknown): string[] | undefined => {
 	if (!Array.isArray(value)) return undefined;
-	const tags = value.filter(
-		(item): item is string => typeof item === "string" && item.length > 0,
-	);
+	const tags = value.filter((item): item is string => typeof item === "string" && item.length > 0);
 	return tags.length > 0 ? tags : undefined;
 };
 
@@ -136,13 +123,8 @@ export const asOptionalNumber = (value: unknown): number | undefined => {
 	return value;
 };
 
-export const pickLocalizedText = (
-	product: Record<string, unknown>,
-	baseKey: string,
-): BarcodeProductNames => {
-	const en =
-		asOptionalString(product[`${baseKey}_en`]) ??
-		asOptionalString(product[baseKey]);
+export const pickLocalizedText = (product: Record<string, unknown>, baseKey: string): BarcodeProductNames => {
+	const en = asOptionalString(product[`${baseKey}_en`]) ?? asOptionalString(product[baseKey]);
 	const hr = asOptionalString(product[`${baseKey}_hr`]);
 	return {
 		...(en ? { en } : {}),
@@ -150,16 +132,12 @@ export const pickLocalizedText = (
 	};
 };
 
-export const mapNutriments = (
-	raw: unknown,
-): BarcodeNutrimentValues | undefined => {
+export const mapNutriments = (raw: unknown): BarcodeNutrimentValues | undefined => {
 	if (typeof raw !== "object" || raw === null) return undefined;
 	const n = raw as Record<string, unknown>;
 
 	const values: BarcodeNutrimentValues = {
-		energyKcal100g:
-			asOptionalNumber(n["energy-kcal_100g"]) ??
-			asOptionalNumber(n.energy_kcal_100g),
+		energyKcal100g: asOptionalNumber(n["energy-kcal_100g"]) ?? asOptionalNumber(n.energy_kcal_100g),
 		proteins100g: asOptionalNumber(n.proteins_100g),
 		carbohydrates100g: asOptionalNumber(n.carbohydrates_100g),
 		sugars100g: asOptionalNumber(n.sugars_100g),
@@ -167,16 +145,13 @@ export const mapNutriments = (
 		saturatedFat100g: asOptionalNumber(n["saturated-fat_100g"]),
 		fiber100g: asOptionalNumber(n.fiber_100g) ?? asOptionalNumber(n.fibre_100g),
 		salt100g: asOptionalNumber(n.salt_100g),
-		energyKcalServing:
-			asOptionalNumber(n["energy-kcal_serving"]) ??
-			asOptionalNumber(n.energy_kcal_serving),
+		energyKcalServing: asOptionalNumber(n["energy-kcal_serving"]) ?? asOptionalNumber(n.energy_kcal_serving),
 		proteinsServing: asOptionalNumber(n.proteins_serving),
 		carbohydratesServing: asOptionalNumber(n.carbohydrates_serving),
 		sugarsServing: asOptionalNumber(n.sugars_serving),
 		fatServing: asOptionalNumber(n.fat_serving),
 		saturatedFatServing: asOptionalNumber(n["saturated-fat_serving"]),
-		fiberServing:
-			asOptionalNumber(n.fiber_serving) ?? asOptionalNumber(n.fibre_serving),
+		fiberServing: asOptionalNumber(n.fiber_serving) ?? asOptionalNumber(n.fibre_serving),
 		saltServing: asOptionalNumber(n.salt_serving),
 	};
 
@@ -200,18 +175,14 @@ export const mapEssentials = (
 		quantity: parsedQuantity?.quantity,
 		unit: parsedQuantity?.unit,
 		shelfLifeDays: resolveShelfLifeDays(categoriesTags),
-		imageThumbUrl:
-			asOptionalString(product.image_front_small_url) ??
-			asOptionalString(product.image_front_thumb_url),
+		imageThumbUrl: asOptionalString(product.image_front_small_url) ?? asOptionalString(product.image_front_thumb_url),
 		categoriesTags,
 		source: "off",
 		fetchedAt: new Date().toISOString(),
 	};
 };
 
-export const mapDetails = (
-	product: Record<string, unknown>,
-): BarcodeProductDetails => ({
+export const mapDetails = (product: Record<string, unknown>): BarcodeProductDetails => ({
 	servingSize: asOptionalString(product.serving_size),
 	nutriments: mapNutriments(product.nutriments),
 	ingredientsText: pickLocalizedText(product, "ingredients_text"),
@@ -220,15 +191,12 @@ export const mapDetails = (
 	nutriscoreGrade: asOptionalString(product.nutriscore_grade)?.toUpperCase(),
 	novaGroup: asOptionalNumber(product.nova_group),
 	ecoscoreGrade: asOptionalString(product.ecoscore_grade)?.toUpperCase(),
-	imageUrl:
-		asOptionalString(product.image_front_url) ??
-		asOptionalString(product.image_url),
+	imageUrl: asOptionalString(product.image_front_url) ?? asOptionalString(product.image_url),
 	detailsFetchedAt: new Date().toISOString(),
 });
 
 export const buildOffUserAgent = (): string => {
-	const version =
-		Constants.expoConfig?.version ?? Constants.nativeAppVersion ?? "1.0.0";
+	const version = Constants.expoConfig?.version ?? Constants.nativeAppVersion ?? "1.0.0";
 	return `${OPEN_FOOD_FACTS_USER_AGENT_APP}/${version} (${OPEN_FOOD_FACTS_CONTACT_EMAIL})`;
 };
 
@@ -283,8 +251,7 @@ export const toBarcodeReportPayload = (
 	},
 });
 
-export const formatAllergenTag = (tag: string): string =>
-	tag.replace(/^en:/, "").replace(/-/g, " ");
+export const formatAllergenTag = (tag: string): string => tag.replace(/^en:/, "").replace(/-/g, " ");
 
 export const isDetailsStale = (detailsFetchedAt?: string): boolean => {
 	if (!detailsFetchedAt) return true;
@@ -310,37 +277,23 @@ export const formatNutrient = (value: number | undefined): string => {
 
 export const isMissingScoreGrade = (grade: string): boolean => {
 	const normalized = grade.trim().toLowerCase();
-	return (
-		normalized === "unknown" ||
-		normalized === "not-applicable" ||
-		normalized === "n/a"
-	);
+	return normalized === "unknown" || normalized === "not-applicable" || normalized === "n/a";
 };
 
-export const formatScoreGrade = (
-	grade: string,
-	unknownLabel: string,
-): string => {
+export const formatScoreGrade = (grade: string, unknownLabel: string): string => {
 	if (isMissingScoreGrade(grade)) return unknownLabel;
 	return grade;
 };
 
-export const resolveParamCode = (
-	value: string | string[] | undefined,
-): string => {
+export const resolveParamCode = (value: string | string[] | undefined): string => {
 	const raw = Array.isArray(value) ? value[0] : value;
 	if (typeof raw !== "string" || raw.trim().length === 0) return "";
 	return normalizeGtin(decodeURIComponent(raw.trim()));
 };
 
-export const hasNutritionValue = (value: number | undefined): value is number =>
-	value !== undefined;
+export const hasNutritionValue = (value: number | undefined): value is number => value !== undefined;
 
-export const pickLocalizedName = (
-	names: BarcodeProductNames | undefined,
-	language: string,
-	fallback = "",
-): string => {
+export const pickLocalizedName = (names: BarcodeProductNames | undefined, language: string, fallback = ""): string => {
 	if (!names) return fallback;
 	if (language.startsWith("hr") && names.hr) return names.hr;
 	if (names.en) return names.en;

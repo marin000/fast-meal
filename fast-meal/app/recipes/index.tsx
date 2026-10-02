@@ -20,10 +20,7 @@ const RecipesListScreen = () => {
 	};
 
 	return (
-		<ScreenScrollView
-			backgroundColor={theme.background}
-			contentContainerStyle={styles.container}
-		>
+		<ScreenScrollView backgroundColor={theme.background} contentContainerStyle={styles.container}>
 			<RecipesHeader />
 
 			<View style={styles.cardsList}>

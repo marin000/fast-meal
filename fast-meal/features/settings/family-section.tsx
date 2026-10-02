@@ -1,13 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import {
-	ActivityIndicator,
-	Pressable,
-	StyleSheet,
-	Text,
-	TextInput,
-	View,
-} from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { PrimaryButton } from "@/components";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
@@ -40,9 +33,7 @@ export const FamilySection = () => {
 				},
 			]}
 		>
-			<Text style={[styles.sectionTitle, { color: theme.textMuted }]}>
-				{t("settings.sections.family")}
-			</Text>
+			<Text style={[styles.sectionTitle, { color: theme.textMuted }]}>{t("settings.sections.family")}</Text>
 
 			{isLoading ? (
 				<View style={styles.loadingRow}>
@@ -51,9 +42,7 @@ export const FamilySection = () => {
 			) : (
 				<>
 					<View style={styles.block}>
-						<Text style={[styles.label, { color: theme.text }]}>
-							{t("settings.family.inviteCodeLabel")}
-						</Text>
+						<Text style={[styles.label, { color: theme.text }]}>{t("settings.family.inviteCodeLabel")}</Text>
 						<Text style={[styles.description, { color: theme.textMuted }]}>
 							{t("settings.family.inviteCodeDescription")}
 						</Text>
@@ -66,9 +55,7 @@ export const FamilySection = () => {
 								},
 							]}
 						>
-							<Text style={[styles.code, { color: theme.text }]}>
-								{inviteCode ?? "—"}
-							</Text>
+							<Text style={[styles.code, { color: theme.text }]}>{inviteCode ?? "—"}</Text>
 							<Pressable
 								accessibilityRole="button"
 								onPress={() => void handleShareCode()}
@@ -94,9 +81,7 @@ export const FamilySection = () => {
 						</View>
 					) : (
 						<View style={styles.block}>
-							<Text style={[styles.label, { color: theme.text }]}>
-								{t("settings.family.joinLabel")}
-							</Text>
+							<Text style={[styles.label, { color: theme.text }]}>{t("settings.family.joinLabel")}</Text>
 							<Text style={[styles.description, { color: theme.textMuted }]}>
 								{t("settings.family.joinDescription")}
 							</Text>
