@@ -2,16 +2,18 @@
 	"expo": {
 		"name": "FastMeal",
 		"slug": "fast-meal",
-		"version": "1.5.1",
+		"version": "1.5.2",
 		"orientation": "portrait",
 		"icon": "./assets/images/icon.png",
 		"scheme": "fastmeal",
 		"userInterfaceStyle": "automatic",
 		"newArchEnabled": true,
 		"ios": {
-			"supportsTablet": true,
-			"buildNumber": "10",
+			"supportsTablet": false,
+			"buildNumber": "11",
+			"bundleIdentifier": "com.marin1997.fastmeal",
 			"infoPlist": {
+				"ITSAppUsesNonExemptEncryption": false,
 				"NSCameraUsageDescription": "FastMeal uses the camera so you can photograph ingredients, scan product barcodes, photograph grocery receipts, or photograph your fridge.",
 				"NSPhotoLibraryUsageDescription": "FastMeal accesses your photos so you can upload a picture of ingredients, your fridge, or a grocery receipt."
 			}
@@ -26,7 +28,13 @@
 			"edgeToEdgeEnabled": true,
 			"predictiveBackGestureEnabled": false,
 			"package": "com.marin1997.fastmeal",
-			"versionCode": 10
+			"versionCode": 11,
+			"permissions": [
+				"android.permission.RECORD_AUDIO",
+				"android.permission.CAMERA",
+				"android.permission.RECORD_AUDIO",
+				"android.permission.CAMERA"
+			]
 		},
 		"web": {
 			"output": "static",
@@ -99,6 +107,12 @@
 			"eas": {
 				"projectId": "d9553ee5-30e8-4b36-bdc1-d857e23e3ceb"
 			}
+		},
+		"runtimeVersion": {
+			"policy": "appVersion"
+		},
+		"updates": {
+			"url": "https://u.expo.dev/d9553ee5-30e8-4b36-bdc1-d857e23e3ceb"
 		}
 	}
 }

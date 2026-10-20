@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 
+import { usePreferences } from "@/context/preferences-context";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import { formatDisplayDate } from "@/utils/date";
 
@@ -15,6 +16,7 @@ interface DateFieldProps {
 export const DateField = ({ label, value, onChange }: DateFieldProps) => {
 	const { t, i18n } = useTranslation();
 	const theme = useAppAppearance();
+	const { darkMode } = usePreferences();
 	const [showPicker, setShowPicker] = useState(false);
 
 	const handlePickerChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
@@ -59,6 +61,8 @@ export const DateField = ({ label, value, onChange }: DateFieldProps) => {
 					value={value ?? new Date()}
 					mode="date"
 					display={Platform.OS === "ios" ? "spinner" : "default"}
+					themeVariant={darkMode ? "dark" : "light"}
+					textColor={theme.text}
 					onChange={handlePickerChange}
 				/>
 			) : null}

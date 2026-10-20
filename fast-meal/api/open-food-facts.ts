@@ -108,6 +108,7 @@ export const fetchOffEssentials = async (
 ): Promise<BarcodeProductEssentials | null> => {
 	const product = await fetchOffProduct(code, language, OPEN_FOOD_FACTS_ESSENTIALS_FIELDS);
 	if (!product) return null;
+	console.log("[barcode-scan] open-food-facts raw product", { code, product });
 	return mapEssentials(code, product, language);
 };
 

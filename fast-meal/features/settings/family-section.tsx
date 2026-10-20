@@ -33,7 +33,7 @@ export const FamilySection = () => {
 				},
 			]}
 		>
-			<Text style={[styles.sectionTitle, { color: theme.textMuted }]}>{t("settings.sections.family")}</Text>
+			<Text style={[styles.sectionTitle, { color: theme.heading }]}>{t("settings.sections.family")}</Text>
 
 			{isLoading ? (
 				<View style={styles.loadingRow}>

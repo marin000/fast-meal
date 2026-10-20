@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Keyboard, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useFeedbackMessage, useFridgeProducts, usePreferences } from "@/context";
@@ -20,6 +20,24 @@ const FridgeScanScreen = () => {
 	const { showMessage } = useFeedbackMessage();
 	const { drafts, handleBarcodeScanned, updateDraft, removeDraft, clearDrafts } = useBarcodeScanSession(language);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+	useEffect(() => {
+		const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+		const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+		const showSubscription = Keyboard.addListener(showEvent, () => {
+			setKeyboardVisible(true);
+		});
+		const hideSubscription = Keyboard.addListener(hideEvent, () => {
+			setKeyboardVisible(false);
+		});
+
+		return () => {
+			showSubscription.remove();
+			hideSubscription.remove();
+		};
+	}, []);
 
 	const handleAddAll = async () => {
 		const ready = drafts.filter((draft) => !draft.isLoading && draft.name.trim().length > 0);
@@ -55,6 +73,8 @@ const FridgeScanScreen = () => {
 		}
 	};
 
+	const scanEnabled = !isSubmitting && !keyboardVisible;
+
 	return (
 		<View style={[styles.container, { backgroundColor: "#000" }]}>
 			<View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
@@ -65,24 +85,37 @@ const FridgeScanScreen = () => {
 				<View style={styles.backButton} />
 			</View>
 
-			<View style={styles.cameraArea}>
-				<BarcodeScannerView
-					onBarcodeScanned={(code) => {
-						void handleBarcodeScanned(code);
+			<KeyboardAvoidingView
+				style={[styles.body, keyboardVisible ? styles.bodyEditing : null]}
+				behavior={Platform.OS === "ios" ? "padding" : undefined}
+			>
+				<View
+					style={[styles.cameraArea, keyboardVisible ? styles.cameraCollapsed : null]}
+					pointerEvents={keyboardVisible ? "none" : "auto"}
+					onStartShouldSetResponder={() => {
+						Keyboard.dismiss();
+						return false;
 					}}
-					enabled={!isSubmitting}
-				/>
-			</View>
+				>
+					<BarcodeScannerView
+						onBarcodeScanned={(code) => {
+							void handleBarcodeScanned(code);
+						}}
+						enabled={scanEnabled}
+					/>
+				</View>
 
-			<ScanReviewSheet
-				drafts={drafts}
-				isSubmitting={isSubmitting}
-				onChangeDraft={updateDraft}
-				onRemoveDraft={removeDraft}
-				onAddAll={() => {
-					void handleAddAll();
-				}}
-			/>
+				<ScanReviewSheet
+					drafts={drafts}
+					isSubmitting={isSubmitting}
+					pinnedTop={keyboardVisible}
+					onChangeDraft={updateDraft}
+					onRemoveDraft={removeDraft}
+					onAddAll={() => {
+						void handleAddAll();
+					}}
+				/>
+			</KeyboardAvoidingView>
 		</View>
 	);
 };
@@ -114,7 +147,20 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		fontWeight: "800",
 	},
+	body: {
+		flex: 1,
+		justifyContent: "flex-end",
+	},
+	bodyEditing: {
+		justifyContent: "flex-start",
+	},
 	cameraArea: {
 		flex: 1,
+	},
+	cameraCollapsed: {
+		flex: 0,
+		height: 0,
+		opacity: 0,
+		overflow: "hidden",
 	},
 });

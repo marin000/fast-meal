@@ -38,7 +38,7 @@ export const RecipeHero = ({ recipe, onBack, rightActions }: RecipeHeroProps) =>
 				<View style={[styles.accent, { backgroundColor: theme.primary }]} />
 
 				<View style={styles.titleContent}>
-					<Text style={[styles.title, { color: theme.text }]}>{recipe.title}</Text>
+					<Text style={[styles.title, { color: theme.heading }]}>{recipe.title}</Text>
 					<View style={styles.badgesRow}>
 						<View style={[styles.timeBadge, { backgroundColor: theme.surfaceOverlay }]}>
 							<Ionicons name="time-outline" size={12} color={theme.iconMuted} />

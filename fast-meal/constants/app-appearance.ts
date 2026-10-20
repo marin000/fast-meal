@@ -15,6 +15,7 @@ export interface AppAppearance {
 	card: string;
 	cardBorder: string;
 	text: string;
+	heading: string;
 	textMuted: string;
 	border: string;
 	primary: string;
@@ -58,6 +59,7 @@ export const lightAppearance: AppAppearance = {
 	card: "#FFFFFF",
 	cardBorder: "rgba(20, 26, 20, 0.08)",
 	text: "#141A14",
+	heading: "#141A14",
 	textMuted: "#6B7A6B",
 	border: "rgba(20, 26, 20, 0.1)",
 	primary: "#2D8A4E",
@@ -109,7 +111,8 @@ export const darkAppearance: AppAppearance = {
 	card: "#132116",
 	cardBorder: "rgba(232, 245, 233, 0.1)",
 	text: "#E8F5E9",
-	textMuted: "#7FA87F",
+	heading: "#4CAF72",
+	textMuted: "#8696A0",
 	border: "rgba(232, 245, 233, 0.1)",
 	primary: "#4CAF72",
 	surfaceOverlay: "rgba(232, 245, 233, 0.08)",
@@ -121,12 +124,12 @@ export const darkAppearance: AppAppearance = {
 	chipSelectedText: "#FFFFFF",
 	inputBg: "#132116",
 	inputBorder: "rgba(232, 245, 233, 0.12)",
-	inputPlaceholder: "#7FA87F",
+	inputPlaceholder: "#8696A0",
 	footerBg: "#132116",
 	footerBorder: "rgba(232, 245, 233, 0.1)",
-	footerTabActive: "#E8F5E9",
-	footerTabInactive: "#7FA87F",
-	iconMuted: "#7FA87F",
+	footerTabActive: "#4CAF72",
+	footerTabInactive: "#8696A0",
+	iconMuted: "#8696A0",
 	nutritionBarTrack: "rgba(232, 245, 233, 0.12)",
 	rowDivider: "rgba(232, 245, 233, 0.1)",
 	logoContainerBg: "#4CAF72",
@@ -135,7 +138,7 @@ export const darkAppearance: AppAppearance = {
 	segmentBorder: "rgba(232, 245, 233, 0.15)",
 	segmentInactiveBg: "#182418",
 	segmentActiveBg: "#4CAF72",
-	segmentInactiveText: "#7FA87F",
+	segmentInactiveText: "#8696A0",
 	segmentActiveText: "#FFFFFF",
 	toggleTrack: "#1C2E1E",
 	toggleTrackActive: "#4CAF72",

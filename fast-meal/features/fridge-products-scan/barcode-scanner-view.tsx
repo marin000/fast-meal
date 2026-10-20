@@ -58,7 +58,7 @@ export const BarcodeScannerView = ({ onBarcodeScanned, enabled = true }: Barcode
 		return (
 			<View style={[styles.centered, { backgroundColor: theme.background }]}>
 				<Ionicons name="camera-outline" size={40} color={theme.iconMuted} />
-				<Text style={[styles.permissionTitle, { color: theme.text }]}>{t("fridge.scan.permissionTitle")}</Text>
+				<Text style={[styles.permissionTitle, { color: theme.heading }]}>{t("fridge.scan.permissionTitle")}</Text>
 				<Text style={[styles.permissionBody, { color: theme.textMuted }]}>{t("fridge.scan.permissionBody")}</Text>
 				<PrimaryButton
 					label={t("fridge.scan.permissionCta")}

@@ -62,7 +62,7 @@ export const ReceiptResultsView = ({
 			]}
 		>
 			<View style={styles.header}>
-				<Text style={[styles.title, { color: theme.text }]}>{t("fridge.scanReceipt.resultsTitle")}</Text>
+				<Text style={[styles.title, { color: theme.heading }]}>{t("fridge.scanReceipt.resultsTitle")}</Text>
 				<Text style={[styles.subtitle, { color: theme.textMuted }]}>
 					{t("fridge.scanReceipt.resultsSubtitle", { count: drafts.length })}
 				</Text>

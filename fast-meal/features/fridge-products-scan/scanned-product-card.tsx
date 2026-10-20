@@ -1,11 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { DateField } from "@/components";
 import type { FridgeProductUnit } from "@/constants/fridge";
+import { getFridgeUnitsForPreference } from "@/constants/fridge";
+import { usePreferences } from "@/context";
 import { QuantityWithUnitField } from "@/features/fridge-products";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { ScannedDraft } from "@/interface/barcode-product";
@@ -21,7 +23,33 @@ interface ScannedProductCardProps {
 export const ScannedProductCard = ({ draft, onChange, onRemove }: ScannedProductCardProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
-	const [quantityInput, setQuantityInput] = useState(draft.quantity !== undefined ? String(draft.quantity) : "");
+	const { units: displayUnits } = usePreferences();
+	const unitOptions = getFridgeUnitsForPreference(displayUnits);
+	const [quantityInput, setQuantityInput] = useState("");
+	const clearedIncompatibleRef = useRef(false);
+	const onChangeRef = useRef(onChange);
+	onChangeRef.current = onChange;
+
+	useEffect(() => {
+		if (draft.isLoading) {
+			clearedIncompatibleRef.current = false;
+			setQuantityInput("");
+			return;
+		}
+
+		const unitIncompatible = Boolean(draft.unit && !unitOptions.includes(draft.unit));
+		if (unitIncompatible) {
+			if (!clearedIncompatibleRef.current) {
+				clearedIncompatibleRef.current = true;
+				setQuantityInput("");
+				onChangeRef.current({ quantity: undefined, unit: undefined });
+			}
+			return;
+		}
+
+		clearedIncompatibleRef.current = false;
+		setQuantityInput(draft.quantity !== undefined ? String(draft.quantity) : "");
+	}, [draft.isLoading, draft.quantity, draft.unit, unitOptions]);
 
 	const parsedQuantity = parseQuantityInput(quantityInput);
 	const hasQuantityInput = quantityInput.trim().length > 0;

@@ -24,7 +24,7 @@ export const GenerationErrorScreen = ({ kind, onRetry, isRetrying = false }: Gen
 			<View style={[styles.logoBackground, { backgroundColor: theme.logoContainerBg }]}>
 				<FridgeAiLogo size={32} />
 			</View>
-			<Text style={[styles.title, { color: theme.text }]}>{t(titleKey)}</Text>
+			<Text style={[styles.title, { color: theme.heading }]}>{t(titleKey)}</Text>
 			<Text style={[styles.subtitle, { color: theme.textMuted }]}>{t(messageKey)}</Text>
 			<View style={styles.actions}>
 				<PrimaryButton label={t("errors.retry")} onPress={onRetry} disabled={isRetrying} leftIconName="refresh" />

@@ -42,7 +42,7 @@ export const RecipeCard = ({ recipe, recipeIndex, onPress }: RecipeCardProps) =>
 			<View style={styles.body}>
 				<View style={styles.topRow}>
 					<View style={[styles.titleRow, styles.titleRowGrow]}>
-						<Text style={[styles.title, { color: theme.text }]} numberOfLines={2}>
+						<Text style={[styles.title, { color: theme.heading }]} numberOfLines={2}>
 							{recipe.title}
 						</Text>
 						<DifficultyBadge difficulty={recipe.difficulty} />
