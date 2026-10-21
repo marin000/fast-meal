@@ -55,7 +55,7 @@ export const FridgeAiLoading = ({ title, subtitle }: FridgeAiLoadingProps) => {
 					<FridgeAiLogo size={32} />
 				</View>
 			</View>
-			<Text style={[styles.title, { color: theme.text }]}>{title}</Text>
+			<Text style={[styles.title, { color: theme.heading }]}>{title}</Text>
 			{subtitle ? <Text style={[styles.subtitle, { color: theme.textMuted }]}>{subtitle}</Text> : null}
 		</View>
 	);

@@ -75,7 +75,7 @@ export const RecipeNutrition = ({ macros }: RecipeNutritionProps) => {
 				},
 			]}
 		>
-			<Text style={[styles.label, { color: theme.textMuted }]}>{t("recipe.nutrition")}</Text>
+			<Text style={[styles.label, { color: theme.heading }]}>{t("recipe.nutrition")}</Text>
 
 			<View style={styles.grid}>
 				{stats.map((stat) => (

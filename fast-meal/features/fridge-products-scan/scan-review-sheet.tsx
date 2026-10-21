@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Keyboard, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { PrimaryButton } from "@/components";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
@@ -10,6 +10,7 @@ import { ScannedProductCard } from "./scanned-product-card";
 interface ScanReviewSheetProps {
 	drafts: ScannedDraft[];
 	isSubmitting: boolean;
+	pinnedTop?: boolean;
 	onChangeDraft: (localId: string, patch: Partial<ScannedDraft>) => void;
 	onRemoveDraft: (localId: string) => void;
 	onAddAll: () => void;
@@ -18,6 +19,7 @@ interface ScanReviewSheetProps {
 export const ScanReviewSheet = ({
 	drafts,
 	isSubmitting,
+	pinnedTop = false,
 	onChangeDraft,
 	onRemoveDraft,
 	onAddAll,
@@ -30,19 +32,36 @@ export const ScanReviewSheet = ({
 
 	if (drafts.length === 0) {
 		return (
-			<View style={[styles.emptySheet, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-				<Text style={[styles.emptyTitle, { color: theme.text }]}>{t("fridge.scan.emptyTitle")}</Text>
-			</View>
+			<Pressable
+				onPress={Keyboard.dismiss}
+				style={[styles.emptySheet, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}
+			>
+				<Text style={[styles.emptyTitle, { color: theme.heading }]}>{t("fridge.scan.emptyTitle")}</Text>
+			</Pressable>
 		);
 	}
 
 	return (
-		<View style={[styles.sheet, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-			<Text style={[styles.title, { color: theme.text }]}>
-				{t("fridge.scan.reviewTitle", { count: drafts.length })}
-			</Text>
+		<View
+			style={[
+				styles.sheet,
+				pinnedTop ? styles.sheetPinnedTop : null,
+				{ backgroundColor: theme.card, borderColor: theme.cardBorder },
+			]}
+		>
+			<Pressable onPress={Keyboard.dismiss}>
+				<Text style={[styles.title, { color: theme.heading }]}>
+					{t("fridge.scan.reviewTitle", { count: drafts.length })}
+				</Text>
+			</Pressable>
 
-			<ScrollView style={styles.list} contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
+			<ScrollView
+				style={styles.list}
+				contentContainerStyle={styles.listContent}
+				keyboardShouldPersistTaps="handled"
+				keyboardDismissMode="on-drag"
+				showsVerticalScrollIndicator={false}
+			>
 				{drafts.map((draft) => (
 					<ScannedProductCard
 						key={draft.localId}
@@ -55,7 +74,10 @@ export const ScanReviewSheet = ({
 
 			<PrimaryButton
 				label={t("fridge.scan.addAll", { count: readyCount })}
-				onPress={onAddAll}
+				onPress={() => {
+					Keyboard.dismiss();
+					onAddAll();
+				}}
 				disabled={!canSubmit}
 				leftIconName="checkmark"
 			/>
@@ -73,6 +95,16 @@ const styles = StyleSheet.create({
 		paddingBottom: 16,
 		paddingHorizontal: 16,
 		paddingTop: 14,
+	},
+	sheetPinnedTop: {
+		borderBottomLeftRadius: 20,
+		borderBottomRightRadius: 20,
+		borderBottomWidth: 1,
+		borderTopLeftRadius: 0,
+		borderTopRightRadius: 0,
+		borderTopWidth: 0,
+		flexGrow: 1,
+		maxHeight: "100%",
 	},
 	emptySheet: {
 		alignItems: "center",
@@ -103,6 +135,7 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		flexGrow: 0,
+		flexShrink: 1,
 	},
 	listContent: {
 		gap: 10,

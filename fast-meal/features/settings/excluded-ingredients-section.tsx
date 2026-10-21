@@ -33,9 +33,7 @@ export const ExcludedIngredientsSection = () => {
 				},
 			]}
 		>
-			<Text style={[styles.sectionTitle, { color: theme.textMuted }]}>
-				{t("settings.sections.excludedIngredients")}
-			</Text>
+			<Text style={[styles.sectionTitle, { color: theme.heading }]}>{t("settings.sections.excludedIngredients")}</Text>
 			<Text style={[styles.description, { color: theme.textMuted }]}>
 				{t("settings.excludedIngredients.description")}
 			</Text>

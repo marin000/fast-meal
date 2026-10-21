@@ -66,10 +66,11 @@ export const AppModal = ({
 		<View
 			style={[
 				styles.sheet,
+				keyboardVisible ? styles.sheetKeyboardOpen : null,
 				{
 					backgroundColor: theme.card,
 					borderTopColor: theme.cardBorder,
-					paddingBottom: bottom + 16,
+					paddingBottom: keyboardVisible ? 12 : bottom + 16,
 				},
 			]}
 		>
@@ -78,7 +79,7 @@ export const AppModal = ({
 			{(title || description) && (
 				<View style={styles.header}>
 					<View style={styles.headerText}>
-						{title ? <Text style={[styles.title, { color: theme.text }]}>{title}</Text> : null}
+						{title ? <Text style={[styles.title, { color: theme.heading }]}>{title}</Text> : null}
 						{description ? <Text style={[styles.description, { color: theme.textMuted }]}>{description}</Text> : null}
 					</View>
 
@@ -114,7 +115,11 @@ export const AppModal = ({
 	return (
 		<Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
 			{avoidKeyboard ? (
-				<KeyboardAvoidingView style={styles.overlay} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+				<KeyboardAvoidingView
+					style={styles.overlay}
+					behavior={Platform.OS === "ios" ? "padding" : undefined}
+					keyboardVerticalOffset={0}
+				>
 					<Pressable
 						accessibilityRole="button"
 						accessibilityLabel="Close modal"
@@ -159,6 +164,9 @@ const styles = StyleSheet.create({
 		shadowOffset: { width: 0, height: -4 },
 		shadowOpacity: 0.12,
 		shadowRadius: 16,
+	},
+	sheetKeyboardOpen: {
+		maxHeight: "85%",
 	},
 	handle: {
 		alignSelf: "center",

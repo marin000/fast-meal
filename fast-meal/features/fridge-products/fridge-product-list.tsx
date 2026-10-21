@@ -31,7 +31,7 @@ export const FridgeProductList = ({ items, onRemove, onPressProduct }: FridgePro
 				<View style={[styles.emptyIcon, { backgroundColor: theme.chipBg }]}>
 					<FridgeIcon size={28} color={theme.iconMuted} />
 				</View>
-				<Text style={[styles.emptyTitle, { color: theme.text }]}>{t("fridge.emptyTitle")}</Text>
+				<Text style={[styles.emptyTitle, { color: theme.heading }]}>{t("fridge.emptyTitle")}</Text>
 				<Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>{t("fridge.emptySubtitle")}</Text>
 			</View>
 		);

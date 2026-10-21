@@ -13,7 +13,7 @@ export const RecipeSection = ({ label, children }: RecipeSectionProps) => {
 
 	return (
 		<View style={styles.section}>
-			<Text style={[styles.label, { color: theme.textMuted }]}>{label}</Text>
+			<Text style={[styles.label, { color: theme.heading }]}>{label}</Text>
 			{children}
 		</View>
 	);

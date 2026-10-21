@@ -26,8 +26,8 @@ export const FridgeScreenHeader = ({
 		<View style={styles.header}>
 			<View style={styles.topRow}>
 				<View style={styles.textBlock}>
-					<Text style={[styles.kicker, { color: theme.textMuted }]}>{t("fridge.kicker")}</Text>
-					<Text style={[styles.title, { color: theme.text }]}>{t("fridge.title")}</Text>
+					<Text style={[styles.kicker, { color: theme.heading }]}>{t("fridge.kicker")}</Text>
+					<Text style={[styles.title, { color: theme.heading }]}>{t("fridge.title")}</Text>
 				</View>
 
 				{recipesAction ? <View style={styles.recipesAction}>{recipesAction}</View> : null}

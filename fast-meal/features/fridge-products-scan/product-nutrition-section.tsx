@@ -26,8 +26,8 @@ export const ProductNutritionSection = ({ nutriments, servingSize }: ProductNutr
 	return (
 		<View style={styles.wrap}>
 			<View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-				<Text style={[styles.label, { color: theme.textMuted }]}>{t("recipe.nutrition")}</Text>
-				<Text style={[styles.sectionTitle, { color: theme.text }]}>{t("fridge.details.per100g")}</Text>
+				<Text style={[styles.label, { color: theme.heading }]}>{t("recipe.nutrition")}</Text>
+				<Text style={[styles.sectionTitle, { color: theme.heading }]}>{t("fridge.details.per100g")}</Text>
 
 				<ProductNutritionMacroGrid nutriments={nutriments} scope="per100" />
 				<ProductNutritionMacroBars nutriments={nutriments} scope="per100" />
@@ -35,8 +35,8 @@ export const ProductNutritionSection = ({ nutriments, servingSize }: ProductNutr
 
 			{showServingCard ? (
 				<View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-					<Text style={[styles.label, { color: theme.textMuted }]}>{t("recipe.nutrition")}</Text>
-					<Text style={[styles.sectionTitle, { color: theme.text }]}>
+					<Text style={[styles.label, { color: theme.heading }]}>{t("recipe.nutrition")}</Text>
+					<Text style={[styles.sectionTitle, { color: theme.heading }]}>
 						{servingSize
 							? t("fridge.details.perServingWithSize", { size: servingSize })
 							: t("fridge.details.perServing")}

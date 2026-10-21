@@ -36,7 +36,7 @@ export const SavedRecipeCard = ({ recipe, onOpen, onDelete }: SavedRecipeCardPro
 			<View style={[styles.accent, { backgroundColor: theme.primary }]} />
 
 			<View style={styles.middle}>
-				<Text style={[styles.title, { color: theme.text }]} numberOfLines={2}>
+				<Text style={[styles.title, { color: theme.heading }]} numberOfLines={2}>
 					{recipe.title}
 				</Text>
 				<View style={styles.macrosRow}>
