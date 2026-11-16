@@ -1,4 +1,11 @@
-import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import {
+	createContext,
+	type ReactNode,
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 import {
 	createFridgeProduct,
 	createFridgeProductsBatch,
@@ -10,6 +17,7 @@ import { useDeviceId } from "@/context/device-id-context";
 import { useRefetchOnForeground } from "@/hooks/use-refetch-on-foreground";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
 import { syncExpirationNotifications } from "@/services/expiration-notifications";
+import { sortFridgeProductsByExpiration } from "@/utils/sort-fridge-products";
 
 interface AddFridgeProductInput {
 	name: string;
@@ -29,9 +37,15 @@ interface FridgeProductsContextValue {
 	removeById: (id: string) => Promise<void>;
 }
 
-const FridgeProductsContext = createContext<FridgeProductsContextValue | undefined>(undefined);
+const FridgeProductsContext = createContext<
+	FridgeProductsContextValue | undefined
+>(undefined);
 
-export const FridgeProductsProvider = ({ children }: { children: ReactNode }) => {
+export const FridgeProductsProvider = ({
+	children,
+}: {
+	children: ReactNode;
+}) => {
 	const { deviceId } = useDeviceId();
 	const [items, setItems] = useState<FridgeProductListItem[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -76,7 +90,10 @@ export const FridgeProductsProvider = ({ children }: { children: ReactNode }) =>
 			});
 			setItems((prev) => {
 				const withoutCreated = prev.filter((item) => item.id !== created.id);
-				const next = [created, ...withoutCreated];
+				const next = sortFridgeProductsByExpiration([
+					created,
+					...withoutCreated,
+				]);
 				void syncExpirationNotifications(next);
 				return next;
 			});
@@ -103,7 +120,10 @@ export const FridgeProductsProvider = ({ children }: { children: ReactNode }) =>
 			setItems((prev) => {
 				const createdIds = new Set(created.map((item) => item.id));
 				const withoutCreated = prev.filter((item) => !createdIds.has(item.id));
-				const next = [...created, ...withoutCreated];
+				const next = sortFridgeProductsByExpiration([
+					...created,
+					...withoutCreated,
+				]);
 				void syncExpirationNotifications(next);
 				return next;
 			});
@@ -143,7 +163,9 @@ export const FridgeProductsProvider = ({ children }: { children: ReactNode }) =>
 export const useFridgeProducts = (): FridgeProductsContextValue => {
 	const ctx = useContext(FridgeProductsContext);
 	if (ctx === undefined) {
-		throw new Error("useFridgeProducts must be used within FridgeProductsProvider");
+		throw new Error(
+			"useFridgeProducts must be used within FridgeProductsProvider",
+		);
 	}
 	return ctx;
 };

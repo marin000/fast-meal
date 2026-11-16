@@ -6,6 +6,7 @@ import { connectMongo } from "@/app/service/mongodb";
 import {
 	captureApiError,
 	parseFridgeProductBody,
+	sortFridgeProductDocsByExpiration,
 	toFridgeProductListItem,
 } from "@/app/utils";
 import {
@@ -41,8 +42,15 @@ export async function POST(req: Request): Promise<Response> {
 		);
 	}
 
-	const { deviceId, name, quantity, unit, expirationDate, purchasedAt, barcode } =
-		parsed;
+	const {
+		deviceId,
+		name,
+		quantity,
+		unit,
+		expirationDate,
+		purchasedAt,
+		barcode,
+	} = parsed;
 
 	await deviceService.ensureDeviceRecord(deviceId);
 	const householdId = await householdService.resolveHouseholdId(deviceId);
@@ -85,9 +93,9 @@ export async function GET(req: Request): Promise<Response> {
 
 	const householdId = await householdService.resolveHouseholdId(deviceId);
 
-	const docs = await FridgeProduct.find({ householdId })
-		.sort({ createdAt: -1 })
-		.lean();
+	const docs = sortFridgeProductDocsByExpiration(
+		await FridgeProduct.find({ householdId }).lean(),
+	);
 
 	const fridgeProducts: FridgeProductListItem[] = docs.map(
 		toFridgeProductListItem,
