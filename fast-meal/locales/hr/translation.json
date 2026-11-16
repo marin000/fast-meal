@@ -80,6 +80,11 @@
 		},
 		"cta": {
 			"seeRecipe": "Pogledaj recept"
+		},
+		"nutritionCitation": {
+			"disclaimer": "Nutritivne vrijednosti su AI procjene temeljene na tipičnim podacima USDA FoodData Central. Približne su i nisu medicinski savjet.",
+			"compactDisclaimer": "AI procjene nutritivnih vrijednosti · nije medicinski savjet.",
+			"sourceLink": "Izvor: USDA FoodData Central"
 		}
 	},
 	"errors": {
@@ -265,6 +270,10 @@
 			"per100g": "Na 100 g",
 			"perServing": "Po porciji",
 			"perServingWithSize": "Po porciji - {{size}}",
+			"nutritionCitation": {
+				"disclaimer": "Nutritivni podaci proizvoda dolaze s Open Food Facts. Vrijednosti mogu biti nepotpune ili približne i nisu medicinski savjet.",
+				"sourceLink": "Izvor: Open Food Facts"
+			},
 			"nutrientDetails": "Detalji",
 			"servingSize": "Porcija: {{size}}",
 			"ingredients": "Sastojci",

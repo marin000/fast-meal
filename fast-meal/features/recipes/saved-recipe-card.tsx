@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { NutritionSourceCitation } from "@/components";
 import { usePreferences } from "@/context";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { Recipe } from "@/interface";
@@ -13,7 +14,11 @@ interface SavedRecipeCardProps {
 	onDelete: () => void;
 }
 
-export const SavedRecipeCard = ({ recipe, onOpen, onDelete }: SavedRecipeCardProps) => {
+export const SavedRecipeCard = ({
+	recipe,
+	onOpen,
+	onDelete,
+}: SavedRecipeCardProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 	const { units } = usePreferences();
@@ -36,7 +41,10 @@ export const SavedRecipeCard = ({ recipe, onOpen, onDelete }: SavedRecipeCardPro
 			<View style={[styles.accent, { backgroundColor: theme.primary }]} />
 
 			<View style={styles.middle}>
-				<Text style={[styles.title, { color: theme.heading }]} numberOfLines={2}>
+				<Text
+					style={[styles.title, { color: theme.heading }]}
+					numberOfLines={2}
+				>
 					{recipe.title}
 				</Text>
 				<View style={styles.macrosRow}>
@@ -47,9 +55,14 @@ export const SavedRecipeCard = ({ recipe, onOpen, onDelete }: SavedRecipeCardPro
 						</Text>
 					</View>
 					<View style={styles.macroItem}>
-						<Ionicons name="nutrition-outline" size={12} color={theme.iconMuted} />
+						<Ionicons
+							name="nutrition-outline"
+							size={12}
+							color={theme.iconMuted}
+						/>
 						<Text style={[styles.macroText, { color: theme.iconMuted }]}>
-							{t("recipe.labels.protein")} {macroMassFromGrams(recipe.macros.protein, imperial)}
+							{t("recipe.labels.protein")}{" "}
+							{macroMassFromGrams(recipe.macros.protein, imperial)}
 							{massUnit}
 						</Text>
 					</View>
@@ -68,13 +81,17 @@ export const SavedRecipeCard = ({ recipe, onOpen, onDelete }: SavedRecipeCardPro
 						</Text>
 					</View>
 				</View>
+				<NutritionSourceCitation kind="recipe" compact />
 			</View>
 
 			<View style={styles.actions}>
 				<Pressable
 					accessibilityRole="button"
 					onPress={onOpen}
-					style={[styles.iconButton, { backgroundColor: theme.substitutionBoxBg }]}
+					style={[
+						styles.iconButton,
+						{ backgroundColor: theme.substitutionBoxBg },
+					]}
 				>
 					<Ionicons name="arrow-forward" size={16} color={theme.primary} />
 				</Pressable>

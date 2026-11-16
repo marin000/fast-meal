@@ -1,6 +1,6 @@
 # Privacy Policy — FastMeal
 
-**Last updated:** October 11, 2026  
+**Last updated:** November 16, 2026  
 **Effective date:** July 10, 2026
 
 ## 1. Who we are
@@ -22,7 +22,7 @@ This Privacy Policy describes how we collect, use, store, and share information 
 
 - We do **not** require you to create an account or provide your name, email address, or phone number to use the App.
 - We assign your device a **random identifier** so we can sync saved recipes and fridge items and enforce daily recipe generation limits.
-- When you generate recipes, we send your **ingredient list and preferences**, and — if you choose — an optional **photo of ingredients or your fridge**, to our servers and to **OpenAI** to produce AI-generated recipe suggestions.
+- When you generate recipes, we send your **ingredient list and preferences**, and — if you choose — an optional **photo of ingredients or your fridge**, to our servers and to **OpenAI** to produce AI-generated recipe suggestions, including **approximate nutrition estimates** (calories and macros). Those estimates are not medical advice; in the App we cite **USDA FoodData Central** as the reference food-composition source for typical values.
 - If you use **barcode scanning**, the App uses the camera on your device to read product barcodes. We send the **decoded barcode** (not camera frames or scan photos) to look up product information, including via **Open Food Facts**, and you can add matching products to your fridge.
 - If you use **receipt scanning**, you can photograph a grocery receipt (or choose a photo from your library). We send that **receipt photo** to our servers and to **OpenAI** to identify food products and quantities so you can review and add them to your fridge. Receipt photos are used only for that processing and are **not** retained on our servers after the request completes.
 - Your **shopping list** is synced to our servers so it can be shared when you join a **family household** with an invite code. Solo users have a private household with only their device.
@@ -79,7 +79,8 @@ We do **not** access your location, microphone, contacts, SMS, or call logs.
 
 We use the information described above to:
 
-- Generate and display recipe suggestions (including from text ingredients and optional photos you provide)
+- Generate and display recipe suggestions (including from text ingredients and optional photos you provide), with approximate nutrition estimates that are AI-generated and cited in the App against USDA FoodData Central (not medical advice)
+- Show product nutrition for barcode scans from **Open Food Facts**, with a citation link in the App
 - Save and sync recipes and fridge products associated with your device
 - Look up scanned barcodes against product databases (including Open Food Facts), show product details, and let you add products to your fridge
 - Extract food products and quantities from grocery receipt photos you submit, so you can review and add them to your fridge
@@ -121,8 +122,9 @@ We share data only as necessary to operate the App:
 
 | Recipient | Purpose | Data shared |
 |-----------|---------|-------------|
-| **OpenAI** | AI-powered recipe generation and receipt product extraction | Ingredient lists, optional ingredient/fridge photos, optional grocery receipt photos you submit, dietary preferences, language, and measurement units |
-| **Open Food Facts** | Public product database lookup for barcode scanning | Decoded product barcodes (and related API request metadata processed by Open Food Facts). Camera frames and scan photos are **not** shared |
+| **OpenAI** | AI-powered recipe generation (including approximate nutrition estimates) and receipt product extraction | Ingredient lists, optional ingredient/fridge photos, optional grocery receipt photos you submit, dietary preferences, language, and measurement units |
+| **Open Food Facts** | Public product database lookup for barcode scanning and product nutrition display | Decoded product barcodes (and related API request metadata processed by Open Food Facts). Camera frames and scan photos are **not** shared |
+| **USDA FoodData Central** | Reference food-composition source cited in the App for recipe nutrition estimates | We do **not** send your personal data to USDA. The App links to the public USDA FoodData Central website so you can review the reference source. Recipe macros are AI estimates guided by typical USDA-style values, not a live USDA API lookup of your ingredients |
 | **MongoDB** (database provider) | Persistent storage | Device identifier, fridge products (including optional barcodes), cached barcode product data, saved recipes, shopping list items, usage counts, and cached recipe data (text-based recipe cache; we do not persist submitted photos as a photo library) |
 | **Vercel** | API hosting, caching, and infrastructure | Request data processed when you use the App (including image data in transit when you submit a photo for generation or receipt scanning, and barcode lookup requests) |
 | **Sentry** | Crash reporting and reliability monitoring | Error diagnostics (stack traces, app/API version, device/OS metadata) and limited non-content product events; not ingredient lists, photos, prompts, or camera frames |
@@ -135,6 +137,7 @@ Third-party privacy policies:
 
 - OpenAI: [https://openai.com/policies/privacy-policy](https://openai.com/policies/privacy-policy)
 - Open Food Facts: [https://world.openfoodfacts.org/privacy](https://world.openfoodfacts.org/privacy)
+- USDA FoodData Central: [https://fdc.nal.usda.gov/](https://fdc.nal.usda.gov/)
 - Vercel: [https://vercel.com/legal/privacy-policy](https://vercel.com/legal/privacy-policy)
 - MongoDB: [https://www.mongodb.com/legal/privacy/privacy-policy](https://www.mongodb.com/legal/privacy/privacy-policy)
 - Sentry: [https://sentry.io/privacy/](https://sentry.io/privacy/)

@@ -80,6 +80,11 @@
 		},
 		"cta": {
 			"seeRecipe": "See Recipe"
+		},
+		"nutritionCitation": {
+			"disclaimer": "Nutrition values are AI estimates based on typical USDA FoodData Central food composition data. They are approximate and not medical advice.",
+			"compactDisclaimer": "AI nutrition estimates · not medical advice.",
+			"sourceLink": "Source: USDA FoodData Central"
 		}
 	},
 	"errors": {
@@ -265,6 +270,10 @@
 			"per100g": "Per 100g",
 			"perServing": "Per serving",
 			"perServingWithSize": "Per serving ({{size}})",
+			"nutritionCitation": {
+				"disclaimer": "Product nutrition data from Open Food Facts. Values may be incomplete or approximate and are not medical advice.",
+				"sourceLink": "Source: Open Food Facts"
+			},
 			"nutrientDetails": "Details",
 			"servingSize": "Serving: {{size}}",
 			"ingredients": "Ingredients",
