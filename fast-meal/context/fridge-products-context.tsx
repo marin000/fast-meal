@@ -4,12 +4,14 @@ import {
 	createFridgeProductsBatch,
 	deleteFridgeProduct,
 	fetchFridgeProducts,
+	updateFridgeProduct,
 } from "@/api/fridge-products";
 import type { FridgeProductUnit } from "@/constants/fridge";
 import { useDeviceId } from "@/context/device-id-context";
 import { useRefetchOnForeground } from "@/hooks/use-refetch-on-foreground";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
 import { syncExpirationNotifications } from "@/services/expiration-notifications";
+import { sortFridgeProductsByExpiration } from "@/utils/sort-fridge-products";
 
 interface AddFridgeProductInput {
 	name: string;
@@ -20,12 +22,22 @@ interface AddFridgeProductInput {
 	barcode?: string;
 }
 
+interface UpdateFridgeProductInput {
+	id: string;
+	name: string;
+	quantity?: number;
+	unit?: FridgeProductUnit;
+	expirationDate?: string;
+	purchasedAt?: string;
+}
+
 interface FridgeProductsContextValue {
 	items: FridgeProductListItem[];
 	isLoading: boolean;
 	reload: () => Promise<void>;
 	addProduct: (input: AddFridgeProductInput) => Promise<void>;
 	addProducts: (inputs: AddFridgeProductInput[]) => Promise<void>;
+	updateProduct: (input: UpdateFridgeProductInput) => Promise<void>;
 	removeById: (id: string) => Promise<void>;
 }
 
@@ -76,7 +88,7 @@ export const FridgeProductsProvider = ({ children }: { children: ReactNode }) =>
 			});
 			setItems((prev) => {
 				const withoutCreated = prev.filter((item) => item.id !== created.id);
-				const next = [created, ...withoutCreated];
+				const next = sortFridgeProductsByExpiration([created, ...withoutCreated]);
 				void syncExpirationNotifications(next);
 				return next;
 			});
@@ -103,7 +115,29 @@ export const FridgeProductsProvider = ({ children }: { children: ReactNode }) =>
 			setItems((prev) => {
 				const createdIds = new Set(created.map((item) => item.id));
 				const withoutCreated = prev.filter((item) => !createdIds.has(item.id));
-				const next = [...created, ...withoutCreated];
+				const next = sortFridgeProductsByExpiration([...created, ...withoutCreated]);
+				void syncExpirationNotifications(next);
+				return next;
+			});
+		},
+		[deviceId],
+	);
+
+	const updateProduct = useCallback(
+		async (input: UpdateFridgeProductInput) => {
+			if (!deviceId) return;
+			const updated = await updateFridgeProduct({
+				deviceId,
+				id: input.id,
+				name: input.name,
+				quantity: input.quantity,
+				unit: input.unit,
+				expirationDate: input.expirationDate,
+				purchasedAt: input.purchasedAt,
+			});
+			setItems((prev) => {
+				const withoutUpdated = prev.filter((item) => item.id !== updated.id);
+				const next = sortFridgeProductsByExpiration([updated, ...withoutUpdated]);
 				void syncExpirationNotifications(next);
 				return next;
 			});
@@ -132,6 +166,7 @@ export const FridgeProductsProvider = ({ children }: { children: ReactNode }) =>
 				reload,
 				addProduct,
 				addProducts,
+				updateProduct,
 				removeById,
 			}}
 		>

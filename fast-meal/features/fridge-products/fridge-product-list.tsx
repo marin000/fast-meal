@@ -9,17 +9,13 @@ import { FridgeProductRow } from "./fridge-product-row";
 interface FridgeProductListProps {
 	items: FridgeProductListItem[];
 	onRemove: (id: string) => void;
-	onPressProduct?: (item: FridgeProductListItem) => void;
+	onEdit: (item: FridgeProductListItem) => void;
+	onOpenDetails?: (item: FridgeProductListItem) => void;
 }
 
-export const FridgeProductList = ({ items, onRemove, onPressProduct }: FridgeProductListProps) => {
+export const FridgeProductList = ({ items, onRemove, onEdit, onOpenDetails }: FridgeProductListProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
-
-	const handlePressProduct = (item: FridgeProductListItem) => {
-		if (!item.barcode) return;
-		onPressProduct?.(item);
-	};
 
 	const uniqueItems = items.filter(
 		(item, index, list) => list.findIndex((candidate) => candidate.id === item.id) === index,
@@ -44,7 +40,14 @@ export const FridgeProductList = ({ items, onRemove, onPressProduct }: FridgePro
 					key={item.id}
 					item={item}
 					onRemove={() => onRemove(item.id)}
-					onPress={() => handlePressProduct(item)}
+					onEdit={() => onEdit(item)}
+					onOpenDetails={
+						item.barcode
+							? () => {
+									onOpenDetails?.(item);
+								}
+							: undefined
+					}
 				/>
 			))}
 		</View>

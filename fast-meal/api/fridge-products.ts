@@ -99,6 +99,39 @@ export const createFridgeProductsBatch = async (params: {
 	return Array.isArray(data.fridgeProducts) ? data.fridgeProducts : [];
 };
 
+export const updateFridgeProduct = async (params: {
+	deviceId: string;
+	id: string;
+	name: string;
+	quantity?: number;
+	unit?: FridgeProductUnit;
+	expirationDate?: string;
+	purchasedAt?: string;
+}): Promise<FridgeProductListItem> => {
+	const hasQuantity = params.quantity !== undefined && params.unit !== undefined;
+
+	const response = await fetch(apiEndpoint, {
+		method: "PATCH",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			deviceId: params.deviceId,
+			id: params.id,
+			name: params.name,
+			quantity: hasQuantity ? params.quantity : null,
+			unit: hasQuantity ? params.unit : null,
+			expirationDate: params.expirationDate ?? null,
+			purchasedAt: params.purchasedAt ?? null,
+		}),
+	});
+
+	if (!response.ok) {
+		const text = await response.text();
+		throw new Error(`Update fridge product failed (${response.status}): ${formatApiErrorBody(response.status, text)}`);
+	}
+
+	return (await response.json()) as FridgeProductListItem;
+};
+
 export const deleteFridgeProduct = async (deviceId: string, id: string): Promise<void> => {
 	const params = new URLSearchParams({ deviceId, id });
 	const response = await fetch(`${apiEndpoint}?${params.toString()}`, {

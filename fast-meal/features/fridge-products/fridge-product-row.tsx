@@ -11,10 +11,11 @@ import { getExpirationRowAppearance, getExpirationStatus } from "@/utils/helper"
 interface FridgeProductRowProps {
 	item: FridgeProductListItem;
 	onRemove: () => void;
-	onPress?: () => void;
+	onEdit: () => void;
+	onOpenDetails?: () => void;
 }
 
-export const FridgeProductRow = ({ item, onRemove, onPress }: FridgeProductRowProps) => {
+export const FridgeProductRow = ({ item, onRemove, onEdit, onOpenDetails }: FridgeProductRowProps) => {
 	const { t, i18n } = useTranslation();
 	const theme = useAppAppearance();
 	const expirationStatus = item.expirationDate ? getExpirationStatus(item.expirationDate) : undefined;
@@ -25,6 +26,7 @@ export const FridgeProductRow = ({ item, onRemove, onPress }: FridgeProductRowPr
 		translateMeasurementUnit(t, unitKey),
 	);
 	const isScanned = Boolean(item.barcode);
+	const handleRowPress = isScanned ? onOpenDetails : onEdit;
 
 	return (
 		<View
@@ -36,7 +38,7 @@ export const FridgeProductRow = ({ item, onRemove, onPress }: FridgeProductRowPr
 				},
 			]}
 		>
-			<Pressable style={styles.contentPressable} onPress={onPress} disabled={!onPress}>
+			<Pressable style={styles.contentPressable} onPress={handleRowPress} disabled={!handleRowPress}>
 				<View style={styles.content}>
 					<Text style={[styles.name, { color: theme.text }]} numberOfLines={2}>
 						{item.name}
@@ -59,11 +61,20 @@ export const FridgeProductRow = ({ item, onRemove, onPress }: FridgeProductRowPr
 				</View>
 			</Pressable>
 
-			{isScanned && onPress ? (
+			<Pressable
+				accessibilityRole="button"
+				accessibilityLabel={t("fridge.edit")}
+				onPress={onEdit}
+				style={[styles.iconButton, { backgroundColor: theme.substitutionBoxBg }]}
+			>
+				<Ionicons name="pencil-outline" size={14} color={theme.primary} />
+			</Pressable>
+
+			{isScanned && onOpenDetails ? (
 				<Pressable
 					accessibilityRole="button"
-					onPress={onPress}
-					style={[styles.arrowButton, { backgroundColor: theme.substitutionBoxBg }]}
+					onPress={onOpenDetails}
+					style={[styles.iconButton, { backgroundColor: theme.substitutionBoxBg }]}
 				>
 					<Ionicons name="arrow-forward" size={14} color={theme.primary} />
 				</Pressable>
@@ -86,7 +97,7 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		borderWidth: 2,
 		flexDirection: "row",
-		gap: 10,
+		gap: 8,
 		paddingHorizontal: 16,
 		paddingVertical: 12,
 	},
@@ -105,7 +116,7 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		fontWeight: "500",
 	},
-	arrowButton: {
+	iconButton: {
 		alignItems: "center",
 		borderRadius: 16,
 		height: 32,

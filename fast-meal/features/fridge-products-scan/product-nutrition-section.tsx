@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 
+import { NutritionSourceCitation } from "@/components";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { BarcodeNutrimentValues } from "@/interface/barcode-product";
 
@@ -31,6 +32,7 @@ export const ProductNutritionSection = ({ nutriments, servingSize }: ProductNutr
 
 				<ProductNutritionMacroGrid nutriments={nutriments} scope="per100" />
 				<ProductNutritionMacroBars nutriments={nutriments} scope="per100" />
+				<NutritionSourceCitation kind="barcode" />
 			</View>
 
 			{showServingCard ? (
@@ -45,12 +47,14 @@ export const ProductNutritionSection = ({ nutriments, servingSize }: ProductNutr
 					<ProductNutritionMacroGrid nutriments={nutriments} scope="perServing" />
 					<ProductNutritionMacroBars nutriments={nutriments} scope="perServing" />
 					<ProductNutritionDetailRows nutriments={nutriments} showServingValues bordered />
+					<NutritionSourceCitation kind="barcode" />
 				</View>
 			) : null}
 
 			{showDetailsOnlyCard ? (
 				<View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
 					<ProductNutritionDetailRows nutriments={nutriments} />
+					<NutritionSourceCitation kind="barcode" />
 				</View>
 			) : null}
 		</View>

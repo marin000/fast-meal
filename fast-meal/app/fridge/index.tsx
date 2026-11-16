@@ -5,24 +5,26 @@ import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { ScreenScrollView } from "@/components";
-import type { FridgeProductUnit } from "@/constants/fridge";
 import { useFeedbackMessage, useFridgeProducts, useHomeIngredients } from "@/context";
 import {
-	AddFridgeProductModal,
 	FridgePickerModal,
+	FridgeProductFormModal,
+	type FridgeProductFormValues,
 	FridgeProductList,
 	FridgeScreenHeader,
 } from "@/features/fridge-products";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
+import type { FridgeProductListItem } from "@/interface/fridge-product";
 
 const FridgeScreen = () => {
 	const { t } = useTranslation();
 	const router = useRouter();
 	const theme = useAppAppearance();
-	const { items, isLoading, addProduct, removeById, reload } = useFridgeProducts();
+	const { items, isLoading, addProduct, updateProduct, removeById, reload } = useFridgeProducts();
 	const { appendIngredients } = useHomeIngredients();
 	const { showMessage } = useFeedbackMessage();
 	const [addModalVisible, setAddModalVisible] = useState(false);
+	const [editingProduct, setEditingProduct] = useState<FridgeProductListItem | null>(null);
 	const [pickerVisible, setPickerVisible] = useState(false);
 
 	useFocusEffect(
@@ -31,18 +33,29 @@ const FridgeScreen = () => {
 		}, [reload]),
 	);
 
-	const handleAdd = async (input: {
-		name: string;
-		quantity?: number;
-		unit?: FridgeProductUnit;
-		expirationDate?: string;
-		purchasedAt?: string;
-	}) => {
+	const handleAdd = async (input: FridgeProductFormValues) => {
 		try {
 			await addProduct(input);
 			showMessage(t("fridge.toast.added"), "success");
 		} catch {
 			showMessage(t("fridge.toast.addFailed"), "error");
+		}
+	};
+
+	const handleEdit = async (input: FridgeProductFormValues) => {
+		if (!editingProduct) return;
+		try {
+			await updateProduct({
+				id: editingProduct.id,
+				name: input.name,
+				quantity: input.quantity,
+				unit: input.unit,
+				expirationDate: input.expirationDate,
+				purchasedAt: input.purchasedAt,
+			});
+			showMessage(t("fridge.toast.updated"), "success");
+		} catch {
+			showMessage(t("fridge.toast.updateFailed"), "error");
 		}
 	};
 
@@ -97,13 +110,27 @@ const FridgeScreen = () => {
 			<FridgeProductList
 				items={items}
 				onRemove={(id) => void handleRemove(id)}
-				onPressProduct={(item) => {
+				onEdit={setEditingProduct}
+				onOpenDetails={(item) => {
 					if (!item.barcode) return;
 					router.push(`/fridge/product/${encodeURIComponent(item.barcode)}` as Href);
 				}}
 			/>
 
-			<AddFridgeProductModal visible={addModalVisible} onClose={() => setAddModalVisible(false)} onAdd={handleAdd} />
+			<FridgeProductFormModal
+				visible={addModalVisible}
+				mode="add"
+				onClose={() => setAddModalVisible(false)}
+				onSubmit={handleAdd}
+			/>
+
+			<FridgeProductFormModal
+				visible={Boolean(editingProduct)}
+				mode="edit"
+				initialProduct={editingProduct}
+				onClose={() => setEditingProduct(null)}
+				onSubmit={handleEdit}
+			/>
 
 			<FridgePickerModal
 				visible={pickerVisible}
