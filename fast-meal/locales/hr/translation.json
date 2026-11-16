@@ -46,8 +46,23 @@
 	},
 	"loading": {
 		"title": "Pregledavamo tvoj hladnjak...",
-		"subtitle": "FastMeal skenira sastojke i priprema jelovnik."
+		"subtitle": "FastMeal skenira sastojke i priprema jelovnik.",
+		"steps": {
+			"fridge": {
+				"title": "Pregledavamo tvoj hladnjak...",
+				"subtitle": "FastMeal skenira sastojke i priprema jelovnik."
+			},
+			"flavors": {
+				"title": "Usklađujemo okuse...",
+				"subtitle": "Tražimo kombinacije koje se odlično slažu."
+			},
+			"recipes": {
+				"title": "Pišemo recepte...",
+				"subtitle": "Pretvaramo ideje u jasne korake za kuhanje."
+			}
+		}
 	},
+
 	"results": {
 		"title": "Ideje za recepte",
 		"subtitle": "Na temelju onoga što imaš kod kuće"

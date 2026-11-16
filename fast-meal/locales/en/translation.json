@@ -46,8 +46,23 @@
 	},
 	"loading": {
 		"title": "Checking your fridge...",
-		"subtitle": "FastMeal is scanning your ingredients and building your menu."
+		"subtitle": "FastMeal is scanning your ingredients and building your menu.",
+		"steps": {
+			"fridge": {
+				"title": "Checking your fridge...",
+				"subtitle": "FastMeal is scanning your ingredients and building your menu."
+			},
+			"flavors": {
+				"title": "Matching flavors...",
+				"subtitle": "Finding combinations that taste great together."
+			},
+			"recipes": {
+				"title": "Writing recipes...",
+				"subtitle": "Turning those ideas into clear steps you can cook."
+			}
+		}
 	},
+
 	"results": {
 		"title": "Recipe ideas",
 		"subtitle": "Based on what you have at home"
