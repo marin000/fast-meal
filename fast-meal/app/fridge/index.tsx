@@ -2,20 +2,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { type Href, useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-	ActivityIndicator,
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-} from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { ScreenScrollView } from "@/components";
-import {
-	useFeedbackMessage,
-	useFridgeProducts,
-	useHomeIngredients,
-} from "@/context";
+import { useFeedbackMessage, useFridgeProducts, useHomeIngredients } from "@/context";
 import {
 	FridgePickerModal,
 	FridgeProductFormModal,
@@ -30,13 +20,11 @@ const FridgeScreen = () => {
 	const { t } = useTranslation();
 	const router = useRouter();
 	const theme = useAppAppearance();
-	const { items, isLoading, addProduct, updateProduct, removeById, reload } =
-		useFridgeProducts();
+	const { items, isLoading, addProduct, updateProduct, removeById, reload } = useFridgeProducts();
 	const { appendIngredients } = useHomeIngredients();
 	const { showMessage } = useFeedbackMessage();
 	const [addModalVisible, setAddModalVisible] = useState(false);
-	const [editingProduct, setEditingProduct] =
-		useState<FridgeProductListItem | null>(null);
+	const [editingProduct, setEditingProduct] = useState<FridgeProductListItem | null>(null);
 	const [pickerVisible, setPickerVisible] = useState(false);
 
 	useFocusEffect(
@@ -95,10 +83,7 @@ const FridgeScreen = () => {
 	}
 
 	return (
-		<ScreenScrollView
-			backgroundColor={theme.background}
-			contentContainerStyle={styles.container}
-		>
+		<ScreenScrollView backgroundColor={theme.background} contentContainerStyle={styles.container}>
 			<FridgeScreenHeader
 				onAddProduct={() => setAddModalVisible(true)}
 				onScanProducts={() => router.push("/fridge/scan" as Href)}
@@ -117,9 +102,7 @@ const FridgeScreen = () => {
 							]}
 						>
 							<Ionicons name="sparkles" size={12} color={theme.primary} />
-							<Text style={[styles.recipesLabel, { color: theme.primary }]}>
-								{t("fridge.useForRecipes")}
-							</Text>
+							<Text style={[styles.recipesLabel, { color: theme.primary }]}>{t("fridge.useForRecipes")}</Text>
 						</Pressable>
 					) : null
 				}
@@ -130,9 +113,7 @@ const FridgeScreen = () => {
 				onEdit={setEditingProduct}
 				onOpenDetails={(item) => {
 					if (!item.barcode) return;
-					router.push(
-						`/fridge/product/${encodeURIComponent(item.barcode)}` as Href,
-					);
+					router.push(`/fridge/product/${encodeURIComponent(item.barcode)}` as Href);
 				}}
 			/>
 

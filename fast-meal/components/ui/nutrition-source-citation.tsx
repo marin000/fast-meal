@@ -1,10 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
 
-import {
-	OPEN_FOOD_FACTS_WEBSITE_URL,
-	USDA_FOODDATA_CENTRAL_URL,
-} from "@/constants/nutrition-sources";
+import { OPEN_FOOD_FACTS_WEBSITE_URL, USDA_FOODDATA_CENTRAL_URL } from "@/constants/nutrition-sources";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 
 type NutritionSourceKind = "recipe" | "barcode";
@@ -16,15 +13,11 @@ interface NutritionSourceCitationProps {
 }
 
 const openSourceUrl = (kind: NutritionSourceKind) => {
-	const url =
-		kind === "recipe" ? USDA_FOODDATA_CENTRAL_URL : OPEN_FOOD_FACTS_WEBSITE_URL;
+	const url = kind === "recipe" ? USDA_FOODDATA_CENTRAL_URL : OPEN_FOOD_FACTS_WEBSITE_URL;
 	void Linking.openURL(url);
 };
 
-export const NutritionSourceCitation = ({
-	kind,
-	compact = false,
-}: NutritionSourceCitationProps) => {
+export const NutritionSourceCitation = ({ kind, compact = false }: NutritionSourceCitationProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 
@@ -36,34 +29,18 @@ export const NutritionSourceCitation = ({
 			: "fridge.details.nutritionCitation.disclaimer";
 
 	const linkKey =
-		kind === "recipe"
-			? "recipe.nutritionCitation.sourceLink"
-			: "fridge.details.nutritionCitation.sourceLink";
+		kind === "recipe" ? "recipe.nutritionCitation.sourceLink" : "fridge.details.nutritionCitation.sourceLink";
 
 	return (
 		<View style={compact ? styles.compactWrap : styles.wrap}>
-			<Text
-				style={[
-					compact ? styles.compactText : styles.text,
-					{ color: theme.textMuted },
-				]}
-			>
-				{t(disclaimerKey)}
-			</Text>
+			<Text style={[compact ? styles.compactText : styles.text, { color: theme.textMuted }]}>{t(disclaimerKey)}</Text>
 			<Pressable
 				accessibilityRole="link"
 				accessibilityLabel={t(linkKey)}
 				hitSlop={8}
 				onPress={() => openSourceUrl(kind)}
 			>
-				<Text
-					style={[
-						compact ? styles.compactLink : styles.link,
-						{ color: theme.primary },
-					]}
-				>
-					{t(linkKey)}
-				</Text>
+				<Text style={[compact ? styles.compactLink : styles.link, { color: theme.primary }]}>{t(linkKey)}</Text>
 			</Pressable>
 		</View>
 	);

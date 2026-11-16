@@ -13,11 +13,7 @@ interface FridgeAiLoadingProps {
 const RING_SIZE = 96;
 const RING_BORDER = 4;
 
-export const FridgeAiLoading = ({
-	title,
-	subtitle,
-	icon,
-}: FridgeAiLoadingProps) => {
+export const FridgeAiLoading = ({ title, subtitle, icon }: FridgeAiLoadingProps) => {
 	const theme = useAppAppearance();
 	const rotation = useRef(new Animated.Value(0)).current;
 	const contentOpacity = useRef(new Animated.Value(1)).current;
@@ -75,21 +71,14 @@ export const FridgeAiLoading = ({
 					]}
 				/>
 				<Animated.View
-					style={[
-						styles.logoBackground,
-						{ backgroundColor: theme.logoContainerBg, opacity: contentOpacity },
-					]}
+					style={[styles.logoBackground, { backgroundColor: theme.logoContainerBg, opacity: contentOpacity }]}
 				>
 					{icon ?? <FridgeAiLogo size={32} />}
 				</Animated.View>
 			</View>
 			<Animated.View style={[styles.copy, { opacity: contentOpacity }]}>
 				<Text style={[styles.title, { color: theme.heading }]}>{title}</Text>
-				{subtitle ? (
-					<Text style={[styles.subtitle, { color: theme.textMuted }]}>
-						{subtitle}
-					</Text>
-				) : null}
+				{subtitle ? <Text style={[styles.subtitle, { color: theme.textMuted }]}>{subtitle}</Text> : null}
 			</Animated.View>
 		</View>
 	);

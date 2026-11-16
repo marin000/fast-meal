@@ -14,11 +14,7 @@ interface SavedRecipeCardProps {
 	onDelete: () => void;
 }
 
-export const SavedRecipeCard = ({
-	recipe,
-	onOpen,
-	onDelete,
-}: SavedRecipeCardProps) => {
+export const SavedRecipeCard = ({ recipe, onOpen, onDelete }: SavedRecipeCardProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 	const { units } = usePreferences();
@@ -41,10 +37,7 @@ export const SavedRecipeCard = ({
 			<View style={[styles.accent, { backgroundColor: theme.primary }]} />
 
 			<View style={styles.middle}>
-				<Text
-					style={[styles.title, { color: theme.heading }]}
-					numberOfLines={2}
-				>
+				<Text style={[styles.title, { color: theme.heading }]} numberOfLines={2}>
 					{recipe.title}
 				</Text>
 				<View style={styles.macrosRow}>
@@ -55,14 +48,9 @@ export const SavedRecipeCard = ({
 						</Text>
 					</View>
 					<View style={styles.macroItem}>
-						<Ionicons
-							name="nutrition-outline"
-							size={12}
-							color={theme.iconMuted}
-						/>
+						<Ionicons name="nutrition-outline" size={12} color={theme.iconMuted} />
 						<Text style={[styles.macroText, { color: theme.iconMuted }]}>
-							{t("recipe.labels.protein")}{" "}
-							{macroMassFromGrams(recipe.macros.protein, imperial)}
+							{t("recipe.labels.protein")} {macroMassFromGrams(recipe.macros.protein, imperial)}
 							{massUnit}
 						</Text>
 					</View>
@@ -88,10 +76,7 @@ export const SavedRecipeCard = ({
 				<Pressable
 					accessibilityRole="button"
 					onPress={onOpen}
-					style={[
-						styles.iconButton,
-						{ backgroundColor: theme.substitutionBoxBg },
-					]}
+					style={[styles.iconButton, { backgroundColor: theme.substitutionBoxBg }]}
 				>
 					<Ionicons name="arrow-forward" size={16} color={theme.primary} />
 				</Pressable>

@@ -5,14 +5,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
 import { formatDisplayDate, getDaysUntilExpiration } from "@/utils/date";
-import {
-	formatFridgeProductQuantity,
-	translateMeasurementUnit,
-} from "@/utils/fridge-product";
-import {
-	getExpirationRowAppearance,
-	getExpirationStatus,
-} from "@/utils/helper";
+import { formatFridgeProductQuantity, translateMeasurementUnit } from "@/utils/fridge-product";
+import { getExpirationRowAppearance, getExpirationStatus } from "@/utils/helper";
 
 interface FridgeProductRowProps {
 	item: FridgeProductListItem;
@@ -21,26 +15,15 @@ interface FridgeProductRowProps {
 	onOpenDetails?: () => void;
 }
 
-export const FridgeProductRow = ({
-	item,
-	onRemove,
-	onEdit,
-	onOpenDetails,
-}: FridgeProductRowProps) => {
+export const FridgeProductRow = ({ item, onRemove, onEdit, onOpenDetails }: FridgeProductRowProps) => {
 	const { t, i18n } = useTranslation();
 	const theme = useAppAppearance();
-	const expirationStatus = item.expirationDate
-		? getExpirationStatus(item.expirationDate)
-		: undefined;
+	const expirationStatus = item.expirationDate ? getExpirationStatus(item.expirationDate) : undefined;
 
 	const rowAppearance = getExpirationRowAppearance(theme, expirationStatus);
-	const daysUntilExpiration = item.expirationDate
-		? getDaysUntilExpiration(item.expirationDate)
-		: null;
-	const quantityLabel = formatFridgeProductQuantity(
-		item.quantity,
-		item.unit,
-		(unitKey) => translateMeasurementUnit(t, unitKey),
+	const daysUntilExpiration = item.expirationDate ? getDaysUntilExpiration(item.expirationDate) : null;
+	const quantityLabel = formatFridgeProductQuantity(item.quantity, item.unit, (unitKey) =>
+		translateMeasurementUnit(t, unitKey),
 	);
 	const isScanned = Boolean(item.barcode);
 	const handleRowPress = isScanned ? onOpenDetails : onEdit;
@@ -55,42 +38,23 @@ export const FridgeProductRow = ({
 				},
 			]}
 		>
-			<Pressable
-				style={styles.contentPressable}
-				onPress={handleRowPress}
-				disabled={!handleRowPress}
-			>
+			<Pressable style={styles.contentPressable} onPress={handleRowPress} disabled={!handleRowPress}>
 				<View style={styles.content}>
 					<Text style={[styles.name, { color: theme.text }]} numberOfLines={2}>
 						{item.name}
 					</Text>
-					{quantityLabel ? (
-						<Text style={[styles.meta, { color: theme.textMuted }]}>
-							{quantityLabel}
-						</Text>
-					) : null}
+					{quantityLabel ? <Text style={[styles.meta, { color: theme.textMuted }]}>{quantityLabel}</Text> : null}
 					{item.expirationDate && daysUntilExpiration !== null ? (
 						<Text style={[styles.meta, { color: rowAppearance.accentColor }]}>
-							{t(
-								daysUntilExpiration < 0
-									? "fridge.expiredOn"
-									: "fridge.expiresOn",
-								{
-									date: formatDisplayDate(
-										new Date(item.expirationDate),
-										i18n.language,
-									),
-								},
-							)}
+							{t(daysUntilExpiration < 0 ? "fridge.expiredOn" : "fridge.expiresOn", {
+								date: formatDisplayDate(new Date(item.expirationDate), i18n.language),
+							})}
 						</Text>
 					) : null}
 					{item.purchasedAt ? (
 						<Text style={[styles.meta, { color: theme.textMuted }]}>
 							{t("fridge.boughtOn", {
-								date: formatDisplayDate(
-									new Date(item.purchasedAt),
-									i18n.language,
-								),
+								date: formatDisplayDate(new Date(item.purchasedAt), i18n.language),
 							})}
 						</Text>
 					) : null}
@@ -101,10 +65,7 @@ export const FridgeProductRow = ({
 				accessibilityRole="button"
 				accessibilityLabel={t("fridge.edit")}
 				onPress={onEdit}
-				style={[
-					styles.iconButton,
-					{ backgroundColor: theme.substitutionBoxBg },
-				]}
+				style={[styles.iconButton, { backgroundColor: theme.substitutionBoxBg }]}
 			>
 				<Ionicons name="pencil-outline" size={14} color={theme.primary} />
 			</Pressable>
@@ -113,10 +74,7 @@ export const FridgeProductRow = ({
 				<Pressable
 					accessibilityRole="button"
 					onPress={onOpenDetails}
-					style={[
-						styles.iconButton,
-						{ backgroundColor: theme.substitutionBoxBg },
-					]}
+					style={[styles.iconButton, { backgroundColor: theme.substitutionBoxBg }]}
 				>
 					<Ionicons name="arrow-forward" size={14} color={theme.primary} />
 				</Pressable>

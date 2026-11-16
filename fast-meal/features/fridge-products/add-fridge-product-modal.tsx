@@ -15,15 +15,6 @@ interface AddFridgeProductModalProps {
 }
 
 /** @deprecated Prefer FridgeProductFormModal; kept for existing imports. */
-export const AddFridgeProductModal = ({
-	visible,
-	onClose,
-	onAdd,
-}: AddFridgeProductModalProps) => (
-	<FridgeProductFormModal
-		visible={visible}
-		mode="add"
-		onClose={onClose}
-		onSubmit={onAdd}
-	/>
+export const AddFridgeProductModal = ({ visible, onClose, onAdd }: AddFridgeProductModalProps) => (
+	<FridgeProductFormModal visible={visible} mode="add" onClose={onClose} onSubmit={onAdd} />
 );

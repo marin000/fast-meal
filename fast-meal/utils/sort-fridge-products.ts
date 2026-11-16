@@ -7,9 +7,7 @@ const toTime = (value: string | undefined): number | null => {
 };
 
 /** Soonest expiration first; items without a date last; newest createdAt as tie-break. */
-export const sortFridgeProductsByExpiration = (
-	items: FridgeProductListItem[],
-): FridgeProductListItem[] =>
+export const sortFridgeProductsByExpiration = (items: FridgeProductListItem[]): FridgeProductListItem[] =>
 	[...items].sort((a, b) => {
 		const aExp = toTime(a.expirationDate);
 		const bExp = toTime(b.expirationDate);

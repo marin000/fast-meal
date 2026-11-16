@@ -3,11 +3,7 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import { AppModal, DateField, PrimaryButton } from "@/components";
-import {
-	FRIDGE_DATE_TABS,
-	type FridgeDateTab,
-	type FridgeProductUnit,
-} from "@/constants/fridge";
+import { FRIDGE_DATE_TABS, type FridgeDateTab, type FridgeProductUnit } from "@/constants/fridge";
 import { SegmentedControl } from "@/features/settings/segmented-control";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { FridgeProductListItem } from "@/interface/fridge-product";
@@ -55,23 +51,11 @@ export const FridgeProductFormModal = ({
 
 		if (mode === "edit" && initialProduct) {
 			setName(initialProduct.name);
-			setQuantityInput(
-				initialProduct.quantity !== undefined
-					? String(initialProduct.quantity)
-					: "",
-			);
+			setQuantityInput(initialProduct.quantity !== undefined ? String(initialProduct.quantity) : "");
 			setUnit(initialProduct.unit);
 			setDateTab("expiration");
-			setExpirationDate(
-				initialProduct.expirationDate
-					? new Date(initialProduct.expirationDate)
-					: undefined,
-			);
-			setPurchasedAt(
-				initialProduct.purchasedAt
-					? new Date(initialProduct.purchasedAt)
-					: undefined,
-			);
+			setExpirationDate(initialProduct.expirationDate ? new Date(initialProduct.expirationDate) : undefined);
+			setPurchasedAt(initialProduct.purchasedAt ? new Date(initialProduct.purchasedAt) : undefined);
 		} else {
 			setName("");
 			setQuantityInput("");
@@ -116,27 +100,17 @@ export const FridgeProductFormModal = ({
 	const hasQuantityInput = quantityInput.trim().length > 0;
 	const isQuantityInvalid = hasQuantityInput && parsedQuantity === undefined;
 	const isUnitMissing = parsedQuantity !== undefined && !unit;
-	const canSubmit =
-		name.trim().length > 0 &&
-		!isSubmitting &&
-		!isQuantityInvalid &&
-		!isUnitMissing;
+	const canSubmit = name.trim().length > 0 && !isSubmitting && !isQuantityInvalid && !isUnitMissing;
 
-	const title =
-		mode === "edit" ? t("fridge.editModal.title") : t("fridge.addModal.title");
-	const submitLabel =
-		mode === "edit"
-			? t("fridge.editModal.submit")
-			: t("fridge.addModal.submit");
+	const title = mode === "edit" ? t("fridge.editModal.title") : t("fridge.addModal.title");
+	const submitLabel = mode === "edit" ? t("fridge.editModal.submit") : t("fridge.addModal.submit");
 	const submitIcon = mode === "edit" ? "checkmark" : "add";
 
 	return (
 		<AppModal visible={visible} onClose={onClose} title={title} avoidKeyboard>
 			<View style={styles.form}>
 				<View style={styles.field}>
-					<Text style={[styles.label, { color: theme.text }]}>
-						{t("fridge.addModal.nameLabel")}
-					</Text>
+					<Text style={[styles.label, { color: theme.text }]}>{t("fridge.addModal.nameLabel")}</Text>
 					<TextInput
 						value={name}
 						onChangeText={setName}
@@ -172,24 +146,14 @@ export const FridgeProductFormModal = ({
 						onPressOption={setDateTab}
 						equalWidth
 						getOptionLabel={(tab) =>
-							tab === "expiration"
-								? t("fridge.addModal.expirationTab")
-								: t("fridge.addModal.purchasedTab")
+							tab === "expiration" ? t("fridge.addModal.expirationTab") : t("fridge.addModal.purchasedTab")
 						}
 					/>
 
 					{dateTab === "expiration" ? (
-						<DateField
-							label={t("fridge.expirationLabel")}
-							value={expirationDate}
-							onChange={setExpirationDate}
-						/>
+						<DateField label={t("fridge.expirationLabel")} value={expirationDate} onChange={setExpirationDate} />
 					) : (
-						<DateField
-							label={t("fridge.purchasedLabel")}
-							value={purchasedAt}
-							onChange={setPurchasedAt}
-						/>
+						<DateField label={t("fridge.purchasedLabel")} value={purchasedAt} onChange={setPurchasedAt} />
 					)}
 				</View>
 

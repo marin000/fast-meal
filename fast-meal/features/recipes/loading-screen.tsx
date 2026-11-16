@@ -42,11 +42,5 @@ export const LoadingScreen = () => {
 
 	const step = LOADING_STEPS[stepIndex];
 
-	return (
-		<FridgeAiLoading
-			icon={step.icon}
-			title={t(step.titleKey)}
-			subtitle={t(step.subtitleKey)}
-		/>
-	);
+	return <FridgeAiLoading icon={step.icon} title={t(step.titleKey)} subtitle={t(step.subtitleKey)} />;
 };

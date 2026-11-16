@@ -13,18 +13,12 @@ interface FridgeProductListProps {
 	onOpenDetails?: (item: FridgeProductListItem) => void;
 }
 
-export const FridgeProductList = ({
-	items,
-	onRemove,
-	onEdit,
-	onOpenDetails,
-}: FridgeProductListProps) => {
+export const FridgeProductList = ({ items, onRemove, onEdit, onOpenDetails }: FridgeProductListProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
 
 	const uniqueItems = items.filter(
-		(item, index, list) =>
-			list.findIndex((candidate) => candidate.id === item.id) === index,
+		(item, index, list) => list.findIndex((candidate) => candidate.id === item.id) === index,
 	);
 
 	if (uniqueItems.length === 0) {
@@ -33,12 +27,8 @@ export const FridgeProductList = ({
 				<View style={[styles.emptyIcon, { backgroundColor: theme.chipBg }]}>
 					<FridgeIcon size={28} color={theme.iconMuted} />
 				</View>
-				<Text style={[styles.emptyTitle, { color: theme.heading }]}>
-					{t("fridge.emptyTitle")}
-				</Text>
-				<Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>
-					{t("fridge.emptySubtitle")}
-				</Text>
+				<Text style={[styles.emptyTitle, { color: theme.heading }]}>{t("fridge.emptyTitle")}</Text>
+				<Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>{t("fridge.emptySubtitle")}</Text>
 			</View>
 		);
 	}
