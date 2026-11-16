@@ -137,6 +137,7 @@
 		"productsTitle": "Products",
 		"addProduct": "Add product",
 		"addPlaceholder": "Product name...",
+		"edit": "Edit product",
 		"addModal": {
 			"title": "Add product",
 			"submit": "Add product",
@@ -148,6 +149,10 @@
 			"unitRequired": "Select a unit when quantity is set",
 			"expirationTab": "Expiration",
 			"purchasedTab": "Bought"
+		},
+		"editModal": {
+			"title": "Edit product",
+			"submit": "Save changes"
 		},
 		"units": {
 			"g": "g",
@@ -246,8 +251,10 @@
 		},
 		"toast": {
 			"added": "Product added",
+			"updated": "Product updated",
 			"deleted": "Product removed",
 			"addFailed": "Could not add product",
+			"updateFailed": "Could not update product",
 			"deleteFailed": "Could not remove product"
 		},
 		"scan": {

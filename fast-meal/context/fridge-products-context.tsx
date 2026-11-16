@@ -11,6 +11,7 @@ import {
 	createFridgeProductsBatch,
 	deleteFridgeProduct,
 	fetchFridgeProducts,
+	updateFridgeProduct,
 } from "@/api/fridge-products";
 import type { FridgeProductUnit } from "@/constants/fridge";
 import { useDeviceId } from "@/context/device-id-context";
@@ -28,12 +29,22 @@ interface AddFridgeProductInput {
 	barcode?: string;
 }
 
+interface UpdateFridgeProductInput {
+	id: string;
+	name: string;
+	quantity?: number;
+	unit?: FridgeProductUnit;
+	expirationDate?: string;
+	purchasedAt?: string;
+}
+
 interface FridgeProductsContextValue {
 	items: FridgeProductListItem[];
 	isLoading: boolean;
 	reload: () => Promise<void>;
 	addProduct: (input: AddFridgeProductInput) => Promise<void>;
 	addProducts: (inputs: AddFridgeProductInput[]) => Promise<void>;
+	updateProduct: (input: UpdateFridgeProductInput) => Promise<void>;
 	removeById: (id: string) => Promise<void>;
 }
 
@@ -131,6 +142,31 @@ export const FridgeProductsProvider = ({
 		[deviceId],
 	);
 
+	const updateProduct = useCallback(
+		async (input: UpdateFridgeProductInput) => {
+			if (!deviceId) return;
+			const updated = await updateFridgeProduct({
+				deviceId,
+				id: input.id,
+				name: input.name,
+				quantity: input.quantity,
+				unit: input.unit,
+				expirationDate: input.expirationDate,
+				purchasedAt: input.purchasedAt,
+			});
+			setItems((prev) => {
+				const withoutUpdated = prev.filter((item) => item.id !== updated.id);
+				const next = sortFridgeProductsByExpiration([
+					updated,
+					...withoutUpdated,
+				]);
+				void syncExpirationNotifications(next);
+				return next;
+			});
+		},
+		[deviceId],
+	);
+
 	const removeById = useCallback(
 		async (id: string) => {
 			if (!deviceId) return;
@@ -152,6 +188,7 @@ export const FridgeProductsProvider = ({
 				reload,
 				addProduct,
 				addProducts,
+				updateProduct,
 				removeById,
 			}}
 		>

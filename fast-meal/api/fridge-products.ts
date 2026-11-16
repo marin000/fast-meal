@@ -4,7 +4,9 @@ import { formatApiErrorBody } from "@/utils/api-error-text";
 
 const apiEndpoint = `${process.env.EXPO_PUBLIC_API_BASE_URL}/api/fridge-products`;
 
-export const fetchFridgeProducts = async (deviceId: string): Promise<FridgeProductListItem[]> => {
+export const fetchFridgeProducts = async (
+	deviceId: string,
+): Promise<FridgeProductListItem[]> => {
 	const params = new URLSearchParams({ deviceId });
 	const response = await fetch(`${apiEndpoint}?${params.toString()}`, {
 		method: "GET",
@@ -43,7 +45,9 @@ export const createFridgeProduct = async (params: {
 
 	if (!response.ok) {
 		const text = await response.text();
-		throw new Error(`Create fridge product failed (${response.status}): ${formatApiErrorBody(response.status, text)}`);
+		throw new Error(
+			`Create fridge product failed (${response.status}): ${formatApiErrorBody(response.status, text)}`,
+		);
 	}
 
 	return (await response.json()) as FridgeProductListItem;
@@ -58,7 +62,9 @@ const toCreatePayload = (params: {
 	barcode?: string;
 }) => ({
 	name: params.name,
-	...(params.quantity !== undefined && params.unit ? { quantity: params.quantity, unit: params.unit } : {}),
+	...(params.quantity !== undefined && params.unit
+		? { quantity: params.quantity, unit: params.unit }
+		: {}),
 	...(params.expirationDate ? { expirationDate: params.expirationDate } : {}),
 	...(params.purchasedAt ? { purchasedAt: params.purchasedAt } : {}),
 	...(params.barcode ? { barcode: params.barcode } : {}),
@@ -99,7 +105,46 @@ export const createFridgeProductsBatch = async (params: {
 	return Array.isArray(data.fridgeProducts) ? data.fridgeProducts : [];
 };
 
-export const deleteFridgeProduct = async (deviceId: string, id: string): Promise<void> => {
+export const updateFridgeProduct = async (params: {
+	deviceId: string;
+	id: string;
+	name: string;
+	quantity?: number;
+	unit?: FridgeProductUnit;
+	expirationDate?: string;
+	purchasedAt?: string;
+}): Promise<FridgeProductListItem> => {
+	const hasQuantity =
+		params.quantity !== undefined && params.unit !== undefined;
+
+	const response = await fetch(apiEndpoint, {
+		method: "PATCH",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			deviceId: params.deviceId,
+			id: params.id,
+			name: params.name,
+			quantity: hasQuantity ? params.quantity : null,
+			unit: hasQuantity ? params.unit : null,
+			expirationDate: params.expirationDate ?? null,
+			purchasedAt: params.purchasedAt ?? null,
+		}),
+	});
+
+	if (!response.ok) {
+		const text = await response.text();
+		throw new Error(
+			`Update fridge product failed (${response.status}): ${formatApiErrorBody(response.status, text)}`,
+		);
+	}
+
+	return (await response.json()) as FridgeProductListItem;
+};
+
+export const deleteFridgeProduct = async (
+	deviceId: string,
+	id: string,
+): Promise<void> => {
 	const params = new URLSearchParams({ deviceId, id });
 	const response = await fetch(`${apiEndpoint}?${params.toString()}`, {
 		method: "DELETE",
@@ -107,6 +152,8 @@ export const deleteFridgeProduct = async (deviceId: string, id: string): Promise
 
 	if (!response.ok) {
 		const text = await response.text();
-		throw new Error(`Delete fridge product failed (${response.status}): ${formatApiErrorBody(response.status, text)}`);
+		throw new Error(
+			`Delete fridge product failed (${response.status}): ${formatApiErrorBody(response.status, text)}`,
+		);
 	}
 };

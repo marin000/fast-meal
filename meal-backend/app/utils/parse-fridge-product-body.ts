@@ -158,6 +158,83 @@ export const parseFridgeProductItemBody = (
 	};
 };
 
+export interface ParsedFridgeProductUpdateBody {
+	deviceId: string;
+	id: string;
+	name: string;
+	quantity: number | null;
+	unit: FridgeProductUnit | null;
+	expirationDate: Date | null;
+	purchasedAt: Date | null;
+}
+
+const parseClearableIsoDate = (
+	value: unknown,
+): { ok: true; date: Date | null } | { ok: false } => {
+	if (value === null) return { ok: true, date: null };
+	if (value === undefined) return { ok: false };
+	if (typeof value !== "string" || value.trim().length === 0) {
+		return { ok: false };
+	}
+	const parsed = new Date(value);
+	if (Number.isNaN(parsed.getTime())) return { ok: false };
+	return { ok: true, date: parsed };
+};
+
+export const parseFridgeProductUpdateBody = (
+	body: unknown,
+): ParsedFridgeProductUpdateBody | null => {
+	if (typeof body !== "object" || body === null) return null;
+
+	const { deviceId, id, name, quantity, unit, expirationDate, purchasedAt } =
+		body as {
+			deviceId?: unknown;
+			id?: unknown;
+			name?: unknown;
+			quantity?: unknown;
+			unit?: unknown;
+			expirationDate?: unknown;
+			purchasedAt?: unknown;
+		};
+
+	if (typeof deviceId !== "string" || deviceId.trim().length === 0) return null;
+	if (typeof id !== "string" || id.trim().length === 0) return null;
+	if (typeof name !== "string" || name.trim().length === 0) return null;
+
+	let parsedQuantity: number | null = null;
+	let parsedUnit: FridgeProductUnit | null = null;
+
+	if (quantity === null && unit === null) {
+		parsedQuantity = null;
+		parsedUnit = null;
+	} else if (quantity === null || unit === null) {
+		return null;
+	} else {
+		const qty = parseOptionalQuantity(quantity);
+		if (!qty.ok || qty.quantity === undefined) return null;
+		const unt = parseOptionalUnit(unit);
+		if (!unt.ok || unt.unit === undefined) return null;
+		parsedQuantity = qty.quantity;
+		parsedUnit = unt.unit;
+	}
+
+	const parsedExpirationDate = parseClearableIsoDate(expirationDate);
+	if (!parsedExpirationDate.ok) return null;
+
+	const parsedPurchasedAt = parseClearableIsoDate(purchasedAt);
+	if (!parsedPurchasedAt.ok) return null;
+
+	return {
+		deviceId: deviceId.trim(),
+		id: id.trim(),
+		name: name.trim(),
+		quantity: parsedQuantity,
+		unit: parsedUnit,
+		expirationDate: parsedExpirationDate.date,
+		purchasedAt: parsedPurchasedAt.date,
+	};
+};
+
 export const parseFridgeProductBatchBody = (
 	body: unknown,
 ): { deviceId: string; products: ParsedFridgeProductItemBody[] } | null => {

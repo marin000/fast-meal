@@ -137,6 +137,7 @@
 		"productsTitle": "Proizvodi",
 		"addProduct": "Dodaj proizvod",
 		"addPlaceholder": "Naziv proizvoda...",
+		"edit": "Uredi proizvod",
 		"addModal": {
 			"title": "Dodaj proizvod",
 			"submit": "Dodaj proizvod",
@@ -148,6 +149,10 @@
 			"unitRequired": "Odaberi jedinicu kad je količina unesena",
 			"expirationTab": "Istječe",
 			"purchasedTab": "Kupljeno"
+		},
+		"editModal": {
+			"title": "Uredi proizvod",
+			"submit": "Spremi promjene"
 		},
 		"units": {
 			"g": "g",
@@ -246,8 +251,10 @@
 		},
 		"toast": {
 			"added": "Proizvod je dodan",
+			"updated": "Proizvod je ažuriran",
 			"deleted": "Proizvod je uklonjen",
 			"addFailed": "Nismo uspjeli dodati proizvod",
+			"updateFailed": "Nismo uspjeli ažurirati proizvod",
 			"deleteFailed": "Nismo uspjeli ukloniti proizvod"
 		},
 		"scan": {
