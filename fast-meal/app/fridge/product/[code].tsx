@@ -146,7 +146,7 @@ const FridgeProductDetailsScreen = () => {
 				<View style={styles.titleBlock}>
 					<View style={[styles.accent, { backgroundColor: theme.primary }]} />
 					<View style={styles.titleContent}>
-						<Text style={[styles.title, { color: theme.text }]}>{name}</Text>
+						<Text style={[styles.title, { color: theme.heading }]}>{name}</Text>
 						{product.brandLabel ? (
 							<Text style={[styles.subtitle, { color: theme.textMuted }]}>{product.brandLabel}</Text>
 						) : null}

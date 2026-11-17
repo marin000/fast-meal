@@ -5,7 +5,7 @@
 	},
 	"home": {
 		"titleMain": "Skuhaj nešto brzo",
-		"titleAccent": "od onoga sto imaš.",
+		"titleAccent": "od onoga što imaš.",
 		"subtitle": "Upiši sastojke i generiraj ideje za recepte.",
 		"ingredientsLabel": "Sastojci",
 		"ingredientsPlaceholder": "Imam jaja, sir, kruh...",
@@ -46,8 +46,23 @@
 	},
 	"loading": {
 		"title": "Pregledavamo tvoj hladnjak...",
-		"subtitle": "FastMeal skenira sastojke i priprema jelovnik."
+		"subtitle": "FastMeal skenira sastojke i priprema jelovnik.",
+		"steps": {
+			"fridge": {
+				"title": "Pregledavamo tvoj hladnjak...",
+				"subtitle": "FastMeal skenira sastojke i priprema jelovnik."
+			},
+			"flavors": {
+				"title": "Usklađujemo okuse...",
+				"subtitle": "Tražimo kombinacije koje se odlično slažu."
+			},
+			"recipes": {
+				"title": "Pišemo recepte...",
+				"subtitle": "Pretvaramo ideje u jasne korake za kuhanje."
+			}
+		}
 	},
+
 	"results": {
 		"title": "Ideje za recepte",
 		"subtitle": "Na temelju onoga što imaš kod kuće"
@@ -80,6 +95,11 @@
 		},
 		"cta": {
 			"seeRecipe": "Pogledaj recept"
+		},
+		"nutritionCitation": {
+			"disclaimer": "Nutritivne vrijednosti su AI procjene temeljene na tipičnim podacima USDA FoodData Central. Približne su i nisu medicinski savjet.",
+			"compactDisclaimer": "AI procjene nutritivnih vrijednosti · nije medicinski savjet.",
+			"sourceLink": "Izvor: USDA FoodData Central"
 		}
 	},
 	"errors": {
@@ -117,6 +137,7 @@
 		"productsTitle": "Proizvodi",
 		"addProduct": "Dodaj proizvod",
 		"addPlaceholder": "Naziv proizvoda...",
+		"edit": "Uredi proizvod",
 		"addModal": {
 			"title": "Dodaj proizvod",
 			"submit": "Dodaj proizvod",
@@ -128,6 +149,10 @@
 			"unitRequired": "Odaberi jedinicu kad je količina unesena",
 			"expirationTab": "Istječe",
 			"purchasedTab": "Kupljeno"
+		},
+		"editModal": {
+			"title": "Uredi proizvod",
+			"submit": "Spremi promjene"
 		},
 		"units": {
 			"g": "g",
@@ -226,8 +251,10 @@
 		},
 		"toast": {
 			"added": "Proizvod je dodan",
+			"updated": "Proizvod je ažuriran",
 			"deleted": "Proizvod je uklonjen",
 			"addFailed": "Nismo uspjeli dodati proizvod",
+			"updateFailed": "Nismo uspjeli ažurirati proizvod",
 			"deleteFailed": "Nismo uspjeli ukloniti proizvod"
 		},
 		"scan": {
@@ -265,6 +292,10 @@
 			"per100g": "Na 100 g",
 			"perServing": "Po porciji",
 			"perServingWithSize": "Po porciji - {{size}}",
+			"nutritionCitation": {
+				"disclaimer": "Nutritivni podaci proizvoda dolaze s Open Food Facts. Vrijednosti mogu biti nepotpune ili približne i nisu medicinski savjet.",
+				"sourceLink": "Izvor: Open Food Facts"
+			},
 			"nutrientDetails": "Detalji",
 			"servingSize": "Porcija: {{size}}",
 			"ingredients": "Sastojci",

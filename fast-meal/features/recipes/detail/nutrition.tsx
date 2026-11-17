@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 
+import { NutritionSourceCitation } from "@/components";
 import { usePreferences } from "@/context";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { RecipeMacros } from "@/interface";
@@ -75,7 +76,7 @@ export const RecipeNutrition = ({ macros }: RecipeNutritionProps) => {
 				},
 			]}
 		>
-			<Text style={[styles.label, { color: theme.textMuted }]}>{t("recipe.nutrition")}</Text>
+			<Text style={[styles.label, { color: theme.heading }]}>{t("recipe.nutrition")}</Text>
 
 			<View style={styles.grid}>
 				{stats.map((stat) => (
@@ -112,6 +113,8 @@ export const RecipeNutrition = ({ macros }: RecipeNutritionProps) => {
 					unit={massUnit}
 				/>
 			</View>
+
+			<NutritionSourceCitation kind="recipe" />
 		</View>
 	);
 };

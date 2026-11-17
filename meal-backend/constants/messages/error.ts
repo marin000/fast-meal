@@ -11,9 +11,13 @@ export const ERROR_MESSAGES = {
 	DEVICE_NOT_CREATED: "Device was not created",
 	FRIDGE_PRODUCT_INVALID_REQUEST_BODY:
 		"Invalid request body. Expected { deviceId: string, name: string, quantity?: number, unit?: string, expirationDate?: string, purchasedAt?: string, barcode?: string }",
+	FRIDGE_PRODUCT_UPDATE_INVALID_REQUEST_BODY:
+		"Invalid request body. Expected { deviceId: string, id: string, name: string, quantity: number | null, unit: string | null, expirationDate: string | null, purchasedAt: string | null }",
 	FRIDGE_PRODUCT_BATCH_INVALID_REQUEST_BODY:
 		"Invalid request body. Expected { deviceId: string, products: Array<{ name: string, quantity?: number, unit?: string, expirationDate?: string, purchasedAt?: string, barcode?: string }> } (max 50 items)",
 	FRIDGE_PRODUCT_SAVE_FAILED: "Could not save fridge product (database error)",
+	FRIDGE_PRODUCT_UPDATE_FAILED:
+		"Could not update fridge product (database error)",
 	FRIDGE_PRODUCT_NOT_FOUND: "Fridge product not found",
 	MISSING_BARCODE_CODE_QUERY: "Missing required query parameter: code",
 	BARCODE_PRODUCT_INVALID_REQUEST_BODY:
@@ -66,6 +70,8 @@ export const ERROR_MESSAGES = {
 export const ERROR_LOG_MESSAGES = {
 	FRIDGE_PRODUCTS_CREATE_FAILED:
 		"[api/fridge-products] FridgeProduct.create failed",
+	FRIDGE_PRODUCTS_UPDATE_FAILED:
+		"[api/fridge-products] FridgeProduct.update failed",
 	FRIDGE_PRODUCTS_BATCH_CREATE_FAILED:
 		"[api/fridge-products/batch] FridgeProduct.insertMany failed",
 	BARCODE_PRODUCTS_UPSERT_FAILED:

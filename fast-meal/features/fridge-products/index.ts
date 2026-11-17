@@ -1,6 +1,7 @@
 export * from "./add-fridge-product-modal";
 export * from "./fridge-action-grid";
 export * from "./fridge-picker-modal";
+export * from "./fridge-product-form-modal";
 export * from "./fridge-product-list";
 export * from "./fridge-product-picker-row";
 export * from "./fridge-product-row";

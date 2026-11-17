@@ -24,7 +24,7 @@ export const ReceiptProcessingView = ({ errorMessage, onRetry }: ReceiptProcessi
 
 	return (
 		<View style={[styles.container, { backgroundColor: theme.background }]}>
-			<Text style={[styles.title, { color: theme.text }]}>{t("fridge.scanReceipt.errorTitle")}</Text>
+			<Text style={[styles.title, { color: theme.heading }]}>{t("fridge.scanReceipt.errorTitle")}</Text>
 			<Text style={[styles.subtitle, { color: theme.textMuted }]}>{errorMessage}</Text>
 			<PrimaryButton label={t("fridge.scanReceipt.retry")} onPress={onRetry} leftIconName="refresh" />
 		</View>

@@ -35,8 +35,8 @@ const ShoppingListScreen = () => {
 	return (
 		<ScreenScrollView backgroundColor={theme.background} contentContainerStyle={styles.container}>
 			<View style={styles.header}>
-				<Text style={[styles.kicker, { color: theme.textMuted }]}>{t("shopping.kicker")}</Text>
-				<Text style={[styles.title, { color: theme.text }]}>{t("shopping.title")}</Text>
+				<Text style={[styles.kicker, { color: theme.heading }]}>{t("shopping.kicker")}</Text>
+				<Text style={[styles.title, { color: theme.heading }]}>{t("shopping.title")}</Text>
 			</View>
 
 			<AddShoppingItemInput onAdd={(name) => void addItem(name)} />
@@ -75,7 +75,7 @@ const ShoppingListScreen = () => {
 					<View style={[styles.emptyIcon, { backgroundColor: theme.chipBg }]}>
 						<Ionicons name="cart-outline" size={28} color={theme.iconMuted} />
 					</View>
-					<Text style={[styles.emptyTitle, { color: theme.text }]}>{t("shopping.emptyTitle")}</Text>
+					<Text style={[styles.emptyTitle, { color: theme.heading }]}>{t("shopping.emptyTitle")}</Text>
 					<Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>{t("shopping.emptySubtitle")}</Text>
 				</View>
 			)}

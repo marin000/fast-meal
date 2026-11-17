@@ -24,7 +24,7 @@ export const DietLifestyleSection = () => {
 				},
 			]}
 		>
-			<Text style={[styles.sectionTitle, { color: theme.textMuted }]}>{t("settings.sections.dietLifestyle")}</Text>
+			<Text style={[styles.sectionTitle, { color: theme.heading }]}>{t("settings.sections.dietLifestyle")}</Text>
 			<SettingsRow label={t("settings.dietaryStyle.label")} description={t("settings.dietaryStyle.description")}>
 				<SegmentedControl
 					options={dietaryStyleOptions}

@@ -46,8 +46,23 @@
 	},
 	"loading": {
 		"title": "Checking your fridge...",
-		"subtitle": "FastMeal is scanning your ingredients and building your menu."
+		"subtitle": "FastMeal is scanning your ingredients and building your menu.",
+		"steps": {
+			"fridge": {
+				"title": "Checking your fridge...",
+				"subtitle": "FastMeal is scanning your ingredients and building your menu."
+			},
+			"flavors": {
+				"title": "Matching flavors...",
+				"subtitle": "Finding combinations that taste great together."
+			},
+			"recipes": {
+				"title": "Writing recipes...",
+				"subtitle": "Turning those ideas into clear steps you can cook."
+			}
+		}
 	},
+
 	"results": {
 		"title": "Recipe ideas",
 		"subtitle": "Based on what you have at home"
@@ -80,6 +95,11 @@
 		},
 		"cta": {
 			"seeRecipe": "See Recipe"
+		},
+		"nutritionCitation": {
+			"disclaimer": "Nutrition values are AI estimates based on typical USDA FoodData Central food composition data. They are approximate and not medical advice.",
+			"compactDisclaimer": "AI nutrition estimates · not medical advice.",
+			"sourceLink": "Source: USDA FoodData Central"
 		}
 	},
 	"errors": {
@@ -117,6 +137,7 @@
 		"productsTitle": "Products",
 		"addProduct": "Add product",
 		"addPlaceholder": "Product name...",
+		"edit": "Edit product",
 		"addModal": {
 			"title": "Add product",
 			"submit": "Add product",
@@ -128,6 +149,10 @@
 			"unitRequired": "Select a unit when quantity is set",
 			"expirationTab": "Expiration",
 			"purchasedTab": "Bought"
+		},
+		"editModal": {
+			"title": "Edit product",
+			"submit": "Save changes"
 		},
 		"units": {
 			"g": "g",
@@ -226,8 +251,10 @@
 		},
 		"toast": {
 			"added": "Product added",
+			"updated": "Product updated",
 			"deleted": "Product removed",
 			"addFailed": "Could not add product",
+			"updateFailed": "Could not update product",
 			"deleteFailed": "Could not remove product"
 		},
 		"scan": {
@@ -265,6 +292,10 @@
 			"per100g": "Per 100g",
 			"perServing": "Per serving",
 			"perServingWithSize": "Per serving ({{size}})",
+			"nutritionCitation": {
+				"disclaimer": "Product nutrition data from Open Food Facts. Values may be incomplete or approximate and are not medical advice.",
+				"sourceLink": "Source: Open Food Facts"
+			},
 			"nutrientDetails": "Details",
 			"servingSize": "Serving: {{size}}",
 			"ingredients": "Ingredients",

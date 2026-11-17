@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 
+import { usePreferences } from "@/context/preferences-context";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import { formatDisplayDate } from "@/utils/date";
 
@@ -15,13 +16,14 @@ interface DateFieldProps {
 export const DateField = ({ label, value, onChange }: DateFieldProps) => {
 	const { t, i18n } = useTranslation();
 	const theme = useAppAppearance();
-	const [showPicker, setShowPicker] = useState(false);
+	const { darkMode } = usePreferences();
+	const [showAndroidPicker, setShowAndroidPicker] = useState(false);
 
 	const handlePickerChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-		if (Platform.OS === "android") setShowPicker(false);
+		if (Platform.OS === "android") setShowAndroidPicker(false);
 
 		if (event?.type === "dismissed") {
-			setShowPicker(false);
+			setShowAndroidPicker(false);
 			return;
 		}
 		if (selectedDate) onChange(selectedDate);
@@ -31,20 +33,43 @@ export const DateField = ({ label, value, onChange }: DateFieldProps) => {
 		<View style={styles.field}>
 			<Text style={[styles.label, { color: theme.textMuted }]}>{label}</Text>
 			<View style={styles.row}>
-				<Pressable
-					onPress={() => setShowPicker(true)}
-					style={[
-						styles.dateButton,
-						{
-							backgroundColor: theme.card,
-							borderColor: theme.inputBorder,
-						},
-					]}
-				>
-					<Text style={[styles.dateText, { color: theme.text }]}>
-						{value ? formatDisplayDate(value, i18n.language) : t("common.addDate")}
-					</Text>
-				</Pressable>
+				{Platform.OS === "ios" ? (
+					<View
+						style={[
+							styles.dateButton,
+							styles.iosPickerButton,
+							{
+								backgroundColor: theme.card,
+								borderColor: theme.inputBorder,
+							},
+						]}
+					>
+						{/* compact opens a calendar popover — works even when the field is near the bottom */}
+						<DateTimePicker
+							value={value ?? new Date()}
+							mode="date"
+							display="compact"
+							themeVariant={darkMode ? "dark" : "light"}
+							accentColor={theme.primary}
+							onChange={handlePickerChange}
+						/>
+					</View>
+				) : (
+					<Pressable
+						onPress={() => setShowAndroidPicker(true)}
+						style={[
+							styles.dateButton,
+							{
+								backgroundColor: theme.card,
+								borderColor: theme.inputBorder,
+							},
+						]}
+					>
+						<Text style={[styles.dateText, { color: theme.text }]}>
+							{value ? formatDisplayDate(value, i18n.language) : t("common.addDate")}
+						</Text>
+					</Pressable>
+				)}
 				{value ? (
 					<Pressable
 						onPress={() => onChange(undefined)}
@@ -54,18 +79,14 @@ export const DateField = ({ label, value, onChange }: DateFieldProps) => {
 					</Pressable>
 				) : null}
 			</View>
-			{showPicker ? (
+			{Platform.OS === "android" && showAndroidPicker ? (
 				<DateTimePicker
 					value={value ?? new Date()}
 					mode="date"
-					display={Platform.OS === "ios" ? "spinner" : "default"}
+					display="default"
+					themeVariant={darkMode ? "dark" : "light"}
 					onChange={handlePickerChange}
 				/>
-			) : null}
-			{Platform.OS === "ios" && showPicker ? (
-				<Pressable onPress={() => setShowPicker(false)}>
-					<Text style={[styles.doneText, { color: theme.primary }]}>Done</Text>
-				</Pressable>
 			) : null}
 		</View>
 	);
@@ -82,6 +103,7 @@ const styles = StyleSheet.create({
 		textTransform: "uppercase",
 	},
 	row: {
+		alignItems: "center",
 		flexDirection: "row",
 		gap: 8,
 	},
@@ -92,6 +114,11 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 12,
 	},
+	iosPickerButton: {
+		justifyContent: "center",
+		minHeight: 48,
+		overflow: "hidden",
+	},
 	dateText: {
 		fontSize: 14,
 		fontWeight: "500",
@@ -101,22 +128,10 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		justifyContent: "center",
 		paddingHorizontal: 12,
+		paddingVertical: 12,
 	},
 	clearText: {
 		fontSize: 12,
 		fontWeight: "700",
-	},
-	webInput: {
-		borderRadius: 12,
-		borderWidth: 2,
-		fontSize: 14,
-		fontWeight: "500",
-		paddingHorizontal: 16,
-		paddingVertical: 12,
-	},
-	doneText: {
-		fontSize: 14,
-		fontWeight: "700",
-		textAlign: "right",
 	},
 });

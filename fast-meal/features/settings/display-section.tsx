@@ -24,7 +24,7 @@ export const DisplaySection = () => {
 				},
 			]}
 		>
-			<Text style={[styles.sectionTitle, { color: theme.textMuted }]}>{t("settings.sections.display")}</Text>
+			<Text style={[styles.sectionTitle, { color: theme.heading }]}>{t("settings.sections.display")}</Text>
 			<SettingsRow label={t("settings.darkMode.label")}>
 				<ToggleSwitch value={darkMode} onValueChange={setDarkMode} />
 			</SettingsRow>

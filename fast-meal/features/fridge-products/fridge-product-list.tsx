@@ -9,17 +9,13 @@ import { FridgeProductRow } from "./fridge-product-row";
 interface FridgeProductListProps {
 	items: FridgeProductListItem[];
 	onRemove: (id: string) => void;
-	onPressProduct?: (item: FridgeProductListItem) => void;
+	onEdit: (item: FridgeProductListItem) => void;
+	onOpenDetails?: (item: FridgeProductListItem) => void;
 }
 
-export const FridgeProductList = ({ items, onRemove, onPressProduct }: FridgeProductListProps) => {
+export const FridgeProductList = ({ items, onRemove, onEdit, onOpenDetails }: FridgeProductListProps) => {
 	const { t } = useTranslation();
 	const theme = useAppAppearance();
-
-	const handlePressProduct = (item: FridgeProductListItem) => {
-		if (!item.barcode) return;
-		onPressProduct?.(item);
-	};
 
 	const uniqueItems = items.filter(
 		(item, index, list) => list.findIndex((candidate) => candidate.id === item.id) === index,
@@ -31,7 +27,7 @@ export const FridgeProductList = ({ items, onRemove, onPressProduct }: FridgePro
 				<View style={[styles.emptyIcon, { backgroundColor: theme.chipBg }]}>
 					<FridgeIcon size={28} color={theme.iconMuted} />
 				</View>
-				<Text style={[styles.emptyTitle, { color: theme.text }]}>{t("fridge.emptyTitle")}</Text>
+				<Text style={[styles.emptyTitle, { color: theme.heading }]}>{t("fridge.emptyTitle")}</Text>
 				<Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>{t("fridge.emptySubtitle")}</Text>
 			</View>
 		);
@@ -44,7 +40,14 @@ export const FridgeProductList = ({ items, onRemove, onPressProduct }: FridgePro
 					key={item.id}
 					item={item}
 					onRemove={() => onRemove(item.id)}
-					onPress={() => handlePressProduct(item)}
+					onEdit={() => onEdit(item)}
+					onOpenDetails={
+						item.barcode
+							? () => {
+									onOpenDetails?.(item);
+								}
+							: undefined
+					}
 				/>
 			))}
 		</View>

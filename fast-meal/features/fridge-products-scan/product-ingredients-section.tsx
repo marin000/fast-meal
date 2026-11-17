@@ -24,14 +24,14 @@ export const ProductIngredientsSection = ({ ingredients, allergensTags }: Produc
 		<View style={styles.wrap}>
 			{hasIngredients ? (
 				<View style={styles.section}>
-					<Text style={[styles.label, { color: theme.textMuted }]}>{t("fridge.details.ingredients")}</Text>
+					<Text style={[styles.label, { color: theme.heading }]}>{t("fridge.details.ingredients")}</Text>
 					<Text style={[styles.body, { color: theme.text }]}>{ingredients}</Text>
 				</View>
 			) : null}
 
 			{hasAllergens ? (
 				<View style={styles.section}>
-					<Text style={[styles.label, { color: theme.textMuted }]}>{t("fridge.details.allergens")}</Text>
+					<Text style={[styles.label, { color: theme.heading }]}>{t("fridge.details.allergens")}</Text>
 					<View style={styles.allergenChips}>
 						{allergensTags?.map((tag) => (
 							<View key={tag} style={[styles.chip, { backgroundColor: theme.substitutionBoxBg }]}>

@@ -5,6 +5,7 @@ export * from "./difficulty-badge";
 export * from "./fridge-ai-loading";
 export * from "./fridge-ai-logo";
 export * from "./fridge-icon";
+export * from "./nutrition-source-citation";
 export * from "./primary-button";
 export * from "./receipt-icon";
 export * from "./text-input";

@@ -45,6 +45,7 @@ Rules:
 - Nutrition numbers in JSON are always in fixed units (regardless of ingredient display units):
   - macros.calories: kilocalories (kcal).
   - macros.protein, macros.carbs, macros.fat: always grams (g). The client converts to oz only for display when the user chose imperial.
+  - Estimate macros using typical values consistent with USDA FoodData Central food composition data. Values are approximate, not lab measurements or medical advice.
 - Return ONLY valid JSON.
 - Do not include markdown, explanations, or extra text outside the JSON object.
 - warnings: use an empty array [] when there is nothing important to say (allergens, cross-contamination, raw ingredients, etc.). Do not use placeholder strings like "None", "N/A", or [""].

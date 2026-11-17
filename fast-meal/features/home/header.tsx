@@ -9,7 +9,7 @@ export const HomeHeader = () => {
 
 	return (
 		<View style={styles.header}>
-			<Text style={[styles.title, { color: theme.text }]}>{t("home.titleMain")}</Text>
+			<Text style={[styles.title, { color: theme.heading }]}>{t("home.titleMain")}</Text>
 			<Text style={[styles.titleAccent, { color: theme.primary }]}>{t("home.titleAccent")}</Text>
 			<Text style={[styles.subtitle, { color: theme.textMuted }]}>{t("home.subtitle")}</Text>
 		</View>

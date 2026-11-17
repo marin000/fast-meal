@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 
+import { NutritionSourceCitation } from "@/components";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { BarcodeNutrimentValues } from "@/interface/barcode-product";
 
@@ -26,17 +27,18 @@ export const ProductNutritionSection = ({ nutriments, servingSize }: ProductNutr
 	return (
 		<View style={styles.wrap}>
 			<View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-				<Text style={[styles.label, { color: theme.textMuted }]}>{t("recipe.nutrition")}</Text>
-				<Text style={[styles.sectionTitle, { color: theme.text }]}>{t("fridge.details.per100g")}</Text>
+				<Text style={[styles.label, { color: theme.heading }]}>{t("recipe.nutrition")}</Text>
+				<Text style={[styles.sectionTitle, { color: theme.heading }]}>{t("fridge.details.per100g")}</Text>
 
 				<ProductNutritionMacroGrid nutriments={nutriments} scope="per100" />
 				<ProductNutritionMacroBars nutriments={nutriments} scope="per100" />
+				<NutritionSourceCitation kind="barcode" />
 			</View>
 
 			{showServingCard ? (
 				<View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-					<Text style={[styles.label, { color: theme.textMuted }]}>{t("recipe.nutrition")}</Text>
-					<Text style={[styles.sectionTitle, { color: theme.text }]}>
+					<Text style={[styles.label, { color: theme.heading }]}>{t("recipe.nutrition")}</Text>
+					<Text style={[styles.sectionTitle, { color: theme.heading }]}>
 						{servingSize
 							? t("fridge.details.perServingWithSize", { size: servingSize })
 							: t("fridge.details.perServing")}
@@ -45,12 +47,14 @@ export const ProductNutritionSection = ({ nutriments, servingSize }: ProductNutr
 					<ProductNutritionMacroGrid nutriments={nutriments} scope="perServing" />
 					<ProductNutritionMacroBars nutriments={nutriments} scope="perServing" />
 					<ProductNutritionDetailRows nutriments={nutriments} showServingValues bordered />
+					<NutritionSourceCitation kind="barcode" />
 				</View>
 			) : null}
 
 			{showDetailsOnlyCard ? (
 				<View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
 					<ProductNutritionDetailRows nutriments={nutriments} />
+					<NutritionSourceCitation kind="barcode" />
 				</View>
 			) : null}
 		</View>

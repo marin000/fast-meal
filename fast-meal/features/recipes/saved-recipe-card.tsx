@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { NutritionSourceCitation } from "@/components";
 import { usePreferences } from "@/context";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { Recipe } from "@/interface";
@@ -36,7 +37,7 @@ export const SavedRecipeCard = ({ recipe, onOpen, onDelete }: SavedRecipeCardPro
 			<View style={[styles.accent, { backgroundColor: theme.primary }]} />
 
 			<View style={styles.middle}>
-				<Text style={[styles.title, { color: theme.text }]} numberOfLines={2}>
+				<Text style={[styles.title, { color: theme.heading }]} numberOfLines={2}>
 					{recipe.title}
 				</Text>
 				<View style={styles.macrosRow}>
@@ -68,6 +69,7 @@ export const SavedRecipeCard = ({ recipe, onOpen, onDelete }: SavedRecipeCardPro
 						</Text>
 					</View>
 				</View>
+				<NutritionSourceCitation kind="recipe" compact />
 			</View>
 
 			<View style={styles.actions}>

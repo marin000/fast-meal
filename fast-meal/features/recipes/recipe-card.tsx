@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { DifficultyBadge } from "@/components";
+import { DifficultyBadge, NutritionSourceCitation } from "@/components";
 import { usePreferences } from "@/context";
 import { useAppAppearance } from "@/hooks/use-app-appearance";
 import type { Recipe } from "@/interface";
@@ -42,7 +42,7 @@ export const RecipeCard = ({ recipe, recipeIndex, onPress }: RecipeCardProps) =>
 			<View style={styles.body}>
 				<View style={styles.topRow}>
 					<View style={[styles.titleRow, styles.titleRowGrow]}>
-						<Text style={[styles.title, { color: theme.text }]} numberOfLines={2}>
+						<Text style={[styles.title, { color: theme.heading }]} numberOfLines={2}>
 							{recipe.title}
 						</Text>
 						<DifficultyBadge difficulty={recipe.difficulty} />
@@ -88,6 +88,8 @@ export const RecipeCard = ({ recipe, recipeIndex, onPress }: RecipeCardProps) =>
 						</Text>
 					</View>
 				</View>
+
+				<NutritionSourceCitation kind="recipe" compact />
 
 				<Pressable
 					accessibilityRole="button"

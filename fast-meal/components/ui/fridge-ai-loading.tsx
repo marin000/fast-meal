@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
 
 import { FridgeAiLogo } from "@/components/ui/fridge-ai-logo";
@@ -7,14 +7,17 @@ import { useAppAppearance } from "@/hooks/use-app-appearance";
 interface FridgeAiLoadingProps {
 	title: string;
 	subtitle?: string;
+	icon?: ReactNode;
 }
 
 const RING_SIZE = 96;
 const RING_BORDER = 4;
 
-export const FridgeAiLoading = ({ title, subtitle }: FridgeAiLoadingProps) => {
+export const FridgeAiLoading = ({ title, subtitle, icon }: FridgeAiLoadingProps) => {
 	const theme = useAppAppearance();
 	const rotation = useRef(new Animated.Value(0)).current;
+	const contentOpacity = useRef(new Animated.Value(1)).current;
+	const contentKeyRef = useRef(`${title}|${subtitle ?? ""}`);
 
 	useEffect(() => {
 		const animation = Animated.loop(
@@ -30,6 +33,22 @@ export const FridgeAiLoading = ({ title, subtitle }: FridgeAiLoadingProps) => {
 
 		return () => animation.stop();
 	}, [rotation]);
+
+	useEffect(() => {
+		const nextKey = `${title}|${subtitle ?? ""}`;
+		if (contentKeyRef.current === nextKey) {
+			return;
+		}
+
+		contentKeyRef.current = nextKey;
+		contentOpacity.setValue(0);
+		Animated.timing(contentOpacity, {
+			toValue: 1,
+			duration: 350,
+			easing: Easing.out(Easing.ease),
+			useNativeDriver: true,
+		}).start();
+	}, [title, subtitle, contentOpacity]);
 
 	const rotateInterpolation = rotation.interpolate({
 		inputRange: [0, 1],
@@ -51,12 +70,16 @@ export const FridgeAiLoading = ({ title, subtitle }: FridgeAiLoadingProps) => {
 						},
 					]}
 				/>
-				<View style={[styles.logoBackground, { backgroundColor: theme.logoContainerBg }]}>
-					<FridgeAiLogo size={32} />
-				</View>
+				<Animated.View
+					style={[styles.logoBackground, { backgroundColor: theme.logoContainerBg, opacity: contentOpacity }]}
+				>
+					{icon ?? <FridgeAiLogo size={32} />}
+				</Animated.View>
 			</View>
-			<Text style={[styles.title, { color: theme.text }]}>{title}</Text>
-			{subtitle ? <Text style={[styles.subtitle, { color: theme.textMuted }]}>{subtitle}</Text> : null}
+			<Animated.View style={[styles.copy, { opacity: contentOpacity }]}>
+				<Text style={[styles.title, { color: theme.heading }]}>{title}</Text>
+				{subtitle ? <Text style={[styles.subtitle, { color: theme.textMuted }]}>{subtitle}</Text> : null}
+			</Animated.View>
 		</View>
 	);
 };
@@ -98,6 +121,10 @@ const styles = StyleSheet.create({
 		height: 56,
 		justifyContent: "center",
 		width: 56,
+	},
+	copy: {
+		alignItems: "center",
+		gap: 14,
 	},
 	title: {
 		fontSize: 20,
